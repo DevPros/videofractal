@@ -40,7 +40,7 @@ public class Sequential extends FractalCalculus implements Runnable {
             stop();
         }
         singleThread = new Thread(this);
-        txt.setText("A Calcular....");
+        //txt.setText("A Calcular....");
 
         singleThread.start();
 
@@ -62,9 +62,9 @@ public class Sequential extends FractalCalculus implements Runnable {
     @Override
     public synchronized void run() {
         time = System.currentTimeMillis();
-        pb.setMaximum(frac.height);
+        //pb.setMaximum(frac.height);
         for (int y = 0; y < frac.height; y++) {
-            pb.setValue(y);
+            //pb.setValue(y);
             for (int x = 0; x < frac.width; x++) {
                 Point2D r = frac.getReal(x, y);
                 double reX = r.getX();
@@ -79,7 +79,7 @@ public class Sequential extends FractalCalculus implements Runnable {
             frac.revalidate();
         }
         time = System.currentTimeMillis() - time;
-        txt.setText(getTimeHum());
+        //txt.setText(getTimeHum());
     }
 
 }

@@ -32,7 +32,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
  * @author João Canoso https://github.com/jpcanoso
  * @author Rui Barcelos https://github.com/barcelosrui
  */
-public class GUIFratal extends javax.swing.JFrame {
+public class GUIServer extends javax.swing.JFrame {
 
     ButtonGroup bf = new ButtonGroup();
     ButtonGroup ba = new ButtonGroup();
@@ -41,9 +41,9 @@ public class GUIFratal extends javax.swing.JFrame {
     /**
      * Construtor inicial que vai iniciar a interface
      */
-    public GUIFratal() {
+    public GUIServer() {
         initComponents();
-        setExtendedState(GUIFratal.MAXIMIZED_BOTH);
+        setExtendedState(GUIServer.MAXIMIZED_BOTH);
         selectFactal();
         sliders(sl_bri);
         sliders(sl_sat);
@@ -695,7 +695,7 @@ public class GUIFratal extends javax.swing.JFrame {
             } catch (IOException ex) {
                 // lança mensagem de erro, caso nao seja possivel criar ficheiro
                 JOptionPane.showMessageDialog(jPanel1, "Ocorreu um erro ao criar o ficheiro", "Erro", JOptionPane.ERROR_MESSAGE);
-                Logger.getLogger(GUIFratal.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(GUIServer.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
     }//GEN-LAST:event_bt_saveActionPerformed
@@ -923,20 +923,21 @@ public class GUIFratal extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(GUIFratal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(GUIServer.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(GUIFratal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(GUIServer.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(GUIFratal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(GUIServer.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(GUIFratal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(GUIServer.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new GUIFratal().setVisible(true);
+                new GUIServer().setVisible(true);
             }
         });
     }

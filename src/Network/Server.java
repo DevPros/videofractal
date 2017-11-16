@@ -6,12 +6,14 @@
 package Network;
 
 import fractal.FractalImage;
+import fractal.functions.Madelbroth;
 import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
@@ -36,9 +38,13 @@ public class Server extends Thread {
                 System.out.println("waiting for clients.....");
                 Socket socket = server.accept();
                 System.out.println("Client connected.");
-                                
+                Scanner in = new Scanner(socket.getInputStream());
                 ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                
+                String iter = in.nextLine();
+                System.out.println("N.º de Iterações = "+iter);
+                f.setFractalFunction(new Madelbroth(Integer.parseInt(iter)));
+                f.seqCalculateFractalGUI(null, null);
+                f.initCalculateFractalGUI();
                 ImageIO.write(f.getImg(), "jpg", baos);
                 baos.flush();
                 
@@ -52,7 +58,7 @@ public class Server extends Thread {
                 dos.write(bytes, 0, bytes.length);
                 
                 System.out.println("Image sent to server....");
-                
+                in.close();
                 dos.close();
                 out.close();
                 
