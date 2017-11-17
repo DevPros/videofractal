@@ -1,13 +1,10 @@
 package fractal;
 
 import fractal.functions.FractalFunction;
-import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import javax.swing.JComponent;
 import java.awt.Dimension;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseMotionListener;
 import java.awt.geom.Point2D;
 import javax.swing.JProgressBar;
 import javax.swing.text.JTextComponent;

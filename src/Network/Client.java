@@ -19,11 +19,22 @@ import javax.imageio.ImageIO;
  */
 public class Client {
     public static String iter;
+    public static String zoom;
+    public static String width,height;
 
+    public static void setDim(String width, String height) {
+        Client.width = width;
+        Client.height = height;
+    }  
+    
     public static void setIter(String iter) {
         Client.iter = iter;
     }
 
+    public static void setZoom(String zoom) {
+        Client.zoom = zoom;
+    }
+    
     
     public static BufferedImage Client(String local, int port) throws Exception {
         //abrir um socket na máquina actual 
@@ -35,6 +46,9 @@ public class Client {
         DataInputStream dis = new DataInputStream(in);
         PrintStream out = new PrintStream(socket.getOutputStream());
         out.println(iter);
+        out.println(zoom);
+        out.println(width);
+        out.println(height);
         
         int len = dis.readInt();
         System.out.println("Image Size: " + len / 1024 + "KB");

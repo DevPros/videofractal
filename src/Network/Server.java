@@ -41,7 +41,13 @@ public class Server extends Thread {
                 Scanner in = new Scanner(socket.getInputStream());
                 ByteArrayOutputStream baos = new ByteArrayOutputStream();
                 String iter = in.nextLine();
+                String zoom = in.nextLine();
+                String width = in.nextLine();
+                String height = in.nextLine();
                 System.out.println("N.º de Iterações = "+iter);
+                System.out.println("N.º de ZOOM = "+zoom);
+                f.setNewZoom(Double.parseDouble(zoom));
+                f.resizeImg(Integer.parseInt(width),Integer.parseInt(height));
                 f.setFractalFunction(new Madelbroth(Integer.parseInt(iter)));
                 f.seqCalculateFractalGUI(null, null);
                 f.initCalculateFractalGUI();
