@@ -43,7 +43,13 @@ public class GUIClient extends javax.swing.JFrame {
         br.add(rb_sd);
         rb_uhd.setSelected(true);
     }
-
+    private String defineFractal(){
+        if(rb_madelbroth.isSelected()){
+            return "1";
+        }else{
+            return "2";
+        }
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -430,6 +436,7 @@ public class GUIClient extends javax.swing.JFrame {
             c.setIter(txt_itera.getText());
             c.setZoom(txt_zoom.getText());
             c.setDim(txt_width.getText(), txt_height.getText());
+            c.defineFractal(defineFractal());
             BufferedImage b = c.Client(tf_ip.getText(), Integer.parseInt(tf_port.getText()));
             ImageIcon icon = new ImageIcon(b);
             Image image = icon.getImage();

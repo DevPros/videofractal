@@ -6,6 +6,7 @@
 package Network;
 
 import fractal.FractalImage;
+import fractal.functions.BurningShip;
 import fractal.functions.Madelbroth;
 import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
@@ -47,11 +48,16 @@ public class Server extends Thread {
                 String zoom = in.nextLine();
                 String width = in.nextLine();
                 String height = in.nextLine();
+                String fractal = in.nextLine();
                 System.out.println("N.º de Iterações = " + iter);
                 System.out.println("N.º de ZOOM = " + zoom);
                 f.setNewZoom(Double.parseDouble(zoom));
                 f.resizeImg(Integer.parseInt(width), Integer.parseInt(height));
-                f.setFractalFunction(new Madelbroth(Integer.parseInt(iter)));
+                if("1".equals(fractal)){
+                    f.setFractalFunction(new Madelbroth(Integer.parseInt(iter)));
+                }else{
+                    f.setFractalFunction(new BurningShip(Integer.parseInt(iter)));
+                }
                 f.seqCalculateFractalGUI(null, null);
                 f.initCalculateFractalGUI();
                 ImageIO.write(f.getImg(), "jpg", baos);

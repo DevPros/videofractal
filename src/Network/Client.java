@@ -5,6 +5,8 @@
  */
 package Network;
 
+import fractal.functions.BurningShip;
+import fractal.functions.Madelbroth;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.DataInputStream;
@@ -18,15 +20,17 @@ import javax.imageio.ImageIO;
  * @author Rui Barcelos https://github.com/barcelosrui
  */
 public class Client {
+
     public static String iter;
     public static String zoom;
-    public static String width,height;
+    public static String define;
+    public static String width, height;
 
     public static void setDim(String width, String height) {
         Client.width = width;
         Client.height = height;
-    }  
-    
+    }
+
     public static void setIter(String iter) {
         Client.iter = iter;
     }
@@ -34,8 +38,11 @@ public class Client {
     public static void setZoom(String zoom) {
         Client.zoom = zoom;
     }
-    
-    
+
+    public static void defineFractal(String define) {
+        Client.define = define;
+    }
+
     public static BufferedImage Client(String local, int port) throws Exception {
         //abrir um socket na máquina actual 
         Socket socket = new Socket(local, port);
@@ -49,7 +56,8 @@ public class Client {
         out.println(zoom);
         out.println(width);
         out.println(height);
-        
+        out.println(define);
+
         int len = dis.readInt();
         System.out.println("Image Size: " + len / 1024 + "KB");
 
@@ -59,7 +67,7 @@ public class Client {
         in.close();
         out.close();
         socket.close();
-        
+
         InputStream ian = new ByteArrayInputStream(data);
         BufferedImage bImage = ImageIO.read(ian);
         return bImage;
