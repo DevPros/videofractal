@@ -6,7 +6,8 @@
 package threads;
 
 import fractal.*;
-import java.util.concurrent.TimeUnit;
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import javax.swing.JProgressBar;
 import javax.swing.text.JTextComponent;
 
@@ -58,11 +59,6 @@ public abstract class FractalCalculus {
      * @return String
      */
     public String getTimeHum() {
-        return String.format("%d:%d:%d:%d",
-                TimeUnit.MILLISECONDS.toHours(time),
-                TimeUnit.MILLISECONDS.toMinutes(time) % 60,
-                TimeUnit.MILLISECONDS.toSeconds(time) % 60,
-                TimeUnit.MILLISECONDS.toMillis(time) % 1000
-        );
+        return new SimpleDateFormat("mm:ss:SSS").format(new Timestamp(time));  
     }
 }
