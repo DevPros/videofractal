@@ -16,7 +16,19 @@ public class Service implements Serializable {
     private double cy;
     private double zoom;
     private byte[] data;
+    
+    public Service(double cx, double cy, double zoom){
+        this.cx = cx;
+        this.cy = cy;
+        this.zoom = zoom;
+        this.data = null;
+    }
 
+    public synchronized Service cloneAndZoom(double factor){
+        zoom *= factor;
+        return new Service(cx, cy, zoom);
+    }
+    
     public double getCx() {
         return cx;
     }
