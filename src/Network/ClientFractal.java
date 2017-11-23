@@ -5,7 +5,7 @@
  */
 package Network;
 
-import java.io.IOException;
+import auxiliar.ImgUtils;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
@@ -37,12 +37,11 @@ public class ClientFractal {
             // receber a resposta
             s = (Service) in.readObject();
             // apresental a resposta
-            //ImageUtils.saveImage(s.getData(), "teste"+i+".jpg");
+            ImgUtils.saveImage(s.getData(), "teste"+i+".jpg");
             //fechar o socket e as streams
             socket.close();
             in.close();
             out.close();
-        
         }
     }
 }
