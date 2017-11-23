@@ -39,6 +39,6 @@ public class ImgUtils {
     }
 
     public static void saveImage(byte[] bytes, String name) throws Exception {
-        
+        ImageIO.write(byteToImage(bytes),"jpg",new File(name));
     }
 }
