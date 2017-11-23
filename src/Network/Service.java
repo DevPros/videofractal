@@ -29,7 +29,9 @@ public class Service implements Serializable {
     public synchronized Service cloneAndZoom(double factor) throws Exception{
         zoom *= factor;
         imageNumber++;
-        return new Service(cx, cy, zoom);
+        Service s = new Service(cx, cy, zoom);
+        s.imageNumber = this.imageNumber;
+        return s;
     }
     
     public double getCx() {
