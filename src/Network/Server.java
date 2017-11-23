@@ -76,20 +76,16 @@ public class Server extends Thread {
                 in.close();
                 dos.close();
                 out.close();
+                server.close();
+                interrupt();
+                if(isInterrupted()==true){
+                    break;
+                }
             }
         } catch (IOException ex) {
             Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
-    public void closeSocket() {
-        try {
-            server.close();
-            interrupt();
-            stop();
-        } catch (IOException ex) {
-            Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
 
 }

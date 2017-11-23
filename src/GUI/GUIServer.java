@@ -1016,8 +1016,7 @@ public class GUIServer extends javax.swing.JFrame {
         if (s.isAlive() || s != null) {
             jButton1.setEnabled(true);
             jButton2.setEnabled(false);
-            s.closeSocket(); 
-            s.currentThread().interrupt();
+            s.interrupt();
             s = null;
         }        
     }//GEN-LAST:event_jButton2ActionPerformed

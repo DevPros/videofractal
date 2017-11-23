@@ -50,6 +50,15 @@ public class GUIClient extends javax.swing.JFrame {
             return "2";
         }
     }
+    private String defineCalcule(){
+        if(rb_seq.isSelected()){
+            return "1";
+        }else if(rb_par.isSelected()){
+            return "2";
+        }else{
+            return "3";
+        }
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
