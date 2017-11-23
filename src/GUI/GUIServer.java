@@ -5,6 +5,7 @@
  */
 package GUI;
 
+import Network.FractalCalculatorServer;
 import Network.Server;
 import fractal.functions.*;
 import java.awt.event.MouseEvent;
@@ -1001,7 +1002,9 @@ public class GUIServer extends javax.swing.JFrame {
     }//GEN-LAST:event_txt_heightKeyReleased
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        s = new Server(f, Integer.parseInt(txt_port.getText()));
+        //s = new Server(f, Integer.parseInt(txt_port.getText()));
+        //s.start();
+        FractalCalculatorServer s = new FractalCalculatorServer(f, Integer.parseInt(txt_port.getText()));
         s.start();
         jButton2.setEnabled(true);
         jButton1.setEnabled(false);

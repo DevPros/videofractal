@@ -12,13 +12,14 @@ import java.io.Serializable;
  * @author Rui Barcelos https://github.com/barcelosrui
  */
 public class Service implements Serializable {
+
     private double cx;
     private double cy;
     private double zoom;
     private byte[] data;
-            int imageNumber;
-    
-    public Service(double cx, double cy, double zoom){
+    int imageNumber;
+
+    public Service(double cx, double cy, double zoom) {
         this.cx = cx;
         this.cy = cy;
         this.zoom = zoom;
@@ -26,14 +27,14 @@ public class Service implements Serializable {
         imageNumber = 0;
     }
 
-    public synchronized Service cloneAndZoom(double factor) throws Exception{
+    public synchronized Service cloneAndZoom(double factor) throws Exception {
         zoom *= factor;
         imageNumber++;
         Service s = new Service(cx, cy, zoom);
         s.imageNumber = this.imageNumber;
         return s;
     }
-    
+
     public double getCx() {
         return cx;
     }
@@ -65,5 +66,5 @@ public class Service implements Serializable {
     public void setData(byte[] data) {
         this.data = data;
     }
-    
+
 }
