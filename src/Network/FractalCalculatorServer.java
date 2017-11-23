@@ -36,11 +36,11 @@ public class FractalCalculatorServer extends Thread {
                 ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
                 ObjectInputStream in = new ObjectInputStream(socket.getInputStream());
                 Service s = (Service)in.readObject();
-                f.resizeImg((int)s.getCx(),(int)s.getCy());
+                f.changePosition(s.getCx(), s.getCy());
                 f.setNewZoom(s.getZoom());
                 f.seqCalculateFractalGUI(null, null);
                 f.initCalculateFractalGUI();
-                s.setData(new ImgUtils().ImageToByte(f.getImg()));
+                s.setData(ImgUtils.ImageToByte(f.getImg()));
                 out.writeObject(s);
                 socket.close();
                 in.close();

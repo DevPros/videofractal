@@ -125,7 +125,10 @@ public final class FractalImage extends JComponent {
     public BufferedImage getImg() {
         return img;
     }
-
+    public void changePosition(double cx,double cy){
+       this.centerX = cx;
+       this.centerY = cy;
+    }
     /**
      * Define um novo zoom
      *

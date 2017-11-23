@@ -9,6 +9,7 @@ import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferByte;
 import java.awt.image.WritableRaster;
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.InputStream;
 import javax.imageio.ImageIO;
@@ -19,19 +20,25 @@ import javax.imageio.ImageIO;
  */
 public class ImgUtils {
 
-    public BufferedImage byteToImage(InputStream ian) throws Exception {
-        return ImageIO.read(ian);
+    public static BufferedImage byteToImage(byte[] data) throws Exception {
+        InputStream ian = new ByteArrayInputStream(data);
+        BufferedImage bImage = ImageIO.read(ian);
+        return bImage;
     }
-    //https://stackoverflow.com/questions/3211156/how-to-convert-image-to-byte-array-in-java
-    public byte[] ImageToByte(BufferedImage img) throws Exception {
-        WritableRaster raster = img.getRaster();
-        DataBufferByte data = (DataBufferByte) 
-        raster.getDataBuffer();
-        return (data.getData());
+
+    //https://stackoverflow.com/questions/10247123/java-convert-bufferedimage-to-byte-without-writing-to-disk
+    public static byte[] ImageToByte(BufferedImage img) throws Exception {
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+
+        //ImageIO.setUseCache(false);
+        ImageIO.write(img, "jpg", outputStream);
+
+        byte[] imageBytes = outputStream.toByteArray();
+
+        return imageBytes;
     }
-    
-    public static void saveImage(byte[] bytes, String name) throws Exception{
-        BufferedImage img = ImageIO.read(new ByteArrayInputStream(bytes));
-        ImageIO.write(img, "png", new File(name));
+
+    public static void saveImage(byte[] bytes, String name) throws Exception {
+        
     }
 }
