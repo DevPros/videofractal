@@ -5,6 +5,7 @@
  */
 package Network;
 
+import auxiliar.ImgUtils;
 import fractal.functions.BurningShip;
 import fractal.functions.Madelbroth;
 import java.awt.image.BufferedImage;
@@ -67,11 +68,9 @@ public class Client {
         in.close();
         out.close();
         socket.close();
-
-        InputStream ian = new ByteArrayInputStream(data);
-        BufferedImage bImage = ImageIO.read(ian);
-        return bImage;
-
+        ImgUtils img = new ImgUtils();
+        return img.byteToImage( new ByteArrayInputStream(data));
         /**/
+    
     }
 }
