@@ -134,7 +134,7 @@ public final class FractalImage extends JComponent {
     public void setNewZoom(double newZoom) {
         this.newZoom = newZoom;
     }
-
+    
     /**
      * Calcula sequencialmente o Fractal
      *

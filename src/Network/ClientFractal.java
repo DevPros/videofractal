@@ -14,7 +14,7 @@ import java.net.Socket;
  *
  */
 public class ClientFractal {
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws Exception {
         
         // mensagem a ser transmitida
         Service s = new Service(0,0, 4);
@@ -37,7 +37,7 @@ public class ClientFractal {
             // receber a resposta
             s = (Service) in.readObject();
             // apresental a resposta
-            ImageUtils.saveImage(s.getData(), "teste"+i+".jpg");
+            //ImageUtils.saveImage(s.getData(), "teste"+i+".jpg");
             //fechar o socket e as streams
             socket.close();
             in.close();

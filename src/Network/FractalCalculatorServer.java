@@ -5,6 +5,7 @@
  */
 package Network;
 
+import auxiliar.ImgUtils;
 import fractal.FractalImage;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -36,11 +37,18 @@ public class FractalCalculatorServer extends Thread {
                 ObjectInputStream in = new ObjectInputStream(socket.getInputStream());
                 Service s = (Service)in.readObject();
                 f.resizeImg((int)s.getCx(),(int)s.getCy());
+                f.setNewZoom(s.getZoom());
+                f.seqCalculateFractalGUI(null, null);
+                f.initCalculateFractalGUI();
+                s.setData(new ImgUtils().ImageToByte(f.getImg()));
+                out.writeObject(s);
+                socket.close();
                 in.close();
                 out.close();
-                socket.close();
+                if(this.isInterrupted()){
+                    break;
+                }
             }
-            
         } catch (Exception ex) {
             Logger.getLogger(FractalCalculatorServer.class.getName()).log(Level.SEVERE, null, ex);
         }

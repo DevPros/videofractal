@@ -5,6 +5,7 @@
  */
 package Network;
 
+import auxiliar.ImgUtils;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
@@ -43,7 +44,7 @@ public class LinkToServer extends Thread {
                 // receber a resposta
                 myService = (Service) in.readObject();
                 // apresental a resposta
-                ImageUtils.saveImage(s.getData(), "teste"+i+".jpg");
+                
                 //fechar o socket e as streams
                 socket.close();
                 in.close();

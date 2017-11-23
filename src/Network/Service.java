@@ -5,6 +5,7 @@
  */
 package Network;
 
+import auxiliar.ImgUtils;
 import java.io.Serializable;
 
 /**
@@ -16,6 +17,7 @@ public class Service implements Serializable {
     private double cy;
     private double zoom;
     private byte[] data;
+    double i = 0;
     
     public Service(double cx, double cy, double zoom){
         this.cx = cx;
@@ -24,8 +26,10 @@ public class Service implements Serializable {
         this.data = null;
     }
 
-    public synchronized Service cloneAndZoom(double factor){
+    public synchronized Service cloneAndZoom(double factor) throws Exception{
         zoom *= factor;
+        new ImgUtils().saveImage(getData(), "teste"+i+".jpg");
+        i++;
         return new Service(cx, cy, zoom);
     }
     
