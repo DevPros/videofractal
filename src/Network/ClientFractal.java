@@ -34,7 +34,7 @@ public class ClientFractal {
             // enviar a mensagem
             out.writeObject(myService);
             out.flush(); //obriga a enviar o pacote
-            
+
             // receber a resposta
             myService = (Service) in.readObject();
             // apresental a resposta
