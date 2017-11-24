@@ -29,6 +29,7 @@ import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.JSlider;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import jdk.nashorn.internal.runtime.regexp.joni.EncodingHelper;
 
 /**
  * @author João Canoso https://github.com/jpcanoso
@@ -36,7 +37,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
  */
 public class GUIServer extends javax.swing.JFrame {
 
-    Server s = null;
+    FractalCalculatorServer s = null;
     ButtonGroup bf = new ButtonGroup();
     ButtonGroup ba = new ButtonGroup();
     ButtonGroup br = new ButtonGroup();
@@ -69,6 +70,8 @@ public class GUIServer extends javax.swing.JFrame {
                 Point2D r = f.getReal(evt.getX(), evt.getY());
                 f.centerX = r.getX();
                 f.centerY = r.getY();
+                tf_cx.setText(r.getX()+"");
+                tf_cy.setText(r.getY()+"");
                 if (evt.getButton() == MouseEvent.BUTTON1) {
                     f.zoom *= f.newZoom;
                     f.initCalculateFractalGUI();
@@ -200,6 +203,11 @@ public class GUIServer extends javax.swing.JFrame {
         jLabel9 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
+        jPanel9 = new javax.swing.JPanel();
+        jLabel12 = new javax.swing.JLabel();
+        jLabel13 = new javax.swing.JLabel();
+        tf_cx = new javax.swing.JTextField();
+        tf_cy = new javax.swing.JTextField();
         jPanel11 = new javax.swing.JPanel();
         bt_calc = new javax.swing.JButton();
         bt_stop = new javax.swing.JButton();
@@ -221,7 +229,7 @@ public class GUIServer extends javax.swing.JFrame {
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 649, Short.MAX_VALUE)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 647, Short.MAX_VALUE)
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -334,7 +342,7 @@ public class GUIServer extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(rb_bal))
                     .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(32, Short.MAX_VALUE))
+                .addContainerGap(16, Short.MAX_VALUE))
         );
 
         rb_madelbroth.getAccessibleContext().setAccessibleName("RButtonMadelbroth");
@@ -490,7 +498,7 @@ public class GUIServer extends javax.swing.JFrame {
                 .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(l_bri)
                     .addComponent(l_sat, javax.swing.GroupLayout.Alignment.TRAILING))
-                .addGap(0, 9, Short.MAX_VALUE))
+                .addGap(0, 20, Short.MAX_VALUE))
         );
         jPanel7Layout.setVerticalGroup(
             jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -504,7 +512,7 @@ public class GUIServer extends javax.swing.JFrame {
                     .addComponent(sl_bri, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jLabel7, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(l_sat, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(31, Short.MAX_VALUE))
+                .addContainerGap(15, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Cor", jPanel7);
@@ -567,7 +575,7 @@ public class GUIServer extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel3)
                     .addComponent(txt_itera, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(0, 52, Short.MAX_VALUE))
+                .addGap(0, 36, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Opções", jPanel1);
@@ -630,6 +638,57 @@ public class GUIServer extends javax.swing.JFrame {
         );
 
         jTabbedPane1.addTab("Server", jPanel8);
+
+        jLabel12.setText("Centro X");
+
+        jLabel13.setText("Centro Y");
+
+        tf_cx.setText("0.50");
+        tf_cx.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tf_cxActionPerformed(evt);
+            }
+        });
+
+        tf_cy.setText("0.50");
+        tf_cy.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tf_cyActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel9Layout = new javax.swing.GroupLayout(jPanel9);
+        jPanel9.setLayout(jPanel9Layout);
+        jPanel9Layout.setHorizontalGroup(
+            jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel9Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel9Layout.createSequentialGroup()
+                        .addComponent(jLabel12)
+                        .addGap(18, 18, 18)
+                        .addComponent(tf_cx))
+                    .addGroup(jPanel9Layout.createSequentialGroup()
+                        .addComponent(jLabel13)
+                        .addGap(18, 18, 18)
+                        .addComponent(tf_cy, javax.swing.GroupLayout.DEFAULT_SIZE, 147, Short.MAX_VALUE)))
+                .addContainerGap())
+        );
+        jPanel9Layout.setVerticalGroup(
+            jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel9Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel12)
+                    .addComponent(tf_cx, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel13)
+                    .addComponent(tf_cy, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(39, Short.MAX_VALUE))
+        );
+
+        jTabbedPane1.addTab("Point", jPanel9);
 
         jPanel11.setBorder(javax.swing.BorderFactory.createTitledBorder("Calculo"));
 
@@ -754,7 +813,7 @@ public class GUIServer extends javax.swing.JFrame {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, 0, Short.MAX_VALUE)
+            .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, 392, Short.MAX_VALUE)
         );
 
         pack();
@@ -1004,10 +1063,14 @@ public class GUIServer extends javax.swing.JFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         //s = new Server(f, Integer.parseInt(txt_port.getText()));
         //s.start();
-        FractalCalculatorServer s = new FractalCalculatorServer(f, Integer.parseInt(txt_port.getText()));
-        s.start();
-        jButton2.setEnabled(true);
-        jButton1.setEnabled(false);
+        if (s == null) {
+            f.changePosition(Double.parseDouble(tf_cx.getText()), Double.parseDouble(tf_cy.getText()));
+            s = new FractalCalculatorServer(f, Integer.parseInt(txt_port.getText()));
+            s.start();
+            jButton2.setEnabled(true);
+            jButton1.setEnabled(false);
+        }
+
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void txt_portActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_portActionPerformed
@@ -1015,14 +1078,25 @@ public class GUIServer extends javax.swing.JFrame {
     }//GEN-LAST:event_txt_portActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        
-        if (s.isAlive() || s != null) {
-            jButton1.setEnabled(true);
-            jButton2.setEnabled(false);
-            s.interrupt();
-            s = null;
-        }        
+        if (s != null) {
+            if (s.isAlive()) {
+                if (s.isInterrupted() == false) {
+                    jButton1.setEnabled(true);
+                    jButton2.setEnabled(false);
+                    s.interrupt();
+                    s = null;
+                }
+            }
+        }
     }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void tf_cxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tf_cxActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_tf_cxActionPerformed
+
+    private void tf_cyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tf_cyActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_tf_cyActionPerformed
 
     /**
      * @param args the command line arguments
@@ -1074,6 +1148,8 @@ public class GUIServer extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel12;
+    private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -1092,6 +1168,7 @@ public class GUIServer extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel7;
     private javax.swing.JPanel jPanel8;
+    private javax.swing.JPanel jPanel9;
     private javax.swing.JRadioButtonMenuItem jRadioButtonMenuItem1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator1;
@@ -1112,6 +1189,8 @@ public class GUIServer extends javax.swing.JFrame {
     private javax.swing.JRadioButton rb_uhd;
     private javax.swing.JSlider sl_bri;
     private javax.swing.JSlider sl_sat;
+    private javax.swing.JTextField tf_cx;
+    private javax.swing.JTextField tf_cy;
     private javax.swing.JTextField txt_bal;
     private javax.swing.JTextField txt_height;
     private javax.swing.JTextField txt_itera;

@@ -21,37 +21,45 @@ import java.util.logging.Logger;
  * @author Rui Barcelos https://github.com/barcelosrui
  */
 public class FractalCalculatorServer extends Thread {
+
     FractalImage f;
-    int port;
+    int port = 10000;
 
     public FractalCalculatorServer(FractalImage f, int port) {
         this.f = f;
         this.port = port;
     }
-    public void run(){
+
+    public void run() {
         try {
-            ServerSocket server =  new ServerSocket(port);
-            while(true){
+            ServerSocket server = new ServerSocket(port);
+            System.out.println("Server run....");
+            while (true) {
                 Socket socket = server.accept();
                 ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
                 ObjectInputStream in = new ObjectInputStream(socket.getInputStream());
-                Service s = (Service)in.readObject();
+                Service s = (Service) in.readObject();
                 f.changePosition(s.getCx(), s.getCy());
                 f.setNewZoom(s.getZoom());
                 f.seqCalculateFractalGUI(null, null);
                 f.initCalculateFractalGUI();
                 s.setData(ImgUtils.ImageToByte(f.getImg()));
                 out.writeObject(s);
+
                 socket.close();
                 in.close();
                 out.close();
-                if(this.isInterrupted()){
+
+                if (isInterrupted() == true) {
+                    System.out.println("Server stop....");
+                    server.close();
                     break;
                 }
             }
+            System.out.println("Server stop....");
         } catch (Exception ex) {
             Logger.getLogger(FractalCalculatorServer.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+
 }

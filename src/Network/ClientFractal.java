@@ -37,8 +37,6 @@ public class ClientFractal {
             // receber a resposta
             myService = (Service) in.readObject();
             // apresental a resposta
-            System.out.println(myService.imageNumber);
-            
             ImgUtils.saveImage(myService.getData(), "teste"+myService.imageNumber+".jpg");
             //fechar o socket e as streams
             socket.close();
