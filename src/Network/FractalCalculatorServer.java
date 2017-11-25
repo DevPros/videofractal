@@ -41,7 +41,7 @@ public class FractalCalculatorServer extends Thread {
                 Service s = (Service) in.readObject();
                 f.changePosition(s.getCx(), s.getCy());
                 f.setNewZoom(s.getZoom());
-                f.seqCalculateFractalGUI(null, null);
+                f.balCalculateFractalGUI(null, null);
                 f.initCalculateFractalGUI();
                 s.setData(ImgUtils.ImageToByte(f.getImg()));
                 out.writeObject(s);

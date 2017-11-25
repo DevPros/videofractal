@@ -29,8 +29,7 @@ public class DistributorFractalVideo {
             ServerSocket server = new ServerSocket(5000);
             while (true) {
                 Socket client = server.accept();
-                LinkToServer link = new LinkToServer(client.getInetAddress().getHostName(),
-                client.getPort(), s, factor);
+                LinkToServer link = new LinkToServer(client.getInetAddress().getHostName(), client.getPort(), s, factor);
                 link.start();
                 client.close();
             }

@@ -6,8 +6,6 @@
 package auxiliar;
 
 import java.awt.image.BufferedImage;
-import java.awt.image.DataBufferByte;
-import java.awt.image.WritableRaster;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -29,12 +27,8 @@ public class ImgUtils {
     //https://stackoverflow.com/questions/10247123/java-convert-bufferedimage-to-byte-without-writing-to-disk
     public static byte[] ImageToByte(BufferedImage img) throws Exception {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-
-        //ImageIO.setUseCache(false);
         ImageIO.write(img, "jpg", outputStream);
-
         byte[] imageBytes = outputStream.toByteArray();
-
         return imageBytes;
     }
 
