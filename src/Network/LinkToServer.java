@@ -5,10 +5,11 @@
  */
 package Network;
 
-import auxiliar.ImgUtils;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -27,6 +28,7 @@ public class LinkToServer extends Thread {
         this.fator = fator;
     }
     
+    @Override
     public void run(){
         while( service.getZoom() < 1E-16){
             try {
@@ -49,8 +51,8 @@ public class LinkToServer extends Thread {
                 socket.close();
                 in.close();
                 out.close();
-            } catch (Exception e) {
-            
+            } catch (Exception ex) {
+            Logger.getLogger(LinkToServer.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
     }

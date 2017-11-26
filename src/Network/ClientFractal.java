@@ -6,7 +6,6 @@
 package Network;
 
 import auxiliar.ImgUtils;
-import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
@@ -53,7 +52,6 @@ public class ClientFractal extends Thread{
             } catch (Exception ex) {
                 Logger.getLogger(ClientFractal.class.getName()).log(Level.SEVERE, null, ex);
             }
-
         }
     }
 

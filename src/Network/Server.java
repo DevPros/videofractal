@@ -35,6 +35,7 @@ public class Server extends Thread {
         this.port = port;
     }
 
+    @Override
     public void run() {
         try {
             server = new ServerSocket(port);

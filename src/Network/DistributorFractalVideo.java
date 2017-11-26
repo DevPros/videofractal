@@ -8,6 +8,8 @@ package Network;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -33,8 +35,8 @@ public class DistributorFractalVideo {
                 link.start();
                 client.close();
             }
-        } catch (Exception e) {
-            
+        } catch (Exception ex) {
+            Logger.getLogger(DistributorFractalVideo.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 }

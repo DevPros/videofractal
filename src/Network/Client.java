@@ -5,17 +5,12 @@
  */
 package Network;
 
-import auxiliar.ImgUtils;
 import static auxiliar.ImgUtils.byteToImage;
-import fractal.functions.BurningShip;
-import fractal.functions.Madelbroth;
 import java.awt.image.BufferedImage;
-import java.io.ByteArrayInputStream;
 import java.io.DataInputStream;
 import java.io.InputStream;
 import java.io.PrintStream;
 import java.net.Socket;
-import javax.imageio.ImageIO;
 
 /**
  *
