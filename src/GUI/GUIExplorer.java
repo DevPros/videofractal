@@ -5,6 +5,7 @@
  */
 package GUI;
 
+import Network.ClientFractal;
 import Network.FractalCalculatorServer;
 import fractal.functions.*;
 import java.awt.event.MouseEvent;
@@ -15,7 +16,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
-import static java.lang.Thread.currentThread;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -28,15 +28,15 @@ import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.JSlider;
 import javax.swing.filechooser.FileNameExtensionFilter;
-import jdk.nashorn.internal.runtime.regexp.joni.EncodingHelper;
 
 /**
  * @author João Canoso https://github.com/jpcanoso
  * @author Rui Barcelos https://github.com/barcelosrui
  */
-public class GUIServer extends javax.swing.JFrame {
+public class GUIExplorer extends javax.swing.JFrame {
 
-    FractalCalculatorServer s = null;
+    //FractalCalculatorServer s = null;
+    private static ClientFractal cf = new ClientFractal();
     ButtonGroup bf = new ButtonGroup();
     ButtonGroup ba = new ButtonGroup();
     ButtonGroup br = new ButtonGroup();
@@ -44,9 +44,9 @@ public class GUIServer extends javax.swing.JFrame {
     /**
      * Construtor inicial que vai iniciar a interface
      */
-    public GUIServer() {
+    public GUIExplorer() {
         initComponents();
-        setExtendedState(GUIServer.MAXIMIZED_BOTH);
+        setExtendedState(GUIExplorer.MAXIMIZED_BOTH);
         selectFactal();
         sliders(sl_bri);
         sliders(sl_sat);
@@ -69,8 +69,8 @@ public class GUIServer extends javax.swing.JFrame {
                 Point2D r = f.getReal(evt.getX(), evt.getY());
                 f.centerX = r.getX();
                 f.centerY = r.getY();
-                tf_cx.setText(r.getX()+"");
-                tf_cy.setText(r.getY()+"");
+                tf_cx.setText(r.getX() + "");
+                tf_cy.setText(r.getY() + "");
                 if (evt.getButton() == MouseEvent.BUTTON1) {
                     f.zoom *= f.newZoom;
                     f.initCalculateFractalGUI();
@@ -205,8 +205,10 @@ public class GUIServer extends javax.swing.JFrame {
         jPanel8 = new javax.swing.JPanel();
         txt_port = new javax.swing.JTextField();
         jLabel9 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        bt_Start = new javax.swing.JButton();
+        bt_stop_n = new javax.swing.JButton();
+        txt_ip = new javax.swing.JTextField();
+        jLabel14 = new javax.swing.JLabel();
         jPanel11 = new javax.swing.JPanel();
         bt_calc = new javax.swing.JButton();
         bt_stop = new javax.swing.JButton();
@@ -341,7 +343,7 @@ public class GUIServer extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(rb_bal))
                     .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(16, Short.MAX_VALUE))
+                .addContainerGap(52, Short.MAX_VALUE))
         );
 
         rb_madelbroth.getAccessibleContext().setAccessibleName("RButtonMadelbroth");
@@ -511,7 +513,7 @@ public class GUIServer extends javax.swing.JFrame {
                     .addComponent(sl_bri, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jLabel7, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(l_sat, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(15, Short.MAX_VALUE))
+                .addContainerGap(51, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Cor", jPanel7);
@@ -574,7 +576,7 @@ public class GUIServer extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel3)
                     .addComponent(txt_itera, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(0, 36, Short.MAX_VALUE))
+                .addGap(0, 72, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Opções", jPanel1);
@@ -625,7 +627,7 @@ public class GUIServer extends javax.swing.JFrame {
                 .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel13)
                     .addComponent(tf_cy, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(39, Short.MAX_VALUE))
+                .addContainerGap(75, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Point", jPanel9);
@@ -641,19 +643,28 @@ public class GUIServer extends javax.swing.JFrame {
 
         jLabel9.setText("Porta:");
 
-        jButton1.setText("Start");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        bt_Start.setText("Start");
+        bt_Start.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                bt_StartActionPerformed(evt);
             }
         });
 
-        jButton2.setText("Stop");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        bt_stop_n.setText("Stop");
+        bt_stop_n.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                bt_stop_nActionPerformed(evt);
             }
         });
+
+        txt_ip.setText("localhost");
+        txt_ip.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txt_ipActionPerformed(evt);
+            }
+        });
+
+        jLabel14.setText("IP:");
 
         javax.swing.GroupLayout jPanel8Layout = new javax.swing.GroupLayout(jPanel8);
         jPanel8.setLayout(jPanel8Layout);
@@ -663,14 +674,18 @@ public class GUIServer extends javax.swing.JFrame {
                 .addGap(0, 0, 0)
                 .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel8Layout.createSequentialGroup()
-                        .addComponent(jLabel9)
-                        .addGap(18, 18, 18)
-                        .addComponent(txt_port))
+                        .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel9)
+                            .addComponent(jLabel14))
+                        .addGap(0, 0, 0)
+                        .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txt_ip)
+                            .addComponent(txt_port)))
                     .addGroup(jPanel8Layout.createSequentialGroup()
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(bt_Start, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                        .addComponent(bt_stop_n, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 2, Short.MAX_VALUE)))
                 .addGap(10, 10, 10))
         );
         jPanel8Layout.setVerticalGroup(
@@ -680,14 +695,18 @@ public class GUIServer extends javax.swing.JFrame {
                 .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel9)
                     .addComponent(txt_port, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
-                    .addComponent(jButton2))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jLabel14)
+                    .addComponent(txt_ip, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(bt_Start)
+                    .addComponent(bt_stop_n))
+                .addGap(0, 0, 0))
         );
 
-        jTabbedPane1.addTab("Server", jPanel8);
+        jTabbedPane1.addTab("Newtork", jPanel8);
 
         jPanel11.setBorder(javax.swing.BorderFactory.createTitledBorder("Calculo"));
 
@@ -812,7 +831,7 @@ public class GUIServer extends javax.swing.JFrame {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, 392, Short.MAX_VALUE)
+            .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, 392, Short.MAX_VALUE)
         );
 
         pack();
@@ -850,7 +869,7 @@ public class GUIServer extends javax.swing.JFrame {
             } catch (IOException ex) {
                 // lança mensagem de erro, caso nao seja possivel criar ficheiro
                 JOptionPane.showMessageDialog(jPanel1, "Ocorreu um erro ao criar o ficheiro", "Erro", JOptionPane.ERROR_MESSAGE);
-                Logger.getLogger(GUIServer.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(GUIExplorer.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
     }//GEN-LAST:event_bt_saveActionPerformed
@@ -1059,35 +1078,36 @@ public class GUIServer extends javax.swing.JFrame {
         br.clearSelection();
     }//GEN-LAST:event_txt_heightKeyReleased
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void bt_StartActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_StartActionPerformed
         //s = new Server(f, Integer.parseInt(txt_port.getText()));
         //s.start();
-        if (s == null) {
+        /*if (s == null) {
             f.changePosition(Double.parseDouble(tf_cx.getText()), Double.parseDouble(tf_cy.getText()));
             s = new FractalCalculatorServer(f, Integer.parseInt(txt_port.getText()));
             s.start();
-            jButton2.setEnabled(true);
-            jButton1.setEnabled(false);
-        }
-
-    }//GEN-LAST:event_jButton1ActionPerformed
+            bt_stop_n.setEnabled(true);
+            bt_Start.setEnabled(false);
+        }*/
+        cf.setPortIp(txt_ip.getText(), Integer.parseInt(txt_port.getText()));
+        cf.start();
+    }//GEN-LAST:event_bt_StartActionPerformed
 
     private void txt_portActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_portActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txt_portActionPerformed
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        if (s != null) {
+    private void bt_stop_nActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_stop_nActionPerformed
+        /*if (s != null) {
             if (s.isAlive()) {
                 if (s.isInterrupted() == false) {
-                    jButton1.setEnabled(true);
-                    jButton2.setEnabled(false);
+                    bt_Start.setEnabled(true);
+                    bt_stop_n.setEnabled(false);
                     s.interrupt();
                     s = null;
                 }
             }
-        }
-    }//GEN-LAST:event_jButton2ActionPerformed
+        }*/
+    }//GEN-LAST:event_bt_stop_nActionPerformed
 
     private void tf_cxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tf_cxActionPerformed
         // TODO add your handling code here:
@@ -1096,6 +1116,10 @@ public class GUIServer extends javax.swing.JFrame {
     private void tf_cyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tf_cyActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_tf_cyActionPerformed
+
+    private void txt_ipActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_ipActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txt_ipActionPerformed
 
     /**
      * @param args the command line arguments
@@ -1114,41 +1138,44 @@ public class GUIServer extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(GUIServer.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(GUIExplorer.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(GUIServer.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(GUIExplorer.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(GUIServer.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(GUIExplorer.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(GUIServer.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(GUIExplorer.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new GUIServer().setVisible(true);
+                new GUIExplorer().setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton bt_Start;
     private javax.swing.JButton bt_calc;
     private javax.swing.JButton bt_minus;
     private javax.swing.JButton bt_plus;
     private javax.swing.JButton bt_save;
     private javax.swing.JButton bt_stop;
+    private javax.swing.JButton bt_stop_n;
     private javax.swing.JButton btn_aceleracao;
     private javax.swing.JButton btn_med5;
     private fractal.FractalImage f;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
+    private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -1192,6 +1219,7 @@ public class GUIServer extends javax.swing.JFrame {
     private javax.swing.JTextField tf_cy;
     private javax.swing.JTextField txt_bal;
     private javax.swing.JTextField txt_height;
+    private javax.swing.JTextField txt_ip;
     private javax.swing.JTextField txt_itera;
     private javax.swing.JTextField txt_par;
     private javax.swing.JTextField txt_port;
