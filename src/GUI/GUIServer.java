@@ -6,7 +6,6 @@
 package GUI;
 
 import Network.FractalCalculatorServer;
-import Network.Server;
 import fractal.functions.*;
 import java.awt.event.MouseEvent;
 import java.awt.geom.Point2D;
