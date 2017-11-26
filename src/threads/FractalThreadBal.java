@@ -40,7 +40,7 @@ public class FractalThreadBal extends Thread {
      */
     @Override
     public void run() {
-        pb.setMaximum(y);
+        //pb.setMaximum(y);
         time = System.currentTimeMillis();
         while ((y = ticket.getAndDecrement()) >= 0) {
             for (int x = 0; x < frac.width; x++) {
@@ -53,7 +53,7 @@ public class FractalThreadBal extends Thread {
                 Color color = Color.getHSBColor(Hue, frac.getSaturation(), frac.getBrightness());
                 frac.img.setRGB(x, y, color.getRGB());
             }
-            pb.setValue(y);
+            //pb.setValue(y);
             frac.repaint();
         }
         time = System.currentTimeMillis() - time;

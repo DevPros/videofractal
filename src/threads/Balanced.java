@@ -40,7 +40,7 @@ public class Balanced extends FractalCalculus {
             stop();
         }
         time = System.currentTimeMillis();
-        txt.setText("A calcular...");
+        //txt.setText("A calcular...");
         // Array de threads com o nº de processadores
         int cores = Runtime.getRuntime().availableProcessors();
         FractalThreadBal[] thr = new FractalThreadBal[cores];
@@ -66,7 +66,7 @@ public class Balanced extends FractalCalculus {
             }
         }
         time = System.currentTimeMillis() - time;
-        txt.setText(getTimeHum());
+        //txt.setText(getTimeHum());
 
     }
 
