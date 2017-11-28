@@ -32,12 +32,13 @@ public class FractalCalculatorServer extends Thread {
     public void run() {
         try {
             ServerSocket server = new ServerSocket(port);
-            System.out.println("Server run....");
+            System.out.println("Server running on port "+port+"...");
             while (true) {
                 Socket socket = server.accept();
                 ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
                 ObjectInputStream in = new ObjectInputStream(socket.getInputStream());
                 Service s = (Service) in.readObject();
+                
                 f.changePosition(s.getCx(), s.getCy());
                 f.setNewZoom(s.getZoom());
                 f.balCalculateFractalGUI(null, null);

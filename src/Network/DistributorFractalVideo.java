@@ -19,8 +19,7 @@ import java.util.logging.Logger;
  */
 public class DistributorFractalVideo {
     public static void main(String[] args) throws IOException {
-        String[] ip = {"localhost", "localhost"};
-        int[] port = {10001, 10002};
+        
         // mensagem a ser transmitida
         Service s = new Service(
             -0.562255859375,
@@ -31,6 +30,7 @@ public class DistributorFractalVideo {
         
         try{
             ServerSocket server = new ServerSocket(5000);
+            System.out.println("[DIST] Distributor running on port 5000...");
             while (true) {
                 Socket serverFractal = server.accept();
                 
@@ -39,6 +39,7 @@ public class DistributorFractalVideo {
                 //abertura da stream de entrada
                 ObjectInputStream in = new ObjectInputStream(serverFractal.getInputStream());
                 int fserver_port = in.readInt();
+                System.out.println("[DIST] New Server on port "+fserver_port);
                 in.close();
                 out.close();
                 serverFractal.close();

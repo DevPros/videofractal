@@ -1090,8 +1090,6 @@ public class GUIServer extends javax.swing.JFrame {
     }//GEN-LAST:event_txt_heightKeyReleased
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        //s = new Server(f, Integer.parseInt(txt_port.getText()));
-        //s.start();
    
         if (s == null) {
             try {
@@ -1101,8 +1099,9 @@ public class GUIServer extends javax.swing.JFrame {
                 ObjectOutputStream out = new ObjectOutputStream(dist.getOutputStream());
                 //abertura da stream de entrada
                 ObjectInputStream in = new ObjectInputStream(dist.getInputStream());
-                
+                // envia porta em que a instancia está a correr
                 out.writeInt(Integer.parseInt(txt_port.getText()));
+                System.out.println("[Server] Sending port "+Integer.parseInt(txt_port.getText())+" to dist");
                 out.close();
                 in.close();
                 dist.close();

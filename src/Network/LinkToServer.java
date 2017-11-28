@@ -5,6 +5,7 @@
  */
 package Network;
 
+import auxiliar.ImgUtils;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
@@ -43,16 +44,19 @@ public class LinkToServer extends Thread {
                 // enviar a mensagem
                 out.writeObject(myService);
                 out.flush(); //obriga a enviar o pacote
+                
                 // receber a resposta
                 myService = (Service) in.readObject();
-                // apresental a resposta
+                
+                // apresenta a resposta
+                ImgUtils.saveImage(myService.getData(), "teste" + myService.imageNumber + ".jpg");
                 
                 //fechar o socket e as streams
                 socket.close();
                 in.close();
                 out.close();
             } catch (Exception ex) {
-            Logger.getLogger(LinkToServer.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(LinkToServer.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
     }
