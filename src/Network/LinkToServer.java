@@ -33,7 +33,7 @@ public class LinkToServer extends Thread {
         while( service.getZoom() < 1E-16){
             try {
                 //ligação do socket ao servidor
-                Socket socket = new Socket("localhost", 10001);
+                Socket socket = new Socket(ip, port);
                 // abertura da stream de saída
                 ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
                 //abertura da stream de entrada

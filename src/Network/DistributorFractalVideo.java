@@ -6,6 +6,8 @@
 package Network;
 
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.logging.Level;
@@ -30,10 +32,21 @@ public class DistributorFractalVideo {
         try{
             ServerSocket server = new ServerSocket(5000);
             while (true) {
-                Socket client = server.accept();
-                LinkToServer link = new LinkToServer(client.getInetAddress().getHostName(), client.getPort(), s, factor);
+                Socket serverFractal = server.accept();
+                
+                // abertura da stream de saída
+                ObjectOutputStream out = new ObjectOutputStream(serverFractal.getOutputStream());
+                //abertura da stream de entrada
+                ObjectInputStream in = new ObjectInputStream(serverFractal.getInputStream());
+                int fserver_port = in.readInt();
+                in.close();
+                out.close();
+                serverFractal.close();
+                
+                
+                LinkToServer link = new LinkToServer(serverFractal.getInetAddress().getHostName(), fserver_port, s, factor);
                 link.start();
-                client.close();
+                serverFractal.close();
             }
         } catch (Exception ex) {
             Logger.getLogger(DistributorFractalVideo.class.getName()).log(Level.SEVERE, null, ex);

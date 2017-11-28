@@ -6,7 +6,6 @@
 package GUI;
 
 import Network.FractalCalculatorServer;
-import Network.Server;
 import fractal.functions.*;
 import java.awt.event.MouseEvent;
 import java.awt.geom.Point2D;
@@ -14,9 +13,11 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
-import static java.lang.Thread.currentThread;
+import java.net.Socket;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -29,7 +30,6 @@ import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.JSlider;
 import javax.swing.filechooser.FileNameExtensionFilter;
-import jdk.nashorn.internal.runtime.regexp.joni.EncodingHelper;
 
 /**
  * @author João Canoso https://github.com/jpcanoso
@@ -205,9 +205,12 @@ public class GUIServer extends javax.swing.JFrame {
         tf_cy = new javax.swing.JTextField();
         jPanel8 = new javax.swing.JPanel();
         txt_port = new javax.swing.JTextField();
-        jLabel9 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
+        txt_distIPPort = new javax.swing.JTextField();
+        txt_distIPServer = new javax.swing.JTextField();
+        jLabel14 = new javax.swing.JLabel();
+        jLabel15 = new javax.swing.JLabel();
         jPanel11 = new javax.swing.JPanel();
         bt_calc = new javax.swing.JButton();
         bt_stop = new javax.swing.JButton();
@@ -233,7 +236,7 @@ public class GUIServer extends javax.swing.JFrame {
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 392, Short.MAX_VALUE)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 486, Short.MAX_VALUE)
         );
 
         jPanel5.setBorder(javax.swing.BorderFactory.createTitledBorder("Tempos"));
@@ -498,7 +501,7 @@ public class GUIServer extends javax.swing.JFrame {
                 .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(l_bri)
                     .addComponent(l_sat, javax.swing.GroupLayout.Alignment.TRAILING))
-                .addGap(0, 20, Short.MAX_VALUE))
+                .addGap(0, 31, Short.MAX_VALUE))
         );
         jPanel7Layout.setVerticalGroup(
             jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -612,7 +615,7 @@ public class GUIServer extends javax.swing.JFrame {
                     .addGroup(jPanel9Layout.createSequentialGroup()
                         .addComponent(jLabel13)
                         .addGap(18, 18, 18)
-                        .addComponent(tf_cy, javax.swing.GroupLayout.DEFAULT_SIZE, 147, Short.MAX_VALUE)))
+                        .addComponent(tf_cy, javax.swing.GroupLayout.DEFAULT_SIZE, 158, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         jPanel9Layout.setVerticalGroup(
@@ -640,8 +643,6 @@ public class GUIServer extends javax.swing.JFrame {
             }
         });
 
-        jLabel9.setText("Porta:");
-
         jButton1.setText("Start");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -656,36 +657,64 @@ public class GUIServer extends javax.swing.JFrame {
             }
         });
 
+        txt_distIPPort.setText("5000");
+        txt_distIPPort.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txt_distIPPortActionPerformed(evt);
+            }
+        });
+
+        txt_distIPServer.setText("localhost");
+        txt_distIPServer.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txt_distIPServerActionPerformed(evt);
+            }
+        });
+
+        jLabel14.setText("Porta:");
+
+        jLabel15.setText("IP Server");
+
         javax.swing.GroupLayout jPanel8Layout = new javax.swing.GroupLayout(jPanel8);
         jPanel8.setLayout(jPanel8Layout);
         jPanel8Layout.setHorizontalGroup(
             jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel8Layout.createSequentialGroup()
-                .addGap(0, 0, 0)
+                .addContainerGap()
+                .addComponent(jLabel15)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(txt_distIPServer, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(txt_distIPPort, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(jPanel8Layout.createSequentialGroup()
                 .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel8Layout.createSequentialGroup()
-                        .addComponent(jLabel9)
-                        .addGap(18, 18, 18)
-                        .addComponent(txt_port))
                     .addGroup(jPanel8Layout.createSequentialGroup()
                         .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE)))
-                .addGap(10, 10, 10))
+                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel8Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jLabel14)
+                        .addGap(25, 25, 25)
+                        .addComponent(txt_port, javax.swing.GroupLayout.DEFAULT_SIZE, 151, Short.MAX_VALUE)))
+                .addContainerGap())
         );
         jPanel8Layout.setVerticalGroup(
             jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel8Layout.createSequentialGroup()
-                .addGap(17, 17, 17)
                 .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel9)
-                    .addComponent(txt_port, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
+                    .addComponent(jLabel15)
+                    .addComponent(txt_distIPServer, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txt_distIPPort, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txt_port, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel14))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jButton1)
-                    .addComponent(jButton2))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jButton2)))
         );
 
         jTabbedPane1.addTab("Server", jPanel8);
@@ -813,7 +842,7 @@ public class GUIServer extends javax.swing.JFrame {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, 392, Short.MAX_VALUE)
+            .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
@@ -1063,7 +1092,25 @@ public class GUIServer extends javax.swing.JFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         //s = new Server(f, Integer.parseInt(txt_port.getText()));
         //s.start();
+   
         if (s == null) {
+            try {
+                Socket dist = new Socket(txt_distIPServer.getText(),
+                        Integer.valueOf(txt_distIPPort.getText())) ;
+                // abertura da stream de saída
+                ObjectOutputStream out = new ObjectOutputStream(dist.getOutputStream());
+                //abertura da stream de entrada
+                ObjectInputStream in = new ObjectInputStream(dist.getInputStream());
+                
+                out.writeInt(Integer.parseInt(txt_port.getText()));
+                out.close();
+                in.close();
+                dist.close();
+                
+            } catch (Exception ex) {
+                Logger.getLogger(GUIServer.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
             f.changePosition(Double.parseDouble(tf_cx.getText()), Double.parseDouble(tf_cy.getText()));
             s = new FractalCalculatorServer(f, Integer.parseInt(txt_port.getText()));
             s.start();
@@ -1097,6 +1144,14 @@ public class GUIServer extends javax.swing.JFrame {
     private void tf_cyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tf_cyActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_tf_cyActionPerformed
+
+    private void txt_distIPPortActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_distIPPortActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txt_distIPPortActionPerformed
+
+    private void txt_distIPServerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_distIPServerActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txt_distIPServerActionPerformed
 
     /**
      * @param args the command line arguments
@@ -1150,6 +1205,8 @@ public class GUIServer extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
+    private javax.swing.JLabel jLabel14;
+    private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -1157,7 +1214,6 @@ public class GUIServer extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
-    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel10;
     private javax.swing.JPanel jPanel11;
@@ -1192,6 +1248,8 @@ public class GUIServer extends javax.swing.JFrame {
     private javax.swing.JTextField tf_cx;
     private javax.swing.JTextField tf_cy;
     private javax.swing.JTextField txt_bal;
+    private javax.swing.JTextField txt_distIPPort;
+    private javax.swing.JTextField txt_distIPServer;
     private javax.swing.JTextField txt_height;
     private javax.swing.JTextField txt_itera;
     private javax.swing.JTextField txt_par;
