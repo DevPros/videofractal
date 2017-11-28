@@ -3,23 +3,13 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/Rui%20Barcelos/Desktop/Licenciatura/SD/SD-Trabalho2/src/fractal/FractalImage.java</file>
-            <file>file:/C:/Users/Rui%20Barcelos/Desktop/Licenciatura/SD/SD-Trabalho2/src/GUI/GUIClient.java</file>
-            <file>file:/C:/Users/Rui%20Barcelos/Desktop/Licenciatura/SD/SD-Trabalho2/src/GUI/GUIServer.java</file>
-            <file>file:/C:/Users/Rui%20Barcelos/Desktop/Licenciatura/SD/SD-Trabalho2/src/GUI/GUIClientOLD.java</file>
-            <file>file:/C:/Users/Rui%20Barcelos/Desktop/Licenciatura/SD/SD-Trabalho2/src/threads/Parallel.java</file>
-            <file>file:/C:/Users/Rui%20Barcelos/Desktop/Licenciatura/SD/SD-Trabalho2/src/Network/DistributorFractalVideo.java</file>
-            <file>file:/C:/Users/Rui%20Barcelos/Desktop/Licenciatura/SD/SD-Trabalho2/src/Network/ClientFractal.java</file>
-            <file>file:/C:/Users/Rui%20Barcelos/Desktop/Licenciatura/SD/SD-Trabalho2/src/Network/Client.java</file>
-            <file>file:/C:/Users/Rui%20Barcelos/Desktop/Licenciatura/SD/SD-Trabalho2/src/auxiliar/ImgUtils.java</file>
-            <file>file:/C:/Users/Rui%20Barcelos/Desktop/Licenciatura/SD/SD-Trabalho2/src/Network/Server.java</file>
-            <file>file:/C:/Users/Rui%20Barcelos/Desktop/Licenciatura/SD/SD-Trabalho2/src/Network/Service.java</file>
-            <file>file:/C:/Users/Rui%20Barcelos/Desktop/Licenciatura/SD/SD-Trabalho2/src/Network/LinkToServer.java</file>
-            <file>file:/C:/Users/Rui%20Barcelos/Desktop/Licenciatura/SD/SD-Trabalho2/src/threads/FractalCalculus.java</file>
-            <file>file:/C:/Users/Rui%20Barcelos/Desktop/Licenciatura/SD/SD-Trabalho2/src/Network/FractalCalculatorServer.java</file>
-            <file>file:/C:/Users/Rui%20Barcelos/Desktop/Licenciatura/SD/SD-Trabalho2/src/fractal/functions/Madelbroth.java</file>
-            <file>file:/C:/Users/Rui%20Barcelos/Desktop/Licenciatura/SD/SD-Trabalho2/src/threads/Sequential.java</file>
-            <file>file:/C:/Users/Rui%20Barcelos/Desktop/Licenciatura/SD/SD-Trabalho2/src/fractal/functions/FractalFunction.java</file>
+            <file>file:/C:/Users/rui_b/Documents/GitHub/SD-Trabalho2/src/Network/LinkToServer.java</file>
+            <file>file:/C:/Users/rui_b/Documents/GitHub/SD-Trabalho2/src/threads/FractalThreadBal.java</file>
+            <file>file:/C:/Users/rui_b/Documents/GitHub/SD-Trabalho2/src/Network/ClientFractal.java</file>
+            <file>file:/C:/Users/rui_b/Documents/GitHub/SD-Trabalho2/src/Network/DistributorFractalVideo.java</file>
+            <file>file:/C:/Users/rui_b/Documents/GitHub/SD-Trabalho2/src/GUI/GUIClient.java</file>
+            <file>file:/C:/Users/rui_b/Documents/GitHub/SD-Trabalho2/src/Network/FractalCalculatorServer.java</file>
+            <file>file:/C:/Users/rui_b/Documents/GitHub/SD-Trabalho2/src/GUI/GUIExplorer.java</file>
         </group>
     </open-files>
 </project-private>

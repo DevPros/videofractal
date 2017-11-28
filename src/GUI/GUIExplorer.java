@@ -6,7 +6,6 @@
 package GUI;
 
 import Network.ClientFractal;
-import Network.FractalCalculatorServer;
 import fractal.functions.*;
 import java.awt.event.MouseEvent;
 import java.awt.geom.Point2D;
@@ -36,7 +35,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 public class GUIExplorer extends javax.swing.JFrame {
 
     //FractalCalculatorServer s = null;
-    private static ClientFractal cf = new ClientFractal();
+    ClientFractal cf = new ClientFractal();
     ButtonGroup bf = new ButtonGroup();
     ButtonGroup ba = new ButtonGroup();
     ButtonGroup br = new ButtonGroup();

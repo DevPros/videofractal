@@ -33,12 +33,13 @@ public class LinkToServer extends Thread {
         while( service.getZoom() < 1E-16){
             try {
                 //ligação do socket ao servidor
-                Socket socket = new Socket("localhost", 10001);
+                Socket socket = new Socket("localhost", 10000);
                 // abertura da stream de saída
                 ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
                 //abertura da stream de entrada
                 ObjectInputStream in = new ObjectInputStream(socket.getInputStream());
                 Service myService = service.cloneAndZoom(fator);
+                System.out.println(myService.getZoom());
                 
                 // enviar a mensagem
                 out.writeObject(myService);
