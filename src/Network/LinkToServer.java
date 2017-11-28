@@ -31,7 +31,7 @@ public class LinkToServer extends Thread {
     
     @Override
     public void run(){
-        while( service.getZoom() < 1E-16){
+        while( service.getZoom() > 1E-16){
             try {
                 //ligação do socket ao servidor
                 Socket socket = new Socket(ip, port);

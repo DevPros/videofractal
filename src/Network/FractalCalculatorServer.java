@@ -32,8 +32,9 @@ public class FractalCalculatorServer extends Thread {
     public void run() {
         try {
             ServerSocket server = new ServerSocket(port);
-            System.out.println("Server running on port "+port+"...");
+            System.out.println("[Server] Server running on port "+port+"...");
             while (true) {
+                //System.out.println(server.getInetAddress());
                 Socket socket = server.accept();
                 ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
                 ObjectInputStream in = new ObjectInputStream(socket.getInputStream());
