@@ -11,6 +11,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.DefaultListModel;
 import javax.swing.JList;
 import javax.swing.JTextArea;
 
@@ -24,7 +25,7 @@ public class Distributor extends Thread{
     double factor;
     
     JTextArea debug;
-    JList<String> serverList;
+    JList<String> serverList = new JList<String>(new DefaultListModel<String>());
     
     // mensagem a ser transmitida
         Service s = new Service(
@@ -44,7 +45,7 @@ public class Distributor extends Thread{
     public void run(){
         try{
             ServerSocket server = new ServerSocket(port);
-            debug.append("[DIST] Distributor running on port 5000...");
+            debug.append("Distributor running on port 5000... \n");
             while (true) {
                 Socket serverFractal = server.accept();
                 
@@ -54,7 +55,11 @@ public class Distributor extends Thread{
                 ObjectInputStream in = new ObjectInputStream(serverFractal.getInputStream());
                 
                 int fserver_port = in.readInt();
-                debug.append("[DIST] New Server on port "+fserver_port);
+                String newServer =  serverFractal.getInetAddress()+":"+fserver_port;
+                debug.append("New Server "+serverFractal.getInetAddress()+":"+fserver_port+"\n");
+                
+                //adicionar servidor à lista
+                ((DefaultListModel)serverList.getModel()).addElement(serverFractal.getInetAddress()+":"+fserver_port);
                 
                 in.close();
                 out.close();
@@ -66,7 +71,7 @@ public class Distributor extends Thread{
                 serverFractal.close();
             }
         } catch (Exception ex) {
-            Logger.getLogger(DistributorFractalVideo.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Distributor.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     
