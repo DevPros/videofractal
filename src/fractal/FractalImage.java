@@ -38,7 +38,7 @@ public final class FractalImage extends JComponent {
      * Construtor por defeito Assim é possivel arrastar este elemento para a GUI
      */
     public FractalImage() {
-        this(800, 600);
+        this(3840,2160);
     }
 
     /**

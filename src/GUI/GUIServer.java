@@ -45,6 +45,8 @@ public class GUIServer extends javax.swing.JFrame {
     public GUIServer() {
         initComponents();
         setExtendedState(GUIServer.MAXIMIZED_BOTH);
+        f.changePosition(-0.5, 0.5);
+        f.setFractalFunction(new Madelbroth(255));
         f.balCalculateFractalGUI(null, null);
         f.initCalculateFractalGUI();
         evt();
