@@ -7,13 +7,18 @@ package Network;
 
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.net.Inet4Address;
+import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.DefaultListModel;
+import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JTextArea;
+import javax.swing.JTextField;
+import java.net.DatagramSocket; 
 
 /**
  *
@@ -24,28 +29,44 @@ public class Distributor extends Thread{
     int port;
     double factor;
     
+    InetAddress myIP;
     JTextArea debug;
-    JList<String> serverList = new JList<String>(new DefaultListModel<String>());
     
+    DefaultListModel model = new DefaultListModel();
+    
+    JList serverList = new JList(model);
+    JTextField jTextFieldIP;
     // mensagem a ser transmitida
-        Service s = new Service(
-            -0.562255859375,
-            -0.64355468875,
-            1.0
-        );
+    Service s = new Service(
+        -0.562255859375,
+        -0.64355468875,
+        2.0
+    );
 
-    public Distributor(int port, double factor, JTextArea jTextAreaDebug, JList<String> ServerList) {
+    public Distributor(int port, double factor, JTextArea jTextAreaDebug, JList ServerList, JTextField jTextFieldIP) {
         this.port = port;
         this.factor = factor;
         this.debug = jTextAreaDebug;
         this.serverList = ServerList;
+        this.jTextFieldIP = jTextFieldIP;
     }
     
     @Override
     public void run(){
         try{
             ServerSocket server = new ServerSocket(port);
-            debug.append("Distributor running on port 5000... \n");
+            
+            // get the real local address
+            // https://stackoverflow.com/a/38342964
+            try(final DatagramSocket socket = new DatagramSocket()){
+                socket.connect(InetAddress.getByName("8.8.8.8"), 10002);
+                myIP = InetAddress.getByName(socket.getLocalAddress().getHostAddress());
+            }
+            
+            
+            debug.append("Distributor running on address "+myIP+":"+port+"... \n");
+            jTextFieldIP.setText(myIP+":"+port);
+            
             while (true) {
                 Socket serverFractal = server.accept();
                 
@@ -53,14 +74,19 @@ public class Distributor extends Thread{
                 ObjectOutputStream out = new ObjectOutputStream(serverFractal.getOutputStream());
                 //abertura da stream de entrada
                 ObjectInputStream in = new ObjectInputStream(serverFractal.getInputStream());
-                
+                //valor da porta
                 int fserver_port = in.readInt();
-                String newServer =  serverFractal.getInetAddress()+":"+fserver_port;
-                debug.append("New Server "+serverFractal.getInetAddress()+":"+fserver_port+"\n");
+                // adiciona o ip:porta ao debug
+                debug.append("New Server "+serverFractal.getInetAddress().getHostAddress()+":"+fserver_port+"\n");
                 
                 //adicionar servidor à lista
-                ((DefaultListModel)serverList.getModel()).addElement(serverFractal.getInetAddress()+":"+fserver_port);
+                //model.addElement(serverFractal.getInetAddress().getHostAddress()+":"+fserver_port);
+                model.addElement(serverFractal.getInetAddress().getHostAddress()+":"+fserver_port);
                 
+                //update JList
+                //JList serverList = new JList(model);
+                //jLabelIPAddress.setText(Inet4Address.getLocalHost().getHostAddress());
+                //jLabelIPAddress.setText("ola");
                 in.close();
                 out.close();
                 serverFractal.close();
@@ -74,6 +100,4 @@ public class Distributor extends Thread{
             Logger.getLogger(Distributor.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
-    
 }
