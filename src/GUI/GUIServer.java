@@ -45,8 +45,8 @@ public class GUIServer extends javax.swing.JFrame {
     public GUIServer() {
         initComponents();
         setExtendedState(GUIServer.MAXIMIZED_BOTH);
-        f.changePosition(-0.5, 0.5);
-        f.setFractalFunction(new Madelbroth(255));
+        f.setFractalFunction(new Madelbroth(256));
+        f.setNewZoom(1.2);
         f.balCalculateFractalGUI(null, null);
         f.initCalculateFractalGUI();
         evt();
@@ -62,36 +62,12 @@ public class GUIServer extends javax.swing.JFrame {
                 Point2D r = f.getReal(evt.getX(), evt.getY());
                 f.centerX = r.getX();
                 f.centerY = r.getY();
-                if (evt.getButton() == MouseEvent.BUTTON1) {
-                    f.zoom *= f.newZoom;
-                    f.initCalculateFractalGUI();
-                }
-                if (evt.getButton() == MouseEvent.BUTTON3) {
-                    f.zoom /= f.newZoom;
-                    f.initCalculateFractalGUI();
-                }
+                System.out.println(r.getX()+"/"+r.getY());
+                
             }
         });
     }
 
-    /**
-     * Define os sliders
-     */
-    private void sliders(JSlider sl) {
-        sl.setMinimum(0);
-        sl.setMajorTickSpacing(0);
-        sl.setMaximum(255);
-        sl.setMajorTickSpacing(255);
-        sl.setValue(255);
-        sl.setPaintTicks(true);
-        sl.setPaintLabels(true);
-    }
-
-
-    /**
-     * Opções para calcular Fractal -Sequencial -Paralelo -Balanciado
-     */
-    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -111,8 +87,8 @@ public class GUIServer extends javax.swing.JFrame {
         txt_port = new javax.swing.JTextField();
         btn_start = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
-        txt_distIPPort = new javax.swing.JTextField();
-        txt_distIPServer = new javax.swing.JTextField();
+        txt_distPort = new javax.swing.JTextField();
+        txt_distIP = new javax.swing.JTextField();
         jLabel14 = new javax.swing.JLabel();
         jLabel15 = new javax.swing.JLabel();
         jLabel16 = new javax.swing.JLabel();
@@ -159,19 +135,14 @@ public class GUIServer extends javax.swing.JFrame {
             }
         });
 
-        txt_distIPPort.setText("5000");
-        txt_distIPPort.addActionListener(new java.awt.event.ActionListener() {
+        txt_distPort.setText("5000");
+        txt_distPort.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txt_distIPPortActionPerformed(evt);
+                txt_distPortActionPerformed(evt);
             }
         });
 
-        txt_distIPServer.setText("localhost");
-        txt_distIPServer.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txt_distIPServerActionPerformed(evt);
-            }
-        });
+        txt_distIP.setText("localhost");
 
         jLabel14.setText("This Port:");
 
@@ -201,8 +172,8 @@ public class GUIServer extends javax.swing.JFrame {
                                 .addComponent(jLabel16)))
                         .addGap(18, 18, 18)
                         .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(txt_distIPServer, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txt_distIPPort, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txt_distIP, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txt_distPort, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(txt_port, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addGap(232, 232, 232))
         );
@@ -212,10 +183,10 @@ public class GUIServer extends javax.swing.JFrame {
                 .addGap(0, 0, 0)
                 .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel15)
-                    .addComponent(txt_distIPServer, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txt_distIP, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(0, 0, 0)
                 .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txt_distIPPort, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txt_distPort, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel16))
                 .addGap(0, 0, 0)
                 .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -265,8 +236,8 @@ public class GUIServer extends javax.swing.JFrame {
    
         if (s == null) {
             try {
-                Socket dist = new Socket(txt_distIPServer.getText(),
-                        Integer.valueOf(txt_distIPPort.getText())) ;
+                Socket dist = new Socket(txt_distIP.getText(),
+                        Integer.valueOf(txt_distPort.getText())) ;
                 // abertura da stream de saída
                 ObjectOutputStream out = new ObjectOutputStream(dist.getOutputStream());
                 //abertura da stream de entrada
@@ -305,13 +276,9 @@ public class GUIServer extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jButton2ActionPerformed
 
-    private void txt_distIPPortActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_distIPPortActionPerformed
+    private void txt_distPortActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_distPortActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_txt_distIPPortActionPerformed
-
-    private void txt_distIPServerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_distIPServerActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txt_distIPServerActionPerformed
+    }//GEN-LAST:event_txt_distPortActionPerformed
 
     /**
      * @param args the command line arguments
@@ -361,8 +328,8 @@ public class GUIServer extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel8;
     private javax.swing.JRadioButtonMenuItem jRadioButtonMenuItem1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextField txt_distIPPort;
-    private javax.swing.JTextField txt_distIPServer;
+    private javax.swing.JTextField txt_distIP;
+    private javax.swing.JTextField txt_distPort;
     private javax.swing.JTextField txt_port;
     // End of variables declaration//GEN-END:variables
 

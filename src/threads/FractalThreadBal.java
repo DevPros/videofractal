@@ -13,7 +13,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import javax.swing.JProgressBar;
 
 /**
- * @author João Canoso  https://github.com/jpcanoso
+ * @author João Canoso https://github.com/jpcanoso
  * @author Rui Barcelos https://github.com/barcelosrui
  */
 public class FractalThreadBal extends Thread {
@@ -24,17 +24,21 @@ public class FractalThreadBal extends Thread {
     // ticket
     AtomicInteger ticket;
     int y;
+
     /**
-     * Recebe o tikect da classe que chama esta, recebe o gractal e a progressbar
+     * Recebe o tikect da classe que chama esta, recebe o gractal e a
+     * progressbar
+     *
      * @param ticket
      * @param frac
-     * @param pb 
+     * @param pb
      */
-    public FractalThreadBal(AtomicInteger ticket, FractalImage frac,JProgressBar pb) {
+    public FractalThreadBal(AtomicInteger ticket, FractalImage frac, JProgressBar pb) {
         this.ticket = ticket;
         this.frac = frac;
         this.pb = pb;
     }
+
     /**
      * Calcula o fractal via balanciado
      */
@@ -44,9 +48,9 @@ public class FractalThreadBal extends Thread {
         time = System.currentTimeMillis();
         while ((y = ticket.getAndDecrement()) >= 0) {
             for (int x = 0; x < frac.width; x++) {
-                Point2D r = frac.getReal(x, y);
-                double reX = r.getX();
-                double reY = r.getY();
+                double reX = frac.centerX + (x - frac.width / 2) * frac.zoom * frac.newZoom ;
+                double reY = frac.centerY - (y - frac.height / 2) * frac.zoom* frac.newZoom ;
+                
                 int index = frac.fractal.getDivergentIteration(new Complex(reX, reY));
 
                 float Hue = (index % 256) / 255.0f;
@@ -56,6 +60,7 @@ public class FractalThreadBal extends Thread {
             //pb.setValue(y);
             frac.repaint();
         }
+        System.out.println("Zoom:"+frac.zoom);
         time = System.currentTimeMillis() - time;
     }
 

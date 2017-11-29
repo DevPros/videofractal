@@ -38,7 +38,7 @@ public final class FractalImage extends JComponent {
      * Construtor por defeito Assim é possivel arrastar este elemento para a GUI
      */
     public FractalImage() {
-        this(3840,2160);
+        this(3840, 2169);
     }
 
     /**
@@ -59,7 +59,7 @@ public final class FractalImage extends JComponent {
      * @param y
      * @return
      */
-    public Point2D getReal(int x, int y) {
+    public Point2D getReal(double x, double y) {
         double reX = centerX + (x - width / 2) * zoom;
         double reY = centerY - (y - height / 2) * zoom;
         return new Point2D.Double(reX, reY);

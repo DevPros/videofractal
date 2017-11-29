@@ -39,7 +39,7 @@ public class FractalCalculatorServer extends Thread {
                 ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
                 ObjectInputStream in = new ObjectInputStream(socket.getInputStream());
                 Service s = (Service) in.readObject();
-                
+                System.out.println("ZOOM: "+s.getZoom()+" X:"+s.getCx()+" Y: "+s.getCy());
                 f.changePosition(s.getCx(), s.getCy());
                 f.setNewZoom(s.getZoom());
                 f.balCalculateFractalGUI(null, null);
