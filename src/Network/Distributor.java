@@ -38,9 +38,9 @@ public class Distributor extends Thread{
     JTextField jTextFieldIP;
     // mensagem a ser transmitida
     Service s = new Service(
-        -0.562255859375,
-        -0.64355468875,
-        2.0
+        -1.78916901860482310667446834118883876381736183681,
+        -0.000000339368515767182566028230266146812728348218,
+       1E-7
     );
 
     public Distributor(int port, double factor, JTextArea jTextAreaDebug, JList ServerList, JTextField jTextFieldIP) {

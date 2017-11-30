@@ -5,14 +5,23 @@
  */
 package Network;
 
+import FractalNovo.FractalThr;
+import static FractalNovo.FractalThr.getFractal;
+import GUI.GUITESTE;
 import auxiliar.ImgUtils;
 import fractal.FractalImage;
+import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
 
 /**
  *
@@ -20,13 +29,16 @@ import java.util.logging.Logger;
  */
 public class FractalCalculatorServer extends Thread {
 
-    FractalImage f;
+    
     int port = 10000;
-
-    public FractalCalculatorServer(FractalImage f, int port) {
-        this.f = f;
+    GUITESTE gui;
+    
+    public FractalCalculatorServer(GUITESTE gui,int port) {
         this.port = port;
+        this.gui = gui;
     }
+    
+    public static BufferedImage image = null;
 
     @Override
     public void run() {
@@ -40,11 +52,15 @@ public class FractalCalculatorServer extends Thread {
                 ObjectInputStream in = new ObjectInputStream(socket.getInputStream());
                 Service s = (Service) in.readObject();
                 System.out.println("ZOOM: "+s.getZoom()+" X:"+s.getCx()+" Y: "+s.getCy());
-                f.changePosition(s.getCx(), s.getCy());
-                f.setNewZoom(s.getZoom());
-                f.balCalculateFractalGUI(null, null);
-                f.initCalculateFractalGUI();
-                s.setData(ImgUtils.ImageToByte(f.getImg()));
+                image = FractalThr.getFractal(s.getCx(), s.getCy(), s.getZoom(),1000, 3860, 2160);
+                ImageIcon icon = new ImageIcon(image);
+                
+
+                gui.l.setIcon(icon);
+                gui.panelIMG.add(gui.l);
+                s.setData(ImgUtils.ImageToByte(image));
+                
+                
                 out.writeObject(s);
 
                 socket.close();
