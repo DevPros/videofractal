@@ -6,6 +6,7 @@
 package Network;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 
 /**
  *
@@ -14,11 +15,11 @@ import java.io.Serializable;
 public class Service implements Serializable {
     private double cx;
     private double cy;
-    private double zoom;
+    private BigDecimal zoom;
     private byte[] data;
             int imageNumber;
     
-    public Service(double cx, double cy, double zoom){
+    public Service(double cx, double cy, BigDecimal zoom){
         this.cx = cx;
         this.cy = cy;
         this.zoom = zoom;
@@ -26,8 +27,8 @@ public class Service implements Serializable {
         imageNumber = 0;
     }
 
-    public synchronized Service cloneAndZoom(double factor) throws Exception{
-        zoom *= factor;
+    public synchronized Service cloneAndZoom(BigDecimal factor) throws Exception{
+        zoom = zoom.multiply(factor);
         imageNumber++;
         Service s = new Service(cx, cy, zoom);
         s.imageNumber = this.imageNumber;
@@ -50,11 +51,11 @@ public class Service implements Serializable {
         this.cy = cy;
     }
 
-    public double getZoom() {
+    public BigDecimal getZoom() {
         return zoom;
     }
 
-    public void setZoom(double zoom) {
+    public void setZoom(BigDecimal zoom) {
         this.zoom = zoom;
     }
 

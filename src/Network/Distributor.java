@@ -12,6 +12,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.math.BigDecimal;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -30,7 +31,7 @@ import javax.imageio.ImageIO;
 public class Distributor extends Thread{
     
     int port;
-    double factor;
+    BigDecimal factor;
     
     InetAddress myIP;
     JTextArea debug;
@@ -41,10 +42,10 @@ public class Distributor extends Thread{
     Service s = new Service(
         -1.78916901860482310667446834118883876381736183681,
         -0.000000339368515767182566028230266146812728348218,
-       1E-7
+       new BigDecimal(1E-7)
     );
 
-    public Distributor(int port, double factor, JTextArea jTextAreaDebug, JTextField jTextFieldIP) {
+    public Distributor(int port, BigDecimal factor, JTextArea jTextAreaDebug, JTextField jTextFieldIP) {
         this.port = port;
         this.factor = factor;
         this.debug = jTextAreaDebug;

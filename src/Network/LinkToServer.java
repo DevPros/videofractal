@@ -8,6 +8,7 @@ package Network;
 import auxiliar.ImgUtils;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.math.BigDecimal;
 import java.net.Socket;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -20,9 +21,9 @@ public class LinkToServer extends Thread {
     String ip;
     int port;
     Service service;
-    double fator;
+    BigDecimal fator;
 
-    public LinkToServer(String ip, int port, Service service, double fator) {
+    public LinkToServer(String ip, int port, Service service, BigDecimal fator) {
         this.ip = ip;
         this.port = port;
         this.service = service;
@@ -31,7 +32,7 @@ public class LinkToServer extends Thread {
     
     @Override
     public void run(){
-        while( service.getZoom() > 1E-18){
+        while( service.getZoom().compareTo(BigDecimal.valueOf(1E-18)) == 1 ){
             try {
                 //ligação do socket ao servidor
                 Socket socket = new Socket(ip, port);
