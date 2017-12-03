@@ -14,14 +14,15 @@ import Remote.RemoteFractal;
 import java.rmi.RemoteException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-public class RMIServer {
+public class GUIRMIServer {
     public static void main(String[] args) {
         try {
+            
             RemoteFractal fr = new RemoteFractal();
             auxiliar.RMI.startRemoteObject(fr, 10021, "fractal");
             System.out.println("Servidor disponivel");
         } catch (RemoteException ex) {
-            Logger.getLogger(RMIServer.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(GUIRMIServer.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 }
