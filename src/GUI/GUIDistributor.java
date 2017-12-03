@@ -284,7 +284,7 @@ public class GUIDistributor extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         int port = Integer.valueOf(distributorPort.getText());
-        BigDecimal factor = new BigDecimal(Double.valueOf(jTextFieldFactor.getText()));
+        BigDecimal factor = new BigDecimal(jTextFieldFactor.getText());
         
         Distributor dist = new Distributor(port, factor, jTextAreaDebug, jTextFieldIP);
         dist.start();

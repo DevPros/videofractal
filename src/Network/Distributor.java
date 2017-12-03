@@ -20,7 +20,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
-import java.net.DatagramSocket; 
+import java.net.DatagramSocket;
 import java.util.concurrent.TimeUnit;
 import javax.imageio.ImageIO;
 
@@ -28,21 +28,21 @@ import javax.imageio.ImageIO;
  *
  * @author Canoso
  */
-public class Distributor extends Thread{
-    
+public class Distributor extends Thread {
+
     int port;
     BigDecimal factor;
-    
+
     InetAddress myIP;
     JTextArea debug;
-    
-    
+
     JTextField jTextFieldIP;
     // mensagem a ser transmitida
-    Service s = new Service(
-        -1.78916901860482310667446834118883876381736183681,
-        -0.000000339368515767182566028230266146812728348218,
-       new BigDecimal(1E-7)
+    Service s = new Service(BigDecimal.valueOf(
+            -1.78916901860482310667446834118883876381736183681),
+            BigDecimal.valueOf(
+                    -0.000000339368515767182566028230266146812728348218),
+            BigDecimal.valueOf(1E-2)
     );
 
     public Distributor(int port, BigDecimal factor, JTextArea jTextAreaDebug, JTextField jTextFieldIP) {
@@ -51,26 +51,25 @@ public class Distributor extends Thread{
         this.debug = jTextAreaDebug;
         this.jTextFieldIP = jTextFieldIP;
     }
-    
+
     @Override
-    public void run(){
-        try{
+    public void run() {
+        try {
             ServerSocket server = new ServerSocket(port);
-            
+
             // get the real local address
             // https://stackoverflow.com/a/38342964
-            try(final DatagramSocket socket = new DatagramSocket()){
+            try (final DatagramSocket socket = new DatagramSocket()) {
                 socket.connect(InetAddress.getByName("8.8.8.8"), 10002);
                 myIP = InetAddress.getByName(socket.getLocalAddress().getHostAddress());
             }
-            
-            
-            debug.append("Distributor running on address "+myIP+":"+port+"... \n");
-            jTextFieldIP.setText(myIP+":"+port);
-            
+
+            debug.append("Distributor running on address " + myIP + ":" + port + "... \n");
+            jTextFieldIP.setText(myIP + ":" + port);
+
             while (true) {
                 Socket serverFractal = server.accept();
-                
+
                 // abertura da stream de saída
                 ObjectOutputStream out = new ObjectOutputStream(serverFractal.getOutputStream());
                 //abertura da stream de entrada
@@ -78,13 +77,12 @@ public class Distributor extends Thread{
                 //valor da porta
                 int fserver_port = in.readInt();
                 // adiciona o ip:porta ao debug
-                debug.append("New Server "+serverFractal.getInetAddress().getHostAddress()+":"+fserver_port+"\n");
-                
+                debug.append("New Server " + serverFractal.getInetAddress().getHostAddress() + ":" + fserver_port + "\n");
+
                 in.close();
                 out.close();
                 serverFractal.close();
-                
-                
+
                 LinkToServer link = new LinkToServer(serverFractal.getInetAddress().getHostName(), fserver_port, s, factor);
                 link.start();
                 serverFractal.close();
@@ -93,12 +91,11 @@ public class Distributor extends Thread{
             Logger.getLogger(Distributor.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
-    public static void generateVideo(File video, File imagens[], int fps, String filetype) throws IOException
-    {
-        IMediaWriter writer = ToolFactory.makeWriter(video+"");
+
+    public static void generateVideo(File video, File imagens[], int fps, String filetype) throws IOException {
+        IMediaWriter writer = ToolFactory.makeWriter(video + "");
         int frameNumber = 0;
-        
+
         for (File imagem : imagens) {
             final BufferedImage image = ImageIO.read(imagem);
             // o ficheiro nao e uma imagem
@@ -114,5 +111,5 @@ public class Distributor extends Thread{
         writer.close();
         System.out.println("Video gerado!");
     }
-    
+
 }

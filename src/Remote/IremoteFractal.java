@@ -5,6 +5,7 @@
  */
 package Remote;
 
+import java.math.BigDecimal;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 
@@ -13,5 +14,5 @@ import java.rmi.RemoteException;
  * @author Canoso
  */
 public interface IremoteFractal extends Remote{
-    public byte[] getFratal(double centerX, double centerY, double zoom, int max, int width, int height) throws RemoteException;
+    public byte[] getFratal(BigDecimal centerX, BigDecimal centerY, BigDecimal zoom, int max, int width, int height) throws RemoteException;
 }
