@@ -31,7 +31,7 @@ public class LinkToServer extends Thread {
     
     @Override
     public void run(){
-        while( service.getZoom() > 1E-16){
+        while( service.getZoom() > 1E-18){
             try {
                 //ligação do socket ao servidor
                 Socket socket = new Socket(ip, port);
@@ -49,7 +49,7 @@ public class LinkToServer extends Thread {
                 myService = (Service) in.readObject();
                 
                 // apresenta a resposta
-                ImgUtils.saveImage(myService.getData(), "teste" + myService.imageNumber + ".jpg");
+                ImgUtils.saveImage(myService.getData(), "teste" + String.format("%05d", myService.imageNumber) + ".jpg");
                 
                 //fechar o socket e as streams
                 socket.close();

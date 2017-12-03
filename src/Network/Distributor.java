@@ -31,7 +31,6 @@ public class Distributor extends Thread{
     
     int port;
     double factor;
-    static String caminho = "Video/";
     
     InetAddress myIP;
     JTextArea debug;
