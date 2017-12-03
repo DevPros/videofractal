@@ -5,20 +5,23 @@
  */
 package Network;
 
+import com.xuggle.mediatool.IMediaWriter;
+import com.xuggle.mediatool.ToolFactory;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.net.Inet4Address;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.DefaultListModel;
-import javax.swing.JLabel;
-import javax.swing.JList;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import java.net.DatagramSocket; 
+import java.util.concurrent.TimeUnit;
+import javax.imageio.ImageIO;
 
 /**
  *
@@ -28,13 +31,12 @@ public class Distributor extends Thread{
     
     int port;
     double factor;
+    static String caminho = "Video/";
     
     InetAddress myIP;
     JTextArea debug;
     
-    DefaultListModel model = new DefaultListModel();
     
-    JList serverList = new JList(model);
     JTextField jTextFieldIP;
     // mensagem a ser transmitida
     Service s = new Service(
@@ -43,11 +45,10 @@ public class Distributor extends Thread{
        1E-7
     );
 
-    public Distributor(int port, double factor, JTextArea jTextAreaDebug, JList ServerList, JTextField jTextFieldIP) {
+    public Distributor(int port, double factor, JTextArea jTextAreaDebug, JTextField jTextFieldIP) {
         this.port = port;
         this.factor = factor;
         this.debug = jTextAreaDebug;
-        this.serverList = ServerList;
         this.jTextFieldIP = jTextFieldIP;
     }
     
@@ -79,14 +80,6 @@ public class Distributor extends Thread{
                 // adiciona o ip:porta ao debug
                 debug.append("New Server "+serverFractal.getInetAddress().getHostAddress()+":"+fserver_port+"\n");
                 
-                //adicionar servidor à lista
-                //model.addElement(serverFractal.getInetAddress().getHostAddress()+":"+fserver_port);
-                model.addElement(serverFractal.getInetAddress().getHostAddress()+":"+fserver_port);
-                
-                //update JList
-                //JList serverList = new JList(model);
-                //jLabelIPAddress.setText(Inet4Address.getLocalHost().getHostAddress());
-                //jLabelIPAddress.setText("ola");
                 in.close();
                 out.close();
                 serverFractal.close();
@@ -100,4 +93,26 @@ public class Distributor extends Thread{
             Logger.getLogger(Distributor.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+    
+    public static void generateVideo(File video, File imagens[], int fps, String filetype) throws IOException
+    {
+        IMediaWriter writer = ToolFactory.makeWriter(video+"");
+        int frameNumber = 0;
+        
+        for (File imagem : imagens) {
+            final BufferedImage image = ImageIO.read(imagem);
+            // o ficheiro nao e uma imagem
+            if (image == null) {
+                continue;
+            }
+            if (frameNumber == 0) {
+                writer.addVideoStream(0, 0, image.getWidth(), image.getHeight());
+            }
+            writer.encodeVideo(0, image, (int) ((1000.0 / fps) * frameNumber), TimeUnit.MILLISECONDS);
+            frameNumber++;
+        }
+        writer.close();
+        System.out.println("Video gerado!");
+    }
+    
 }

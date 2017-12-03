@@ -22,11 +22,9 @@ package FractalNovo;
 
 import java.awt.Color;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.imageio.ImageIO;
 
 /**
  *
@@ -59,6 +57,7 @@ public class FractalThr extends Thread {
         this.image = image;
     }
 
+    @Override
     public void run() {
         int y;
         double cx, cy;
