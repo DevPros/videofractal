@@ -5,9 +5,11 @@
  */
 package Network;
 
+import GUI.GUIDistributor;
 import GUI.RMIClient;
 import Remote.IremoteFractal;
 import auxiliar.RMI;
+import java.awt.Dimension;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.logging.Level;
@@ -21,7 +23,7 @@ import javax.swing.JTextArea;
  */
 public class RMIServer extends Thread{
     
-    JTextArea debug;
+    GUIDistributor gui;
     double centerX;
     double centerY;
     double zoom;
@@ -30,8 +32,8 @@ public class RMIServer extends Thread{
     int height;
     int count = 0;
 
-    public RMIServer(JTextArea debug, double centerX, double centerY, double zoom, int iter, int width, int height) {
-        this.debug = debug;
+    public RMIServer(GUIDistributor gui, double centerX, double centerY, double zoom, int iter, int width, int height) {
+        this.gui = gui;
         this.centerX = centerX;
         this.centerY = centerY;
         this.zoom = zoom;
@@ -42,12 +44,15 @@ public class RMIServer extends Thread{
     
     @Override
     public void run() {
-        debug.append("[RMI] RMI Server initialized.");
+        gui.jTextAreaDebug.append("[RMI] RMI Server initialized.");
         try{
+            gui.jProgressBar1.setMinimum(0);
+            gui.jProgressBar1.setMaximum(2147483647);
             IremoteFractal remoteF = (IremoteFractal) RMI.getRemote("localhost", 10021, "fractal");
             while(true) 
             {
                 zoom *= 0.9;
+                gui.jProgressBar1.setValue((int)(Math.pow(zoom,-1)/1000));
                 byte[] data = remoteF.getFratal(centerX, centerY, zoom, iter, width, height);
                 BufferedImage image = auxiliar.ImgUtils.byteToImage(data);
                 ImageIO.write(image, "png", new File("fractal" + String.format("%06d", count) + ".png"));

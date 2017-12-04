@@ -5,6 +5,7 @@
  */
 package Network;
 
+import GUI.GUIDistributor;
 import com.xuggle.mediatool.IMediaWriter;
 import com.xuggle.mediatool.ToolFactory;
 import java.awt.image.BufferedImage;
@@ -93,7 +94,7 @@ public class Distributor extends Thread{
         }
     }
     
-    public static void generateVideo(File video, File imagens[], int fps, String filetype) throws IOException
+    public static void generateVideo(File video, File imagens[], int fps, String filetype, GUIDistributor gui) throws IOException
     {
         IMediaWriter writer = ToolFactory.makeWriter(video+"");
         int frameNumber = 0;
@@ -108,6 +109,8 @@ public class Distributor extends Thread{
                 writer.addVideoStream(0, 0, image.getWidth(), image.getHeight());
             }
             writer.encodeVideo(0, image, (int) ((1000.0 / fps) * frameNumber), TimeUnit.MILLISECONDS);
+            gui.jProgressBarVideo.setMaximum(imagens.length);
+            gui.jProgressBarVideo.setValue(frameNumber);
             frameNumber++;
         }
         writer.close();
