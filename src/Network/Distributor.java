@@ -20,29 +20,32 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
-import java.net.DatagramSocket; 
+import java.net.DatagramSocket;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.concurrent.TimeUnit;
 import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
 
 /**
  *
  * @author Canoso
  */
-public class Distributor extends Thread{
-    
+public class Distributor extends Thread {
+
     int port;
     double factor;
-    
+
     InetAddress myIP;
     JTextArea debug;
-    
-    
+
     JTextField jTextFieldIP;
     // mensagem a ser transmitida
     Service s = new Service(
-        -1.7685736563152709932817429153295447129341200534055498823375111352827765533646353820119779335363321986478087958745766432300344486098206084588445291690832853792608335811319613234806674959498380432536269122404488847453646628324959064543,
-        -0.0009642968513582800001762427203738194482747761226565635652857831533070475543666558930286153827950716700828887932578932976924523447497708248894734256480183898683164582055541842171815899305250842692638349057118793296768325124255746563,
-       1E-7
+            -1.7685736563152709932817429153295447129341200534055498823375111352827765533646353820119779335363321986478087958745766432300344486098206084588445291690832853792608335811319613234806674959498380432536269122404488847453646628324959064543,
+            -0.0009642968513582800001762427203738194482747761226565635652857831533070475543666558930286153827950716700828887932578932976924523447497708248894734256480183898683164582055541842171815899305250842692638349057118793296768325124255746563,
+            1E-7
     );
 
     public Distributor(int port, double factor, JTextArea jTextAreaDebug, JTextField jTextFieldIP) {
@@ -51,26 +54,25 @@ public class Distributor extends Thread{
         this.debug = jTextAreaDebug;
         this.jTextFieldIP = jTextFieldIP;
     }
-    
+
     @Override
-    public void run(){
-        try{
+    public void run() {
+        try {
             ServerSocket server = new ServerSocket(port);
-            
+
             // get the real local address
             // https://stackoverflow.com/a/38342964
-            try(final DatagramSocket socket = new DatagramSocket()){
+            try (final DatagramSocket socket = new DatagramSocket()) {
                 socket.connect(InetAddress.getByName("8.8.8.8"), 10002);
                 myIP = InetAddress.getByName(socket.getLocalAddress().getHostAddress());
             }
-            
-            
-            debug.append("Distributor running on address "+myIP+":"+port+"... \n");
-            jTextFieldIP.setText(myIP+":"+port);
-            
+
+            debug.append("Distributor running on address " + myIP + ":" + port + "... \n");
+            jTextFieldIP.setText(myIP + ":" + port);
+
             while (true) {
                 Socket serverFractal = server.accept();
-                
+
                 // abertura da stream de saída
                 ObjectOutputStream out = new ObjectOutputStream(serverFractal.getOutputStream());
                 //abertura da stream de entrada
@@ -78,13 +80,12 @@ public class Distributor extends Thread{
                 //valor da porta
                 int fserver_port = in.readInt();
                 // adiciona o ip:porta ao debug
-                debug.append("New Server "+serverFractal.getInetAddress().getHostAddress()+":"+fserver_port+"\n");
-                
+                debug.append("New Server " + serverFractal.getInetAddress().getHostAddress() + ":" + fserver_port + "\n");
+
                 in.close();
                 out.close();
                 serverFractal.close();
-                
-                
+
                 LinkToServer link = new LinkToServer(serverFractal.getInetAddress().getHostName(), fserver_port, s, factor);
                 link.start();
                 serverFractal.close();
@@ -93,12 +94,11 @@ public class Distributor extends Thread{
             Logger.getLogger(Distributor.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
-    public static void generateVideo(File video, File imagens[], int fps, String filetype, GUIDistributor gui) throws IOException
-    {
-        IMediaWriter writer = ToolFactory.makeWriter(video+"");
+
+    public static void generateVideo(File video, File imagens[], int fps, String filetype, GUIDistributor gui) throws IOException {
+        IMediaWriter writer = ToolFactory.makeWriter(video + "");
         int frameNumber = 0;
-        
+        int imgleng = imagens.length - 1;
         for (File imagem : imagens) {
             final BufferedImage image = ImageIO.read(imagem);
             // o ficheiro nao e uma imagem
@@ -109,12 +109,20 @@ public class Distributor extends Thread{
                 writer.addVideoStream(0, 0, image.getWidth(), image.getHeight());
             }
             writer.encodeVideo(0, image, (int) ((1000.0 / fps) * frameNumber), TimeUnit.MILLISECONDS);
-            gui.jProgressBarVideo.setMaximum(imagens.length);
+            gui.jProgressBarVideo.setMaximum(imagens.length - 1);
             gui.jProgressBarVideo.setValue(frameNumber);
+
+            double perc = (((double) frameNumber / imgleng) * 100);
+            NumberFormat formatter = new DecimalFormat("#0.00");
+            gui.lperc.setText(formatter.format(perc) + "%");
             frameNumber++;
         }
         writer.close();
+        JOptionPane.showMessageDialog(gui, "Video Gerado", "Fractal Movie", JOptionPane.PLAIN_MESSAGE, new ImageIcon("src/auxiliar/icon.png"));
+        gui.jProgressBarVideo.setValue(0);
+        gui.bt_genVideo.setEnabled(true);
+        gui.lperc.setText("0.00%");
         System.out.println("Video gerado!");
     }
-    
+
 }

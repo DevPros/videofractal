@@ -23,12 +23,12 @@ import javax.swing.JFileChooser;
  * @author Rui Barcelos https://github.com/barcelosrui
  */
 public class GUIDistributor extends javax.swing.JFrame {
+
     // Video 
     String videoSourceFiles; // dir com imagens src
     File images[];  // array de imagens
     ////////////////////////////
-    
-    
+
     /**
      * Creates new form GUIClient
      */
@@ -86,8 +86,9 @@ public class GUIDistributor extends javax.swing.JFrame {
         jComboVideoFormat = new javax.swing.JComboBox<>();
         jLabelVideoTime = new javax.swing.JLabel();
         jButton4 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        bt_genVideo = new javax.swing.JButton();
         jProgressBarVideo = new javax.swing.JProgressBar();
+        lperc = new javax.swing.JLabel();
         jPanel7 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         jPanel8 = new javax.swing.JPanel();
@@ -187,10 +188,11 @@ public class GUIDistributor extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 6, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(distributorPort, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel2)
-                    .addComponent(jProgressBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jProgressBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(distributorPort, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel2)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -392,29 +394,34 @@ public class GUIDistributor extends javax.swing.JFrame {
                 .addContainerGap(20, Short.MAX_VALUE))
         );
 
-        jButton2.setText("Generate Video");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        bt_genVideo.setText("Generate Video");
+        bt_genVideo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                bt_genVideoActionPerformed(evt);
             }
         });
+
+        lperc.setText("0.00%");
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
-                .addContainerGap()
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(jProgressBarVideo, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addContainerGap()
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel3Layout.createSequentialGroup()
+                                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(0, 0, Short.MAX_VALUE))
+                            .addComponent(jProgressBarVideo, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addGap(170, 170, 170)
+                        .addComponent(bt_genVideo)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(lperc, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
-            .addGroup(jPanel3Layout.createSequentialGroup()
-                .addGap(170, 170, 170)
-                .addComponent(jButton2)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -424,7 +431,9 @@ public class GUIDistributor extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jProgressBarVideo, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(jButton2)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(bt_genVideo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(lperc, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap(196, Short.MAX_VALUE))
         );
 
@@ -486,23 +495,22 @@ public class GUIDistributor extends javax.swing.JFrame {
         int distPort = Integer.valueOf(distributorPort.getText()); // porta do distribuidor
         int groupPort = Integer.valueOf(jTextGroupPort.getText()); // porta do grupo
         double zoom = Double.valueOf(jTextZoom.getText()); // valor do zoom
-        
+
         int width = Integer.valueOf(jTextWidth.getText());
         int height = Integer.valueOf(jTextHeight.getText());
         int iterations = Integer.valueOf(jTextIterations.getText());
         double centerX = Double.valueOf(jTextXCoordinate.getText());
         double centerY = Double.valueOf(jTextYCoordinate.getText());
-        
-        
+
         // inicializar RMI server
         RMIServer server = new RMIServer(this, centerX, centerY, zoom, iterations, width, height);
         server.start();
 
         // inicializa server multicast
-        MulticastServer multicastServer = new MulticastServer(jTextAreaDebug, groupAddress, groupPort, distPort); 
+        MulticastServer multicastServer = new MulticastServer(jTextAreaDebug, groupAddress, groupPort, distPort);
         // inicia server multicast
         multicastServer.start();
-        
+
         //Distributor dist = new Distributor(distPort, zoom, jTextAreaDebug, jTextFieldIP);
         //dist.start();
     }//GEN-LAST:event_jButton1ActionPerformed
@@ -512,35 +520,38 @@ public class GUIDistributor extends javax.swing.JFrame {
     }//GEN-LAST:event_distributorPortActionPerformed
 
     /**
-     * Generate Video button 
-     * @param evt 
+     * Generate Video button
+     *
+     * @param evt
      */
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+    private void bt_genVideoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_genVideoActionPerformed
         // verificar se tudo de encontra preenchido
         //if (jTextSourceFiles.getText() == "" || jTextFPS.getText() == "")
         //{
-            //JOptionPane.showMessageDialog(jPanel1, "Todos os campos devem ser preenchidos.", "Erro", JOptionPane.ERROR_MESSAGE);
+        //JOptionPane.showMessageDialog(jPanel1, "Todos os campos devem ser preenchidos.", "Erro", JOptionPane.ERROR_MESSAGE);
         //}
-        
+
         int fps = Integer.parseInt(jTextFPS.getText());
         String filetype = jComboVideoFormat.getSelectedItem().toString();
-        
+
         // Escolher ficheiro a guardar
         JFileChooser fileChooser = new JFileChooser();
         if (fileChooser.showSaveDialog(this) == JFileChooser.APPROVE_OPTION) {
-            File file = fileChooser.getSelectedFile();
+            File file = new File(fileChooser.getSelectedFile()+"."+jComboVideoFormat.getSelectedItem());
+            //desabilitar o botão
+            bt_genVideo.setEnabled(false);
             // gerar e guardar ficheiro
-            
+
             // gera o video dentro de uma thread
             new Thread(() -> {
                 try {
-                    Distributor.generateVideo(file, images, fps, filetype,this);
+                    Distributor.generateVideo(file, images, fps, filetype, this);
                 } catch (IOException ex) {
-                Logger.getLogger(GUIDistributor.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(GUIDistributor.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }).start();
         }
-    }//GEN-LAST:event_jButton2ActionPerformed
+    }//GEN-LAST:event_bt_genVideoActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         // TODO
@@ -548,7 +559,7 @@ public class GUIDistributor extends javax.swing.JFrame {
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         JFileChooser chooser;
-        chooser = new JFileChooser(); 
+        chooser = new JFileChooser();
         chooser.setCurrentDirectory(new java.io.File("."));
         chooser.setDialogTitle("Choose a Directory");
         chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
@@ -556,14 +567,14 @@ public class GUIDistributor extends javax.swing.JFrame {
         // desativar opção de todos os ficheiros
         chooser.setAcceptAllFileFilterUsed(false);
         // escolheu?
-        if (chooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) { 
-            videoSourceFiles = chooser.getSelectedFile()+"";            
+        if (chooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
+            videoSourceFiles = chooser.getSelectedFile() + "";
             // atribuir à text box a directoria escolhida
             jTextSourceFiles.setText(videoSourceFiles);
             // 
             images = (new File(videoSourceFiles)).listFiles();
             //
-            jLabelVideoTime.setText("Video will be "+images.length / Integer.parseInt(jTextFPS.getText())+" seconds long");
+            jLabelVideoTime.setText("Video will be " + images.length / Integer.parseInt(jTextFPS.getText()) + " seconds long");
         }
     }//GEN-LAST:event_jButton4ActionPerformed
 
@@ -608,9 +619,9 @@ public class GUIDistributor extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    public javax.swing.JButton bt_genVideo;
     private javax.swing.JTextField distributorPort;
     private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
     private javax.swing.JComboBox<String> jComboVideoFormat;
@@ -655,5 +666,6 @@ public class GUIDistributor extends javax.swing.JFrame {
     private javax.swing.JTextField jTextYCoordinate;
     private javax.swing.JTextField jTextZoom;
     public javax.swing.JLabel limage;
+    public javax.swing.JLabel lperc;
     // End of variables declaration//GEN-END:variables
 }
