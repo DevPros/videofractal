@@ -48,13 +48,9 @@ public class RMIServer extends Thread{
     public void run() {
         gui.jTextAreaDebug.append("[RMI] RMI Server initialized.");
         try{
-            gui.jProgressBar1.setMinimum(0);
-            gui.jProgressBar1.setMaximum(2147483647);
             IremoteFractal remoteF = (IremoteFractal) RMI.getRemote("localhost", 10021, "fractal");
-            while(true) 
-            {
+            while(true) {
                 zoom *= 0.9;
-                gui.jProgressBar1.setValue((int)(Math.pow(zoom,-1)/1000));
                 byte[] data = remoteF.getFratal(centerX, centerY, zoom, iter, width, height);
                 BufferedImage image = auxiliar.ImgUtils.byteToImage(data);
                 ImageIcon icon = new ImageIcon(image);
