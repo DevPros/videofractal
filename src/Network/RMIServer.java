@@ -15,6 +15,8 @@ import java.io.File;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.JTextArea;
 
 /**
@@ -55,6 +57,8 @@ public class RMIServer extends Thread{
                 gui.jProgressBar1.setValue((int)(Math.pow(zoom,-1)/1000));
                 byte[] data = remoteF.getFratal(centerX, centerY, zoom, iter, width, height);
                 BufferedImage image = auxiliar.ImgUtils.byteToImage(data);
+                ImageIcon icon = new ImageIcon(image);
+                gui.limage.setIcon(icon);
                 ImageIO.write(image, "png", new File("fractal" + String.format("%06d", count) + ".png"));
                 count++;
             }
