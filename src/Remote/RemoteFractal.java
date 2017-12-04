@@ -19,7 +19,7 @@ import java.util.logging.Logger;
 public class RemoteFractal implements IremoteFractal{
 
     @Override
-    public byte[] getFratal(BigDecimal centerX, BigDecimal centerY, BigDecimal zoom, int max, int width, int height) throws RemoteException {
+    public byte[] getFratal(double centerX, double centerY, BigDecimal zoom, int max, int width, int height) throws RemoteException {
         try {
             BufferedImage img = FractalThr.getFractal(centerX, centerY, zoom, max, width, height);
             return auxiliar.ImgUtils.ImageToByte(img);

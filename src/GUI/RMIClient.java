@@ -21,8 +21,8 @@ import javax.imageio.ImageIO;
 public class RMIClient {
     public static void main(String[] args) {
         try{
-            BigDecimal cx = new BigDecimal(-1.7);
-            BigDecimal cy = new BigDecimal(-0.00000000339);
+            double cx = -1.7;
+            double cy = -0.00000000339;
             int max = 100;
             int width = 100;
             int height = 100;

@@ -34,8 +34,8 @@ import java.util.logging.Logger;
 public class FractalThr extends Thread {
 
     AtomicInteger rowNumber;
-    BigDecimal centerX;
-    BigDecimal centerY;
+    Double centerX;
+    Double centerY;
     BigDecimal zoom;
     int max;
     int[][] image;
@@ -50,7 +50,7 @@ public class FractalThr extends Thread {
      * @param maxIteration max Iteration
      * @param image shared Array of escape iterations
      */
-    public FractalThr(AtomicInteger rowNumber, BigDecimal centerX, BigDecimal centerY, BigDecimal zoom, int maxIteration, int[][] image) {
+    public FractalThr(AtomicInteger rowNumber, Double centerX, Double centerY, BigDecimal zoom, int maxIteration, int[][] image) {
         this.rowNumber = rowNumber;
         this.centerX = centerX;
         this.centerY = centerY;
@@ -62,14 +62,14 @@ public class FractalThr extends Thread {
     @Override
     public void run() {
         int y;
-        BigDecimal cx, cy;
-        
+        double cx, cy;
+
         //calculate pixels
         while ((y = rowNumber.getAndDecrement()) >= 0) {
             for (int x = 0; x < image[y].length; x++) {
                 //coordinates of fractal world
-                cx = centerX.add(new BigDecimal(x - image[y].length / 2.0)).multiply(zoom);
-                cy = centerY.subtract(new BigDecimal(y - image.length / 2.0)).multiply(zoom);
+                cx = centerX + (x - image[y].length / 2.0) * zoom.doubleValue();
+                cy = centerY - (y - image.length / 2.0) *zoom.doubleValue();
                 //escape iteration
                 image[y][x] = mandelbroth(cx, cy, max);
             }
@@ -84,14 +84,12 @@ public class FractalThr extends Thread {
      * @param max max iteration
      * @return escape iteration
      */
-    private int mandelbroth(BigDecimal c_re, BigDecimal c_im, int max) {
+    private int mandelbroth(double c_re, double c_im, int max) {
         int iteration = 0;
-        BigDecimal x = new BigDecimal(0);
-        BigDecimal y = new BigDecimal(0);
-        BigDecimal x_new;
-        while ((x.multiply(x).add(y.multiply(y))).compareTo(BigDecimal.valueOf(4)) == 1 && iteration < max ) {
-            x_new = x.multiply(x).subtract(y).multiply(y).add(c_re);
-            y = new BigDecimal(2).multiply(x).multiply(y).add(c_im);
+        double x = 0, y = 0, x_new;
+        while (x * x + y * y < 4 && iteration < max) {
+            x_new = x * x - y * y + c_re;
+            y = 2 * x * y + c_im;
             x = x_new;
             iteration++;
         }
@@ -108,7 +106,7 @@ public class FractalThr extends Thread {
      * @param height height of image
      * @return image of the fractal
      */
-    public static BufferedImage getFractal(BigDecimal centerX, BigDecimal centerY, BigDecimal zoom, int max, int width, int height) {
+    public static BufferedImage getFractal(double centerX, double centerY, BigDecimal zoom, int max, int width, int height) {
         //escape iteration     
         int[][] image = new int[height][width];
         //row distributor

@@ -14,5 +14,5 @@ import java.rmi.RemoteException;
  * @author Canoso
  */
 public interface IremoteFractal extends Remote{
-    public byte[] getFratal(BigDecimal centerX, BigDecimal centerY, BigDecimal zoom, int max, int width, int height) throws RemoteException;
+    public byte[] getFratal(double centerX, double centerY, BigDecimal zoom, int max, int width, int height) throws RemoteException;
 }

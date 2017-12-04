@@ -13,13 +13,13 @@ import java.math.BigDecimal;
  * @author Rui Barcelos https://github.com/barcelosrui
  */
 public class Service implements Serializable {
-    private BigDecimal cx;
-    private BigDecimal cy;
+    private Double cx;
+    private Double cy;
     private BigDecimal zoom;
     private byte[] data;
             int imageNumber;
     
-    public Service(BigDecimal cx, BigDecimal cy, BigDecimal zoom){
+    public Service(Double cx, Double cy, BigDecimal zoom){
         this.cx = cx;
         this.cy = cy;
         this.zoom = zoom;
@@ -35,19 +35,19 @@ public class Service implements Serializable {
         return s;
     }
     
-    public BigDecimal getCx() {
+    public Double getCx() {
         return cx;
     }
 
-    public void setCx(BigDecimal cx) {
+    public void setCx(Double cx) {
         this.cx = cx;
     }
 
-    public BigDecimal getCy() {
+    public Double getCy() {
         return cy;
     }
 
-    public void setCy(BigDecimal cy) {
+    public void setCy(Double cy) {
         this.cy = cy;
     }
 
