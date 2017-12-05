@@ -6,6 +6,7 @@
 package GUI;
 
 import Network.FractalCalculatorServer;
+import Network.MulticastClient;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.io.ObjectInputStream;
@@ -183,29 +184,31 @@ public class GUIServer extends javax.swing.JFrame {
 
     private void btn_startActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_startActionPerformed
 
-        if (s == null) {
-            try {
-                Socket dist = new Socket(txt_distIP.getText(),
-                    Integer.valueOf(txt_distPort.getText())) ;
+        MulticastClient MCclient = new MulticastClient(1000);
+        MCclient.start();
+        //if (s == null) {
+        //    try {
+        //        Socket dist = new Socket(txt_distIP.getText(),
+        //            Integer.valueOf(txt_distPort.getText())) ;
                 // abertura da stream de saída
-                ObjectOutputStream out = new ObjectOutputStream(dist.getOutputStream());
+        //        ObjectOutputStream out = new ObjectOutputStream(dist.getOutputStream());
                 //abertura da stream de entrada
-                ObjectInputStream in = new ObjectInputStream(dist.getInputStream());
+        //        ObjectInputStream in = new ObjectInputStream(dist.getInputStream());
                 // envia porta em que a instancia está a correr
-                out.writeInt(Integer.parseInt(txt_port.getText()));
-                System.out.println("[Server] Sending port "+Integer.parseInt(txt_port.getText())+" to dist");
-                out.close();
-                in.close();
-                dist.close();
-            } catch (Exception ex) {
-                Logger.getLogger(GUIServer.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            s = new FractalCalculatorServer(this,Integer.parseInt(txt_port.getText()));
+        //        out.writeInt(Integer.parseInt(txt_port.getText()));
+        //        System.out.println("[Server] Sending port "+Integer.parseInt(txt_port.getText())+" to dist");
+        //        out.close();
+        //        in.close();
+        //        dist.close();
+        //    } catch (Exception ex) {
+        //        Logger.getLogger(GUIServer.class.getName()).log(Level.SEVERE, null, ex);
+        //    }
+       //     s = new FractalCalculatorServer(this,Integer.parseInt(txt_port.getText()));
             
-            s.start();
-            jButton2.setEnabled(true);
-            btn_start.setEnabled(false);
-        }
+        //    s.start();
+        //    jButton2.setEnabled(true);
+        //    btn_start.setEnabled(false);
+        //}
     }//GEN-LAST:event_btn_startActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
@@ -257,6 +260,7 @@ public class GUIServer extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new GUIServer().setVisible(true);
+                
             }
         });
     }
