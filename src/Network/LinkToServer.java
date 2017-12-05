@@ -55,7 +55,8 @@ public class LinkToServer extends Thread {
                 ImageIcon icon = new ImageIcon(ImgUtils.byteToImage(myService.getData()));
                 gui.limage.setIcon(icon);
                         // apresenta a resposta
-                ImgUtils.saveImage(myService.getData(), "teste" + String.format("%05d", myService.imageNumber) + ".jpg");
+                gui.lnumbImg.setText(myService.imageNumber+"");
+                ImgUtils.saveImage(myService.getData(), "img/fractal" + String.format("%05d", myService.imageNumber) + ".jpg");
                 
                 //fechar o socket e as streams
                 socket.close();

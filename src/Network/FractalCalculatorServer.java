@@ -26,7 +26,7 @@ public class FractalCalculatorServer extends Thread {
     
     int port = 10000;
     GUIServer gui;
-    
+    long cont = 0;
     public FractalCalculatorServer(GUIServer gui,int port) {
         this.port = port;
         this.gui = gui;
