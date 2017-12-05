@@ -5,12 +5,14 @@
  */
 package Network;
 
+import GUI.GUIDistributor;
 import auxiliar.ImgUtils;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.ImageIcon;
 
 /**
  *
@@ -20,17 +22,20 @@ public class LinkToServer extends Thread {
     String ip;
     int port;
     Service service;
+    GUIDistributor gui;
     double fator;
 
-    public LinkToServer(String ip, int port, Service service, double fator) {
+    public LinkToServer(String ip, int port, Service service, double fator, GUIDistributor gui) {
         this.ip = ip;
         this.port = port;
         this.service = service;
         this.fator = fator;
+        this.gui = gui;
     }
     
     @Override
     public void run(){
+        System.out.println("LinkToServer");
         while( service.getZoom() > 1E-18){
             try {
                 //ligação do socket ao servidor
@@ -47,8 +52,9 @@ public class LinkToServer extends Thread {
                 
                 // receber a resposta
                 myService = (Service) in.readObject();
-                
-                // apresenta a resposta
+                ImageIcon icon = new ImageIcon(ImgUtils.byteToImage(myService.getData()));
+                gui.limage.setIcon(icon);
+                        // apresenta a resposta
                 ImgUtils.saveImage(myService.getData(), "teste" + String.format("%05d", myService.imageNumber) + ".jpg");
                 
                 //fechar o socket e as streams

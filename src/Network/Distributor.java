@@ -5,6 +5,7 @@
  */
 package Network;
 
+import GUI.GUIDistributor;
 import com.xuggle.mediatool.IMediaWriter;
 import com.xuggle.mediatool.ToolFactory;
 import java.awt.image.BufferedImage;
@@ -20,8 +21,12 @@ import java.util.logging.Logger;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import java.net.DatagramSocket; 
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.concurrent.TimeUnit;
 import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -32,23 +37,17 @@ public class Distributor extends Thread{
     int port;
     double factor;
     
+    private static GUIDistributor gui;
     InetAddress myIP;
-    JTextArea debug;
-    
-    
-    JTextField jTextFieldIP;
-    // mensagem a ser transmitida
-    Service s = new Service(
-        -1.78916901860482310667446834118883876381736183681,
-        -0.000000339368515767182566028230266146812728348218,
-       1E-7
-    );
 
-    public Distributor(int port, double factor, JTextArea jTextAreaDebug, JTextField jTextFieldIP) {
+    // mensagem a ser transmitida
+    Service s = null;
+
+    public Distributor(double centerX ,double centerY ,int port, double factor,GUIDistributor gui) {
         this.port = port;
         this.factor = factor;
-        this.debug = jTextAreaDebug;
-        this.jTextFieldIP = jTextFieldIP;
+        this.gui = gui;
+        this.s = new Service(centerX,centerY,1E-1);
     }
     
     @Override
@@ -64,12 +63,12 @@ public class Distributor extends Thread{
             }
             
             
-            debug.append("Distributor running on address "+myIP+":"+port+"... \n");
-            jTextFieldIP.setText(myIP+":"+port);
+            gui.jTextAreaDebug.append("Distributor running on address "+myIP+":"+port+"... \n");
+            gui.jTextFieldIP.setText(myIP+":"+port);
             
             while (true) {
                 Socket serverFractal = server.accept();
-                
+                System.out.println("Aqui");
                 // abertura da stream de saída
                 ObjectOutputStream out = new ObjectOutputStream(serverFractal.getOutputStream());
                 //abertura da stream de entrada
@@ -77,14 +76,14 @@ public class Distributor extends Thread{
                 //valor da porta
                 int fserver_port = in.readInt();
                 // adiciona o ip:porta ao debug
-                debug.append("New Server "+serverFractal.getInetAddress().getHostAddress()+":"+fserver_port+"\n");
+                gui.jTextAreaDebug.append("New Server "+serverFractal.getInetAddress().getHostAddress()+":"+fserver_port+"\n");
                 
                 in.close();
                 out.close();
                 serverFractal.close();
                 
                 
-                LinkToServer link = new LinkToServer(serverFractal.getInetAddress().getHostName(), fserver_port, s, factor);
+                LinkToServer link = new LinkToServer(serverFractal.getInetAddress().getHostName(), fserver_port, s, factor, gui);
                 link.start();
                 serverFractal.close();
             }
@@ -93,11 +92,11 @@ public class Distributor extends Thread{
         }
     }
     
-    public static void generateVideo(File video, File imagens[], int fps, String filetype) throws IOException
+    public static void generateVideo(File video, File imagens[], int fps, String filetype, GUIDistributor gui) throws IOException
     {
-        IMediaWriter writer = ToolFactory.makeWriter(video+"");
+        IMediaWriter writer = ToolFactory.makeWriter(video + "");
         int frameNumber = 0;
-        
+        int imgleng = imagens.length - 1;
         for (File imagem : imagens) {
             final BufferedImage image = ImageIO.read(imagem);
             // o ficheiro nao e uma imagem
@@ -108,9 +107,19 @@ public class Distributor extends Thread{
                 writer.addVideoStream(0, 0, image.getWidth(), image.getHeight());
             }
             writer.encodeVideo(0, image, (int) ((1000.0 / fps) * frameNumber), TimeUnit.MILLISECONDS);
+            gui.jProgressBarVideo.setMaximum(imagens.length - 1);
+            gui.jProgressBarVideo.setValue(frameNumber);
+
+            double perc = (((double) frameNumber / imgleng) * 100);
+            NumberFormat formatter = new DecimalFormat("#0.00");
+            gui.lperc.setText(formatter.format(perc) + "%");
             frameNumber++;
         }
         writer.close();
+        JOptionPane.showMessageDialog(gui, "Video Gerado", "Fractal Movie", JOptionPane.PLAIN_MESSAGE, new ImageIcon("src/auxiliar/icon.png"));
+        gui.jProgressBarVideo.setValue(0);
+        gui.bt_genVideo.setEnabled(true);
+        gui.lperc.setText("0.00%");
         System.out.println("Video gerado!");
     }
     
