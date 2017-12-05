@@ -18,42 +18,46 @@ import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 
 /**
- *
+ * @author João Canoso https://github.com/jpcanoso
  * @author Rui Barcelos https://github.com/barcelosrui
  */
 public class FractalCalculatorServer extends Thread {
 
-    
     int port = 10000;
-    GUIServerOLD gui;
-    
-    public FractalCalculatorServer(GUIServerOLD gui,int port) {
+    GUIServer gui;
+    long cont = 0;
+    /**
+     * Inicia o calculo da thread
+     * @param gui
+     * @param port 
+     */
+    public FractalCalculatorServer(GUIServer gui, int port) {
         this.port = port;
         this.gui = gui;
     }
-    
-    public static BufferedImage image = null;
 
+    public static BufferedImage image = null;
+    /**
+     * Metodo que é iniciado quando se inicia a tread
+     */
     @Override
     public void run() {
         try {
             ServerSocket server = new ServerSocket(port);
-            System.out.println("[Server] Server running on port "+port+"...");
+            gui.jTextDebug.append("[Server] Server running on port " + port + "...\n");
+
             while (true) {
                 //System.out.println(server.getInetAddress());
                 Socket socket = server.accept();
                 ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
                 ObjectInputStream in = new ObjectInputStream(socket.getInputStream());
                 Service s = (Service) in.readObject();
-                System.out.println("ZOOM: "+s.getZoom()+" X:"+s.getCx()+" Y: "+s.getCy());
-                image = FractalThr.getFractal(s.getCx(), s.getCy(), s.getZoom(),1000, 3860, 2160);
+                image = FractalThr.getFractal(s.getCx(), s.getCy(), s.getZoom(), 1000, 3860, 2160);
                 ImageIcon icon = new ImageIcon(image);
-                
 
                 gui.l.setIcon(icon);
                 s.setData(ImgUtils.ImageToByte(image));
-                
-                
+
                 out.writeObject(s);
 
                 socket.close();
@@ -66,7 +70,7 @@ public class FractalCalculatorServer extends Thread {
                     break;
                 }
             }
-            System.out.println("Server stop....");
+            gui.jTextDebug.append("Server stoped....\n");
         } catch (Exception ex) {
             Logger.getLogger(FractalCalculatorServer.class.getName()).log(Level.SEVERE, null, ex);
         }

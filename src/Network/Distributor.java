@@ -29,35 +29,43 @@ import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
 /**
- *
- * @author Canoso
+ * @author João Canoso https://github.com/jpcanoso
+ * @author Rui Barcelos https://github.com/barcelosrui
  */
 public class Distributor extends Thread {
 
     int port;
     double factor;
 
+    private static GUIDistributor gui;
     InetAddress myIP;
-    JTextArea debug;
 
-    JTextField jTextFieldIP;
     // mensagem a ser transmitida
-    Service s = new Service(
-            -1.7685736563152709932817429153295447129341200534055498823375111352827765533646353820119779335363321986478087958745766432300344486098206084588445291690832853792608335811319613234806674959498380432536269122404488847453646628324959064543,
-            -0.0009642968513582800001762427203738194482747761226565635652857831533070475543666558930286153827950716700828887932578932976924523447497708248894734256480183898683164582055541842171815899305250842692638349057118793296768325124255746563,
-            1E-7
-    );
+    Service s = null;
 
-    public Distributor(int port, double factor, JTextArea jTextAreaDebug, JTextField jTextFieldIP) {
+    /**
+     * Recebe os Parametro da GUI Para começar a distribuir
+     *
+     * @param centerX
+     * @param centerY
+     * @param port
+     * @param factor
+     * @param gui
+     */
+    public Distributor(double centerX, double centerY, int port, double factor, GUIDistributor gui) {
         this.port = port;
         this.factor = factor;
-        this.debug = jTextAreaDebug;
-        this.jTextFieldIP = jTextFieldIP;
+        this.gui = gui;
+        this.s = new Service(centerX, centerY, 1E-1, Integer.valueOf(gui.jTextIterations.getText()), Integer.valueOf(gui.jTextWidth.getText()), Integer.valueOf(gui.jTextHeight.getText()));
     }
 
+    /**
+     * Metodo Executado com a Thread é iniciada
+     */
     @Override
     public void run() {
         try {
+            //Server Port
             ServerSocket server = new ServerSocket(port);
 
             // get the real local address
@@ -67,12 +75,11 @@ public class Distributor extends Thread {
                 myIP = InetAddress.getByName(socket.getLocalAddress().getHostAddress());
             }
 
-            debug.append("Distributor running on address " + myIP + ":" + port + "... \n");
-            jTextFieldIP.setText(myIP + ":" + port);
-
+            gui.jTextAreaDebug.append("Distributor running on address " + myIP + ":" + port + "... \n");
+            gui.jTextFieldIP.setText(myIP + ":" + port);
+            //Escuta o server
             while (true) {
                 Socket serverFractal = server.accept();
-
                 // abertura da stream de saída
                 ObjectOutputStream out = new ObjectOutputStream(serverFractal.getOutputStream());
                 //abertura da stream de entrada
@@ -80,13 +87,13 @@ public class Distributor extends Thread {
                 //valor da porta
                 int fserver_port = in.readInt();
                 // adiciona o ip:porta ao debug
-                debug.append("New Server " + serverFractal.getInetAddress().getHostAddress() + ":" + fserver_port + "\n");
+                gui.jTextAreaDebug.append("New Server " + serverFractal.getInetAddress().getHostAddress() + ":" + fserver_port + "\n");
 
                 in.close();
                 out.close();
                 serverFractal.close();
 
-                LinkToServer link = new LinkToServer(serverFractal.getInetAddress().getHostName(), fserver_port, s, factor);
+                LinkToServer link = new LinkToServer(serverFractal.getInetAddress().getHostName(), fserver_port, s, factor, gui);
                 link.start();
                 serverFractal.close();
             }
@@ -95,6 +102,16 @@ public class Distributor extends Thread {
         }
     }
 
+    /**
+     * Função que serve para gerar o vídeo
+     *
+     * @param video
+     * @param imagens
+     * @param fps
+     * @param filetype
+     * @param gui
+     * @throws IOException
+     */
     public static void generateVideo(File video, File imagens[], int fps, String filetype, GUIDistributor gui) throws IOException {
         IMediaWriter writer = ToolFactory.makeWriter(video + "");
         int frameNumber = 0;
@@ -109,7 +126,7 @@ public class Distributor extends Thread {
                 writer.addVideoStream(0, 0, image.getWidth(), image.getHeight());
             }
             writer.encodeVideo(0, image, (int) ((1000.0 / fps) * frameNumber), TimeUnit.MILLISECONDS);
-            gui.jProgressBarVideo.setMaximum(imagens.length - 1);
+            gui.jProgressBarVideo.setMaximum(imagens.length);
             gui.jProgressBarVideo.setValue(frameNumber);
 
             double perc = (((double) frameNumber / imgleng) * 100);
@@ -122,7 +139,6 @@ public class Distributor extends Thread {
         gui.jProgressBarVideo.setValue(0);
         gui.bt_genVideo.setEnabled(true);
         gui.lperc.setText("0.00%");
-        System.out.println("Video gerado!");
     }
 
 }
