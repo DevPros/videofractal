@@ -6,7 +6,10 @@
 package GUI;
 
 import Network.Distributor;
+import Network.Multicast.MulticastDistributor;
 import java.io.File;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFileChooser;
@@ -485,34 +488,27 @@ public class GUIDistributor extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        /*InetAddress groupAddress = null;
+        InetAddress groupAddress = null;
         try {
             groupAddress = InetAddress.getByName(jTextGroupAddress.getText()); //Endereço do grupo
         } catch (UnknownHostException ex) {
-            Logger.getLogger(GUIDistributor1.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(GUIDistributor.class.getName()).log(Level.SEVERE, null, ex);
         }
         int distPort = Integer.valueOf(distributorPort.getText()); // porta do distribuidor
         int groupPort = Integer.valueOf(jTextGroupPort.getText()); // porta do grupo
-        double zoom = Double.valueOf(jTextZoom.getText()); // valor do zoom
-        */
+        double factor = Double.valueOf(jTextZoom.getText());       // Zoom
         int width = Integer.valueOf(jTextWidth.getText());
         int height = Integer.valueOf(jTextHeight.getText());
         int iterations = Integer.valueOf(jTextIterations.getText());
         double centerX = Double.valueOf(jTextXCoordinate.getText());
-        double centerY = Double.valueOf(jTextYCoordinate.getText());
-        
-        // inicializar RMI server
-        //RMIServer server = new RMIServer(this, centerX, centerY, zoom, iterations, width, height);
-        //server.start();
+        double centerY = Double.valueOf(jTextYCoordinate.getText());     
 
         // inicializa server multicast
-        //MulticastServer multicastServer = new MulticastServer(jTextAreaDebug, groupAddress, groupPort, distPort);
-        // inicia server multicast
-        //multicastServer.start();
-        int port = Integer.valueOf(distributorPort.getText());
-        double factor = Double.valueOf(jTextZoom.getText());
-        
-        Distributor dist = new Distributor(centerX,centerY,port, factor,this);
+        MulticastDistributor multicastServer = new MulticastDistributor(jTextAreaDebug, groupAddress, groupPort, distPort);
+        multicastServer.start();
+
+        // inicializa distribuidor
+        Distributor dist = new Distributor(centerX, centerY, distPort, factor, this);
         dist.start();
     }//GEN-LAST:event_jButton1ActionPerformed
 
