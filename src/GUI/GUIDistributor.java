@@ -561,7 +561,7 @@ public class GUIDistributor extends javax.swing.JFrame {
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         JFileChooser chooser;
         chooser = new JFileChooser();
-        chooser.setCurrentDirectory(new java.io.File("."));
+        chooser.setCurrentDirectory(new java.io.File("img"));
         chooser.setDialogTitle("Choose a Directory");
         chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 

@@ -106,7 +106,7 @@ public class Distributor extends Thread{
                 writer.addVideoStream(0, 0, image.getWidth(), image.getHeight());
             }
             writer.encodeVideo(0, image, (int) ((1000.0 / fps) * frameNumber), TimeUnit.MILLISECONDS);
-            gui.jProgressBarVideo.setMaximum(imagens.length - 1);
+            gui.jProgressBarVideo.setMaximum(imagens.length);
             gui.jProgressBarVideo.setValue(frameNumber);
 
             double perc = (((double) frameNumber / imgleng) * 100);
