@@ -16,7 +16,6 @@ import java.util.logging.Logger;
  * @author Canoso
  */
 public class RemoteFractal implements IremoteFractal{
-
     @Override
     public byte[] getFratal(double centerX, double centerY, double zoom, int max, int width, int height) throws RemoteException {
         try {
@@ -27,5 +26,4 @@ public class RemoteFractal implements IremoteFractal{
         }
         return null;
     }
-    
 }

@@ -14,13 +14,19 @@ import Remote.RemoteFractal;
 import java.rmi.RemoteException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-public class GUIRMIServer {
-    public static void main(String[] args) {
+import javax.swing.ImageIcon;
+public class GUIRMIServer extends Thread{
+    GUIServer gui = null;
+
+    public GUIRMIServer(GUIServer gui) {
+        this.gui = gui;
+    }
+    
+    public void run() {
         try {
-            
             RemoteFractal fr = new RemoteFractal();
-            auxiliar.RMI.startRemoteObject(fr, 10021, "fractal");
-            System.out.println("Servidor disponivel");
+            auxiliar.RMI.startRemoteObject(fr,Integer.valueOf(gui.txt_port.getText()), "fractal");
+            gui.lstatusServer.setText("Server Up in" + gui.txt_port.getText());
         } catch (RemoteException ex) {
             Logger.getLogger(GUIRMIServer.class.getName()).log(Level.SEVERE, null, ex);
         }

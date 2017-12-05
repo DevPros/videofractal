@@ -6,7 +6,7 @@
 package Network;
 
 import FractalNovo.FractalThr;
-import GUI.GUIServer;
+import GUI.GUIServerOLD;
 import auxiliar.ImgUtils;
 import java.awt.image.BufferedImage;
 import java.io.ObjectInputStream;
@@ -25,9 +25,9 @@ public class FractalCalculatorServer extends Thread {
 
     
     int port = 10000;
-    GUIServer gui;
+    GUIServerOLD gui;
     
-    public FractalCalculatorServer(GUIServer gui,int port) {
+    public FractalCalculatorServer(GUIServerOLD gui,int port) {
         this.port = port;
         this.gui = gui;
     }
