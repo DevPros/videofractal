@@ -5,6 +5,7 @@
  */
 package Network.Multicast;
 
+import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.InetAddress;
 import java.net.MulticastSocket;
@@ -15,20 +16,41 @@ import java.util.logging.Logger;
  *
  * @author Canoso
  */
-public class Server extends Thread{
+public class MulticastServer extends Thread{
     MulticastSocket socket;
     DatagramPacket packet;
-    InetAddress address;
+    InetAddress groupAddress;
     
     int port;
 
-    public Server(int port) {
+    public MulticastServer(int port, InetAddress groupAddress) {
         this.port = port;
+        this.groupAddress = groupAddress;
     }
     
     @Override
     public void run() {
         System.out.println("[Multicast] Multicast receiver started\n");
+        
+        byte[] buf = new byte[256];
+        
+        try (MulticastSocket clientSocket = new MulticastSocket(port)){
+            //Joint the Multicast group.
+            clientSocket.joinGroup(groupAddress);
+     
+            while (true) {
+                // Receive the information and print it.
+                DatagramPacket msgPacket = new DatagramPacket(buf, buf.length);
+                clientSocket.receive(msgPacket);
+
+                String msg = new String(buf, 0, buf.length);
+                System.out.println("Socket 1 received msg: " + msg);
+            }
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+        
+        /*
         try {
 
             socket = new MulticastSocket(port);
@@ -50,7 +72,7 @@ public class Server extends Thread{
                 Thread.sleep(5000);
             }
         } catch (Exception ex) {
-            Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
-        }
+            Logger.getLogger(MulticastServer.class.getName()).log(Level.SEVERE, null, ex);
+        } */
     }
 }
