@@ -20,7 +20,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
-import java.net.DatagramSocket; 
+import java.net.DatagramSocket;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.concurrent.TimeUnit;
@@ -29,43 +29,55 @@ import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
 /**
- *
- * @author Canoso
+ * @author João Canoso https://github.com/jpcanoso
+ * @author Rui Barcelos https://github.com/barcelosrui
  */
-public class Distributor extends Thread{
-    
+public class Distributor extends Thread {
+
     int port;
     double factor;
-    
+
     private static GUIDistributor gui;
     InetAddress myIP;
 
     // mensagem a ser transmitida
     Service s = null;
 
-    public Distributor(double centerX ,double centerY ,int port, double factor,GUIDistributor gui) {
+    /**
+     * Recebe os Parametro da GUI Para começar a distribuir
+     *
+     * @param centerX
+     * @param centerY
+     * @param port
+     * @param factor
+     * @param gui
+     */
+    public Distributor(double centerX, double centerY, int port, double factor, GUIDistributor gui) {
         this.port = port;
         this.factor = factor;
         this.gui = gui;
-        this.s = new Service(centerX,centerY,1E-1);
+        this.s = new Service(centerX, centerY, 1E-1, Integer.valueOf(gui.jTextIterations.getText()), Integer.valueOf(gui.jTextWidth.getText()), Integer.valueOf(gui.jTextHeight.getText()));
     }
-    
+
+    /**
+     * Metodo Executado com a Thread é iniciada
+     */
     @Override
-    public void run(){
-        try{
+    public void run() {
+        try {
+            //Server Port
             ServerSocket server = new ServerSocket(port);
-            
+
             // get the real local address
             // https://stackoverflow.com/a/38342964
-            try(final DatagramSocket socket = new DatagramSocket()){
+            try (final DatagramSocket socket = new DatagramSocket()) {
                 socket.connect(InetAddress.getByName("8.8.8.8"), 10002);
                 myIP = InetAddress.getByName(socket.getLocalAddress().getHostAddress());
             }
-            
-            
-            gui.jTextAreaDebug.append("Distributor running on address "+myIP+":"+port+"... \n");
-            gui.jTextFieldIP.setText(myIP+":"+port);
-            
+
+            gui.jTextAreaDebug.append("Distributor running on address " + myIP + ":" + port + "... \n");
+            gui.jTextFieldIP.setText(myIP + ":" + port);
+            //Escuta o server
             while (true) {
                 Socket serverFractal = server.accept();
                 // abertura da stream de saída
@@ -75,13 +87,12 @@ public class Distributor extends Thread{
                 //valor da porta
                 int fserver_port = in.readInt();
                 // adiciona o ip:porta ao debug
-                gui.jTextAreaDebug.append("New Server "+serverFractal.getInetAddress().getHostAddress()+":"+fserver_port+"\n");
-                
+                gui.jTextAreaDebug.append("New Server " + serverFractal.getInetAddress().getHostAddress() + ":" + fserver_port + "\n");
+
                 in.close();
                 out.close();
                 serverFractal.close();
-                
-                
+
                 LinkToServer link = new LinkToServer(serverFractal.getInetAddress().getHostName(), fserver_port, s, factor, gui);
                 link.start();
                 serverFractal.close();
@@ -90,9 +101,18 @@ public class Distributor extends Thread{
             Logger.getLogger(Distributor.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
-    public static void generateVideo(File video, File imagens[], int fps, String filetype, GUIDistributor gui) throws IOException
-    {
+
+    /**
+     * Função que serve para gerar o vídeo
+     *
+     * @param video
+     * @param imagens
+     * @param fps
+     * @param filetype
+     * @param gui
+     * @throws IOException
+     */
+    public static void generateVideo(File video, File imagens[], int fps, String filetype, GUIDistributor gui) throws IOException {
         IMediaWriter writer = ToolFactory.makeWriter(video + "");
         int frameNumber = 0;
         int imgleng = imagens.length - 1;
@@ -119,7 +139,6 @@ public class Distributor extends Thread{
         gui.jProgressBarVideo.setValue(0);
         gui.bt_genVideo.setEnabled(true);
         gui.lperc.setText("0.00%");
-        System.out.println("Video gerado!");
     }
-    
+
 }

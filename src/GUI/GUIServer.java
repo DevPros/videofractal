@@ -17,12 +17,14 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 
 /**
- *
+ * @author João Canoso https://github.com/jpcanoso
  * @author Rui Barcelos https://github.com/barcelosrui
  */
 public class GUIServer extends javax.swing.JFrame {
+
     FractalCalculatorServer s = null;
     public static InetAddress groupAddress = null;
+
     /**
      * Creates new form GUITESTE
      */
@@ -42,7 +44,7 @@ public class GUIServer extends javax.swing.JFrame {
         jPanel8 = new javax.swing.JPanel();
         txt_distIP = new javax.swing.JTextField();
         btn_start = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        bt_stopManual = new javax.swing.JButton();
         txt_distPort = new javax.swing.JTextField();
         txt_port = new javax.swing.JTextField();
         jLabel14 = new javax.swing.JLabel();
@@ -53,9 +55,9 @@ public class GUIServer extends javax.swing.JFrame {
         jTextGroupAddress = new javax.swing.JTextField();
         jTextGroupPort = new javax.swing.JTextField();
         jSeparator1 = new javax.swing.JSeparator();
-        jButton1 = new javax.swing.JButton();
+        bt_autoDiscovery = new javax.swing.JButton();
         jSeparator2 = new javax.swing.JSeparator();
-        jButton3 = new javax.swing.JButton();
+        bt_stop = new javax.swing.JButton();
         panelSuport = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         panelIMG = new javax.swing.JPanel();
@@ -77,19 +79,14 @@ public class GUIServer extends javax.swing.JFrame {
             }
         });
 
-        jButton2.setText("Stop");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        bt_stopManual.setText("Stop");
+        bt_stopManual.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                bt_stopManualActionPerformed(evt);
             }
         });
 
         txt_distPort.setText("5000");
-        txt_distPort.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txt_distPortActionPerformed(evt);
-            }
-        });
 
         txt_port.setText("10001");
 
@@ -107,17 +104,17 @@ public class GUIServer extends javax.swing.JFrame {
 
         jTextGroupPort.setText("10000");
 
-        jButton1.setText("Auto Discovery Server");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        bt_autoDiscovery.setText("Auto Discovery Server");
+        bt_autoDiscovery.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                bt_autoDiscoveryActionPerformed(evt);
             }
         });
 
-        jButton3.setText("Stop");
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
+        bt_stop.setText("Stop");
+        bt_stop.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
+                bt_stopActionPerformed(evt);
             }
         });
 
@@ -132,7 +129,7 @@ public class GUIServer extends javax.swing.JFrame {
                     .addGroup(jPanel8Layout.createSequentialGroup()
                         .addComponent(btn_start, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(bt_stopManual, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel8Layout.createSequentialGroup()
                         .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel14)
@@ -155,9 +152,9 @@ public class GUIServer extends javax.swing.JFrame {
                             .addComponent(jTextGroupPort)
                             .addComponent(jTextGroupAddress)))
                     .addGroup(jPanel8Layout.createSequentialGroup()
-                        .addComponent(jButton1)
+                        .addComponent(bt_autoDiscovery)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButton3)))
+                        .addComponent(bt_stop)))
                 .addContainerGap())
         );
         jPanel8Layout.setVerticalGroup(
@@ -178,8 +175,8 @@ public class GUIServer extends javax.swing.JFrame {
                     .addComponent(jLabel2))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
-                    .addComponent(jButton3))
+                    .addComponent(bt_autoDiscovery)
+                    .addComponent(bt_stop))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -192,7 +189,7 @@ public class GUIServer extends javax.swing.JFrame {
                     .addComponent(txt_distIP, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jButton2)
+                    .addComponent(bt_stopManual)
                     .addComponent(btn_start))
                 .addContainerGap())
         );
@@ -264,51 +261,59 @@ public class GUIServer extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void txt_distPortActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_distPortActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txt_distPortActionPerformed
-
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+    /**
+     * Para o calculo Manual do server
+     *
+     * @param evt
+     */
+    private void bt_stopManualActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_stopManualActionPerformed
         if (s != null) {
             if (s.isAlive()) {
                 if (s.isInterrupted() == false) {
                     btn_start.setEnabled(true);
-                    jButton2.setEnabled(false);
+                    bt_stopManual.setEnabled(false);
                     s.interrupt();
                     s = null;
                 }
             }
         }
-    }//GEN-LAST:event_jButton2ActionPerformed
-
+    }//GEN-LAST:event_bt_stopManualActionPerformed
+    /**
+     * Inicia Manualmente o server
+     *
+     * @param evt
+     */
     private void btn_startActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_startActionPerformed
         if (s == null) {
             try {
                 Socket dist = new Socket(txt_distIP.getText(),
-                    Integer.valueOf(txt_distPort.getText())) ;
+                        Integer.valueOf(txt_distPort.getText()));
                 // abertura da stream de saída
                 ObjectOutputStream out = new ObjectOutputStream(dist.getOutputStream());
                 //abertura da stream de entrada
                 ObjectInputStream in = new ObjectInputStream(dist.getInputStream());
                 // envia porta em que a instancia está a correr
                 out.writeInt(Integer.parseInt(txt_port.getText()));
-                System.out.println("[Server] Sending port "+Integer.parseInt(txt_port.getText())+" to dist");
+                jTextDebug.append("[Server] Sending port " + Integer.parseInt(txt_port.getText()) + " to dist");
                 out.close();
                 in.close();
                 dist.close();
             } catch (Exception ex) {
                 Logger.getLogger(GUIServer.class.getName()).log(Level.SEVERE, null, ex);
             }
-            s = new FractalCalculatorServer(this,Integer.parseInt(txt_port.getText()));
+            s = new FractalCalculatorServer(this, Integer.parseInt(txt_port.getText()));
 
             s.start();
-            jButton2.setEnabled(true);
+            bt_stopManual.setEnabled(true);
             btn_start.setEnabled(false);
         }
     }//GEN-LAST:event_btn_startActionPerformed
-
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    /**
+     * Descobre automáticamente o server
+     *
+     * @param evt
+     */
+    private void bt_autoDiscoveryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_autoDiscoveryActionPerformed
         InetAddress groupAddress = null;
         String distPort;
         try {
@@ -317,58 +322,62 @@ public class GUIServer extends javax.swing.JFrame {
             Logger.getLogger(GUIDistributor.class.getName()).log(Level.SEVERE, null, ex);
         }
         int groupPort = Integer.valueOf(jTextGroupPort.getText());
-        
+
         //obtem a porta do server com multicast
-        distPort = MulticastServer.listenMulticast(groupPort, groupAddress);
-        System.out.println("recebido: "+distPort);
-        
+        distPort = MulticastServer.listenMulticast(groupPort, groupAddress, this);
+
         String[] dados = distPort.split(",");
         // limpa e faz o parse
         int porta = Integer.parseInt(dados[1].trim());
         // retira a / do ip
-        dados[0] = dados[0].replace("/","");
+        dados[0] = dados[0].replace("/", "");
         //System.out.println("porta: "+porta);
         //System.out.println("ip: "+dados[0]);
-        
+
         // inicia server
         if (s == null) {
             try {
                 //Socket dist = new Socket(txt_distIP.getText(),Integer.valueOf(txt_distPort.getText())) ;
-                Socket dist = new Socket(dados[0],porta) ;
+                Socket dist = new Socket(dados[0], porta);
                 // abertura da stream de saída
                 ObjectOutputStream out = new ObjectOutputStream(dist.getOutputStream());
                 //abertura da stream de entrada
                 ObjectInputStream in = new ObjectInputStream(dist.getInputStream());
                 // envia porta em que a instancia está a correr
                 out.writeInt(Integer.parseInt(txt_port.getText()));
-                System.out.println("[Server] Sending port "+Integer.parseInt(txt_port.getText())+" to dist");
+                System.out.println("[Server] Sending port " + Integer.parseInt(txt_port.getText()) + " to dist");
                 out.close();
                 in.close();
                 dist.close();
             } catch (Exception ex) {
                 Logger.getLogger(GUIServer.class.getName()).log(Level.SEVERE, null, ex);
             }
-            s = new FractalCalculatorServer(this,Integer.parseInt(txt_port.getText()));
-
+            //Inicia enviando a gui e a porta
+            s = new FractalCalculatorServer(this, Integer.parseInt(txt_port.getText()));
+            //Inicia o server
             s.start();
-            jButton2.setEnabled(true);
+            bt_stopManual.setEnabled(true);
             btn_start.setEnabled(false);
         }
-        
-    }//GEN-LAST:event_jButton1ActionPerformed
 
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+    }//GEN-LAST:event_bt_autoDiscoveryActionPerformed
+    /**
+     * Para a thread
+     *
+     * @param evt
+     */
+    private void bt_stopActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_stopActionPerformed
         if (s != null) {
             if (s.isAlive()) {
                 if (s.isInterrupted() == false) {
                     btn_start.setEnabled(true);
-                    jButton2.setEnabled(false);
+                    bt_stopManual.setEnabled(false);
                     s.interrupt();
                     s = null;
                 }
             }
         }
-    }//GEN-LAST:event_jButton3ActionPerformed
+    }//GEN-LAST:event_bt_stopActionPerformed
 
     /**
      * @param args the command line arguments
@@ -407,10 +416,10 @@ public class GUIServer extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton bt_autoDiscovery;
+    private javax.swing.JButton bt_stop;
+    private javax.swing.JButton bt_stopManual;
     private javax.swing.JButton btn_start;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel15;
@@ -422,7 +431,7 @@ public class GUIServer extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
-    private javax.swing.JTextArea jTextDebug;
+    public javax.swing.JTextArea jTextDebug;
     private javax.swing.JTextField jTextGroupAddress;
     private javax.swing.JTextField jTextGroupPort;
     public javax.swing.JLabel l;

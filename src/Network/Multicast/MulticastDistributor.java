@@ -5,43 +5,39 @@
  */
 package Network.Multicast;
 
-/**
- *
- * @author Canoso
- */
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
-import java.net.MulticastSocket;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JTextArea;
 
 /**
- *
- * @author Canoso
+ * @author João Canoso https://github.com/jpcanoso
+ * @author Rui Barcelos https://github.com/barcelosrui
  */
-public class MulticastDistributor extends Thread{
-     
+public class MulticastDistributor extends Thread {
+
     JTextArea debug;
     InetAddress groupAddress;
     int groupPort;
     String distPort;
 
-    
     public MulticastDistributor(JTextArea debug, InetAddress groupAddress, int groupPort, int distPort) {
         this.debug = debug;
         this.groupAddress = groupAddress;
         this.groupPort = groupPort;
-        this.distPort = distPort+"";
+        this.distPort = distPort + "";
     }
-    
-   
+
+    /**
+     * É executado quando é chamado para encotrar os servidores via multicast
+     */
     @Override
     public void run() {
         int count = 0;
-     
+
         // Open a new DatagramSocket, which will be used to send the data.
         try (DatagramSocket serverSocket = new DatagramSocket()) {
             while (true) {
@@ -50,18 +46,18 @@ public class MulticastDistributor extends Thread{
                 data = distPort.getBytes();
                 // mensagem de debug
                 debug.append("[Multicast] Advertisement " + count + " | Port: " + distPort + "\n");
-                
+
                 // incrementa contador
-                count ++;
-                
+                count++;
+
                 // Create a packet that will contain the data
                 // (in the form of bytes) and send it.
                 DatagramPacket msgPacket = new DatagramPacket(data,
                         data.length, groupAddress, groupPort);
-                
+
                 // envia pacote
                 serverSocket.send(msgPacket);
-    
+
                 //pausa a thread 10 segundos
                 Thread.sleep(10000);
             }
@@ -70,7 +66,7 @@ public class MulticastDistributor extends Thread{
         } catch (InterruptedException ex) {
             Logger.getLogger(MulticastDistributor.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+
         /*
         try {
             //Multicast Socket

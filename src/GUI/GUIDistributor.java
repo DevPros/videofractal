@@ -15,7 +15,7 @@ import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 
 /**
- *
+ * @author João Canoso https://github.com/jpcanoso
  * @author Rui Barcelos https://github.com/barcelosrui
  */
 public class GUIDistributor extends javax.swing.JFrame {
@@ -45,7 +45,7 @@ public class GUIDistributor extends javax.swing.JFrame {
         jPanel2 = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
         jTextFieldIP = new javax.swing.JTextField();
-        jButton1 = new javax.swing.JButton();
+        bt_startDist = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTextAreaDebug = new javax.swing.JTextArea();
@@ -55,7 +55,7 @@ public class GUIDistributor extends javax.swing.JFrame {
         jTextGroupAddress = new javax.swing.JTextField();
         jLabel8 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        distributorPort = new javax.swing.JTextField();
+        txt_distributorPort = new javax.swing.JTextField();
         jTextGroupPort = new javax.swing.JTextField();
         jSeparator1 = new javax.swing.JSeparator();
         jPanel6 = new javax.swing.JPanel();
@@ -98,10 +98,10 @@ public class GUIDistributor extends javax.swing.JFrame {
 
         jTextFieldIP.setEditable(false);
 
-        jButton1.setText("Start Distributor");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        bt_startDist.setText("Start Distributor");
+        bt_startDist.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                bt_startDistActionPerformed(evt);
             }
         });
 
@@ -139,12 +139,7 @@ public class GUIDistributor extends javax.swing.JFrame {
 
         jLabel2.setText("Distributor Port");
 
-        distributorPort.setText("5000");
-        distributorPort.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                distributorPortActionPerformed(evt);
-            }
-        });
+        txt_distributorPort.setText("5000");
 
         jTextGroupPort.setText("10000");
 
@@ -166,7 +161,7 @@ public class GUIDistributor extends javax.swing.JFrame {
                     .addGroup(jPanel5Layout.createSequentialGroup()
                         .addComponent(jLabel2)
                         .addGap(18, 18, 18)
-                        .addComponent(distributorPort, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(txt_distributorPort, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addComponent(jSeparator1, javax.swing.GroupLayout.Alignment.TRAILING)
         );
@@ -183,7 +178,7 @@ public class GUIDistributor extends javax.swing.JFrame {
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 6, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(distributorPort, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txt_distributorPort, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel2))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -191,11 +186,6 @@ public class GUIDistributor extends javax.swing.JFrame {
         jPanel6.setBorder(javax.swing.BorderFactory.createTitledBorder("Fractal Properties"));
 
         jTextZoom.setText("0.99");
-        jTextZoom.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextZoomActionPerformed(evt);
-            }
-        });
 
         jLabel1.setText("Zoom");
 
@@ -209,7 +199,7 @@ public class GUIDistributor extends javax.swing.JFrame {
 
         jLabel11.setText("Iterations");
 
-        jTextIterations.setText("256");
+        jTextIterations.setText("1000");
 
         jLabel12.setText("Width");
 
@@ -238,10 +228,10 @@ public class GUIDistributor extends javax.swing.JFrame {
                         .addComponent(jLabel1)
                         .addGap(18, 18, 18)
                         .addComponent(jTextZoom, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(26, 26, 26)
-                        .addComponent(jLabel11)
                         .addGap(18, 18, 18)
-                        .addComponent(jTextIterations, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel11)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jTextIterations, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(26, 26, 26)
                         .addComponent(jLabel12)
                         .addGap(18, 18, 18)
@@ -294,7 +284,7 @@ public class GUIDistributor extends javax.swing.JFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(jTextFieldIP, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(bt_startDist, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jButton3)
                                 .addGap(0, 0, Short.MAX_VALUE))
@@ -317,7 +307,7 @@ public class GUIDistributor extends javax.swing.JFrame {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel3)
                     .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jButton1)
+                        .addComponent(bt_startDist)
                         .addComponent(jButton3)
                         .addComponent(jTextFieldIP, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -486,22 +476,23 @@ public class GUIDistributor extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    /**
+     * Botão para calcular o server
+     *
+     * @param evt
+     */
+    private void bt_startDistActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_startDistActionPerformed
         InetAddress groupAddress = null;
         try {
             groupAddress = InetAddress.getByName(jTextGroupAddress.getText()); //Endereço do grupo
         } catch (UnknownHostException ex) {
             Logger.getLogger(GUIDistributor.class.getName()).log(Level.SEVERE, null, ex);
         }
-        int distPort = Integer.valueOf(distributorPort.getText()); // porta do distribuidor
+        int distPort = Integer.valueOf(txt_distributorPort.getText()); // porta do distribuidor
         int groupPort = Integer.valueOf(jTextGroupPort.getText()); // porta do grupo
         double factor = Double.valueOf(jTextZoom.getText());       // Zoom
-        int width = Integer.valueOf(jTextWidth.getText());
-        int height = Integer.valueOf(jTextHeight.getText());
-        int iterations = Integer.valueOf(jTextIterations.getText());
-        double centerX = Double.valueOf(jTextXCoordinate.getText());
-        double centerY = Double.valueOf(jTextYCoordinate.getText());     
+        double centerX = Double.valueOf(jTextXCoordinate.getText());//Coordenada X do ponto a calcular
+        double centerY = Double.valueOf(jTextYCoordinate.getText());//Coordenada Y do ponto a calcular    
 
         // inicializa server multicast
         MulticastDistributor multicastServer = new MulticastDistributor(jTextAreaDebug, groupAddress, groupPort, distPort);
@@ -510,14 +501,10 @@ public class GUIDistributor extends javax.swing.JFrame {
         // inicializa distribuidor
         Distributor dist = new Distributor(centerX, centerY, distPort, factor, this);
         dist.start();
-    }//GEN-LAST:event_jButton1ActionPerformed
-
-    private void distributorPortActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_distributorPortActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_distributorPortActionPerformed
+    }//GEN-LAST:event_bt_startDistActionPerformed
 
     /**
-     * Generate Video button
+     * Botão que serve para gera um video
      *
      * @param evt
      */
@@ -534,7 +521,7 @@ public class GUIDistributor extends javax.swing.JFrame {
         // Escolher ficheiro a guardar
         JFileChooser fileChooser = new JFileChooser();
         if (fileChooser.showSaveDialog(this) == JFileChooser.APPROVE_OPTION) {
-            File file = new File(fileChooser.getSelectedFile()+"."+jComboVideoFormat.getSelectedItem());
+            File file = new File(fileChooser.getSelectedFile() + "." + jComboVideoFormat.getSelectedItem());
             //desabilitar o botão
             bt_genVideo.setEnabled(false);
             // gerar e guardar ficheiro
@@ -542,23 +529,34 @@ public class GUIDistributor extends javax.swing.JFrame {
             // gera o video dentro de uma thread
             new Thread(() -> {
                 try {
-                    Distributor.generateVideo(file, images, fps, filetype,this);
+                    Distributor.generateVideo(file, images, fps, filetype, this);
                 } catch (Exception ex) {
                     Logger.getLogger(GUIDistributor.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }).start();
         }
     }//GEN-LAST:event_bt_genVideoActionPerformed
-
+    /**
+     * Sem Função Servirá para repor os parametros de origem
+     *
+     * @param evt
+     */
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         // TODO
     }//GEN-LAST:event_jButton3ActionPerformed
-
+    /**
+     * Activar a função do botão para gerar o video
+     *
+     * @param evt
+     */
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         JFileChooser chooser;
         chooser = new JFileChooser();
+        //define qual é a pasta do projeto a ser utilizada
         chooser.setCurrentDirectory(new java.io.File("img"));
+        //Adiciona o titulo ao Choser
         chooser.setDialogTitle("Choose a Directory");
+        //Obriga a selecionar apenas Directorias
         chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 
         // desativar opção de todos os ficheiros
@@ -574,10 +572,6 @@ public class GUIDistributor extends javax.swing.JFrame {
             jLabelVideoTime.setText("Video will be " + images.length / Integer.parseInt(jTextFPS.getText()) + " seconds long");
         }
     }//GEN-LAST:event_jButton4ActionPerformed
-
-    private void jTextZoomActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextZoomActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTextZoomActionPerformed
 
     /**
      * @param args the command line arguments
@@ -623,8 +617,7 @@ public class GUIDistributor extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public javax.swing.JButton bt_genVideo;
-    private javax.swing.JTextField distributorPort;
-    private javax.swing.JButton jButton1;
+    private javax.swing.JButton bt_startDist;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
     private javax.swing.JComboBox<String> jComboVideoFormat;
@@ -661,15 +654,16 @@ public class GUIDistributor extends javax.swing.JFrame {
     public javax.swing.JTextField jTextFieldIP;
     private javax.swing.JTextField jTextGroupAddress;
     private javax.swing.JTextField jTextGroupPort;
-    private javax.swing.JTextField jTextHeight;
-    private javax.swing.JTextField jTextIterations;
+    public javax.swing.JTextField jTextHeight;
+    public javax.swing.JTextField jTextIterations;
     private javax.swing.JTextField jTextSourceFiles;
-    private javax.swing.JTextField jTextWidth;
+    public javax.swing.JTextField jTextWidth;
     private javax.swing.JTextField jTextXCoordinate;
     private javax.swing.JTextField jTextYCoordinate;
     private javax.swing.JTextField jTextZoom;
     public javax.swing.JLabel limage;
     public javax.swing.JLabel lnumbImg;
     public javax.swing.JLabel lperc;
+    private javax.swing.JTextField txt_distributorPort;
     // End of variables declaration//GEN-END:variables
 }
