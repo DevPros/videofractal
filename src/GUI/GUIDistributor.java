@@ -8,12 +8,10 @@ package GUI;
 import Network.Distributor;
 import Network.MulticastServer;
 import Network.RMIServer;
-import Remote.RemoteFractal;
 import java.io.File;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
-import java.rmi.RemoteException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFileChooser;
@@ -509,13 +507,13 @@ public class GUIDistributor extends javax.swing.JFrame {
         double centerY = Double.valueOf(jTextYCoordinate.getText());
 
         // inicializar RMI server
-        //RMIServer server = new RMIServer(this, centerX, centerY, zoom, iterations, width, height);
-        //server.start();
+        RMIServer server = new RMIServer(this, centerX, centerY, zoom, iterations, width, height);
+        server.start();
 
         // inicializa server multicast
-        MulticastServer multicastServer = new MulticastServer(jTextAreaDebug, groupAddress, groupPort, distPort);
+        //MulticastServer multicastServer = new MulticastServer(jTextAreaDebug, groupAddress, groupPort, distPort);
         // inicia server multicast
-        multicastServer.start();
+        //multicastServer.start();
 
         //Distributor dist = new Distributor(distPort, zoom, jTextAreaDebug, jTextFieldIP);
         //dist.start();
