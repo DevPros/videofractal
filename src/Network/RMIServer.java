@@ -55,7 +55,7 @@ public class RMIServer extends Thread{
                 BufferedImage image = auxiliar.ImgUtils.byteToImage(data);
                 ImageIcon icon = new ImageIcon(image);
                 gui.limage.setIcon(icon);
-                ImageIO.write(image, "png", new File("fractal" + String.format("%06d", count) + ".png"));
+                ImageIO.write(image, "png", new File("img/fractal" + String.format("%06d", count) + ".png"));
                 count++;
                 gui.lnumbImg.setText(count+"");
             }
