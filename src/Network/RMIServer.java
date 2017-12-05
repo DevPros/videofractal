@@ -6,7 +6,6 @@
 package Network;
 
 import GUI.GUIDistributor;
-import GUI.RMIClient;
 import Remote.IremoteFractal;
 import auxiliar.RMI;
 import java.awt.Dimension;
@@ -60,7 +59,7 @@ public class RMIServer extends Thread{
                 gui.lnumbImg.setText(count+"");
             }
         } catch (Exception ex) {
-            Logger.getLogger(RMIClient.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(RMIServer.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 }

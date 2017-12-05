@@ -5,6 +5,11 @@
  */
 package GUI;
 
+import Remote.RemoteFractal;
+import java.rmi.RemoteException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /**
  *
  * @author Rui Barcelos https://github.com/barcelosrui
@@ -16,6 +21,15 @@ public class GUIServer extends javax.swing.JFrame {
      */
     public GUIServer() {
         initComponents();
+    }
+    public void server() {
+        try {
+            RemoteFractal fr = new RemoteFractal();
+            auxiliar.RMI.startRemoteObject(fr,Integer.valueOf(txt_port.getText()), "fractal");
+            lstatusServer.setText("Server Up in" + txt_port.getText());
+        } catch (RemoteException ex) {
+            Logger.getLogger(GUIServer.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**
@@ -96,8 +110,7 @@ public class GUIServer extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void bt_startActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_startActionPerformed
-        GUIRMIServer server = new GUIRMIServer(this);
-        server.start();
+        server();
         /*
         MulticastClient MCclient = new MulticastClient(1000);
         MCclient.start();
@@ -130,7 +143,7 @@ public class GUIServer extends javax.swing.JFrame {
             java.util.logging.Logger.getLogger(GUIServer.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
-
+        
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {

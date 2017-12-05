@@ -5,7 +5,7 @@
  */
 package GUI;
 
-import Network.Distributor;
+import Network.Video;
 import Network.MulticastServer;
 import Network.RMIServer;
 import java.io.File;
@@ -549,7 +549,7 @@ public class GUIDistributor extends javax.swing.JFrame {
             // gera o video dentro de uma thread
             new Thread(() -> {
                 try {
-                    Distributor.generateVideo(file, images, fps, filetype, this);
+                    Video.generateVideo(file, images, fps, filetype, this);
                 } catch (IOException ex) {
                     Logger.getLogger(GUIDistributor.class.getName()).log(Level.SEVERE, null, ex);
                 }
