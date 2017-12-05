@@ -68,7 +68,6 @@ public class Distributor extends Thread{
             
             while (true) {
                 Socket serverFractal = server.accept();
-                System.out.println("Aqui");
                 // abertura da stream de saída
                 ObjectOutputStream out = new ObjectOutputStream(serverFractal.getOutputStream());
                 //abertura da stream de entrada
