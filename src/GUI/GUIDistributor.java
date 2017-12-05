@@ -509,8 +509,8 @@ public class GUIDistributor extends javax.swing.JFrame {
         double centerY = Double.valueOf(jTextYCoordinate.getText());
 
         // inicializar RMI server
-        RMIServer server = new RMIServer(this, centerX, centerY, zoom, iterations, width, height);
-        server.start();
+        //RMIServer server = new RMIServer(this, centerX, centerY, zoom, iterations, width, height);
+        //server.start();
 
         // inicializa server multicast
         MulticastServer multicastServer = new MulticastServer(jTextAreaDebug, groupAddress, groupPort, distPort);

@@ -97,7 +97,11 @@ public class GUIServer extends javax.swing.JFrame {
 
     private void bt_startActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_startActionPerformed
         GUIRMIServer server = new GUIRMIServer(this);
-        server.run();
+        server.start();
+        /*
+        MulticastClient MCclient = new MulticastClient(1000);
+        MCclient.start();
+        */
     }//GEN-LAST:event_bt_startActionPerformed
 
     /**
@@ -131,6 +135,7 @@ public class GUIServer extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new GUIServer().setVisible(true);
+                
             }
         });
     }
