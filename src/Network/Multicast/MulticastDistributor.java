@@ -66,46 +66,5 @@ public class MulticastDistributor extends Thread {
         } catch (InterruptedException ex) {
             Logger.getLogger(MulticastDistributor.class.getName()).log(Level.SEVERE, null, ex);
         }
-
-        /*
-        try {
-            //Multicast Socket
-            MulticastSocket socket = new MulticastSocket();
-            while (true) {
-                //mensagem
-                byte[] data = new byte[256];
-                count = count + 1;
-                debug.append("[Multicast] Advertisement " + count + " | Port: " + distPort + "\n");
-                data = distPort.getBytes();
-                //pacote de envio
-                DatagramPacket dg = new DatagramPacket(data, data.length, groupAddress, groupPort);
-                // envia o pacote
-                socket.send(dg);
-                //pausa a thread 10 segundos
-                Thread.sleep(10000);
-            }
-        } catch (Exception ex) {
-            Logger.getLogger(Distributor.class.getName()).log(Level.SEVERE, null, ex);
-        
-        /*
-        try {
-            //Multicast Socket
-            MulticastSocket socket = new MulticastSocket();
-            while (true) {
-                //mensagem
-                byte[] data = new byte[256];
-                count = count + 1;
-                debug.append("[Multicast] Advertisement " + count + " | Port: " + distPort + "\n");
-                data = distPort.getBytes();
-                //pacote de envio
-                DatagramPacket dg = new DatagramPacket(data, data.length, groupAddress, groupPort);
-                // envia o pacote
-                socket.send(dg);
-                //pausa a thread 10 segundos
-                Thread.sleep(10000);
-            }
-        } catch (Exception ex) {
-            Logger.getLogger(Distributor.class.getName()).log(Level.SEVERE, null, ex);
-        } */
     }
 }

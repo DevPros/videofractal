@@ -5,7 +5,6 @@
  */
 package GUI;
 
-import Network.Distributor;
 import Network.FractalCalculatorServer;
 import Network.Multicast.MulticastServer;
 import java.util.logging.Level;
@@ -67,6 +66,7 @@ public class GUIServer extends javax.swing.JFrame {
         jTextDebug = new javax.swing.JTextArea();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Server");
 
         jPanel8.setBorder(javax.swing.BorderFactory.createTitledBorder("Network"));
 

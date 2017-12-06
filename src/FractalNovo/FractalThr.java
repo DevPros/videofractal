@@ -144,18 +144,4 @@ public class FractalThr extends Thread {
         }
         return img;
     }
-
-   
-    /*
-    public static void main(String[] args) throws Exception {
-        double cx = -1.78916901860482310667446834118883876381736183681;
-        double cy = -0.000000339368515767182566028230266146812728348218;
-        int max = 1000;
-        int width = 192;
-        int height = 108;
-        double zoom = 1E-7;
-        BufferedImage image = getFractal(cx, cy, zoom, max, width, height);
-        ImageIO.write(image, "png", new File("mandelbrot.png"));
-    }*/
-
 }
