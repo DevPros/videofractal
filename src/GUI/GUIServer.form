@@ -45,7 +45,14 @@
     </DimensionLayout>
   </Layout>
   <SubComponents>
-    <Container class="javax.swing.JPanel" name="jPanel1">
+    <Container class="javax.swing.JPanel" name="jPanel8">
+      <Properties>
+        <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
+          <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
+            <TitledBorder title="Network"/>
+          </Border>
+        </Property>
+      </Properties>
 
       <Layout>
         <DimensionLayout dim="0">
@@ -134,8 +141,6 @@
                       <Component id="jLabel14" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="txt_distIP" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace type="separate" max="-2" attributes="0"/>
-                  <Component id="bt_start" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Component id="bt_stopManual" min="-2" max="-2" attributes="0"/>
@@ -156,30 +161,27 @@
           <Properties>
             <Property name="text" type="java.lang.String" value="Manual Server"/>
           </Properties>
-          <AuxValues>
-            <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="1"/>
-          </AuxValues>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btn_startActionPerformed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JButton" name="bt_stopManual">
           <Properties>
-            <Property name="text" type="java.lang.String" value="PORT:"/>
+            <Property name="text" type="java.lang.String" value="Stop"/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="bt_stopManualActionPerformed"/>
           </Events>
         </Component>
-        <Component class="javax.swing.JButton" name="bt_start">
+        <Component class="javax.swing.JTextField" name="txt_distPort">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Start"/>
+            <Property name="text" type="java.lang.String" value="5000"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="txt_port">
           <Properties>
             <Property name="text" type="java.lang.String" value="10001"/>
           </Properties>
-          <AuxValues>
-            <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="1"/>
-          </AuxValues>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel14">
           <Properties>

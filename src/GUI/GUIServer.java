@@ -26,7 +26,7 @@ public class GUIServer extends javax.swing.JFrame {
     public static InetAddress groupAddress = null;
 
     /**
-     * Creates new form GUIServer
+     * Creates new form GUITESTE
      */
     public GUIServer() {
         initComponents();
@@ -405,12 +405,12 @@ public class GUIServer extends javax.swing.JFrame {
             java.util.logging.Logger.getLogger(GUIServer.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
+        //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new GUIServer().setVisible(true);
-                
             }
         });
     }
