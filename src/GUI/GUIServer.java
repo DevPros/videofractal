@@ -222,7 +222,9 @@ public class GUIServer extends javax.swing.JFrame {
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Debug"));
 
+        jTextDebug.setBackground(new java.awt.Color(0, 0, 0));
         jTextDebug.setColumns(20);
+        jTextDebug.setForeground(new java.awt.Color(255, 255, 255));
         jTextDebug.setRows(5);
         jScrollPane2.setViewportView(jTextDebug);
 

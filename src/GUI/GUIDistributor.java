@@ -107,7 +107,9 @@ public class GUIDistributor extends javax.swing.JFrame {
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Debug", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 14))); // NOI18N
 
+        jTextAreaDebug.setBackground(new java.awt.Color(0, 0, 0));
         jTextAreaDebug.setColumns(20);
+        jTextAreaDebug.setForeground(new java.awt.Color(255, 255, 255));
         jTextAreaDebug.setRows(5);
         jScrollPane1.setViewportView(jTextAreaDebug);
 
@@ -542,7 +544,15 @@ public class GUIDistributor extends javax.swing.JFrame {
      * @param evt
      */
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        // TODO
+        jTextZoom.setText("0.99");
+        jTextIterations.setText("1000");
+        jTextWidth.setText("3840");
+        jTextHeight.setText("2160");
+        jTextXCoordinate.setText("-1.7685736563152709932817429153295447129341200534055498823375111352827765533646353820119779335363321986478087958745766432300344486098206084588445291690832853792608335811319613234806674959498380432536269122404488847453646628324959064543");
+        jTextYCoordinate.setText("-0.0009642968513582800001762427203738194482747761226565635652857831533070475543666558930286153827950716700828887932578932976924523447497708248894734256480183898683164582055541842171815899305250842692638349057118793296768325124255746563");
+        txt_distributorPort.setText("5000");
+        jTextGroupAddress.setText("230.0.0.1");
+        jTextGroupPort.setText("10000");
     }//GEN-LAST:event_jButton3ActionPerformed
     /**
      * Activar a função do botão para gerar o video
