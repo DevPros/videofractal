@@ -6,7 +6,7 @@
 package Network;
 
 import FractalNovo.FractalThr;
-import GUI.GUIServerOLD;
+import GUI.GUIServer;
 import auxiliar.ImgUtils;
 import java.awt.image.BufferedImage;
 import java.io.ObjectInputStream;
