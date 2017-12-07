@@ -6,14 +6,8 @@
 package GUI;
 
 import Network.FractalCalculatorServer;
-import Network.Multicast.MulticastServer;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+import Server.AuxServer;
 import java.net.InetAddress;
-import java.net.Socket;
-import java.net.UnknownHostException;
 
 /**
  * @author João Canoso https://github.com/jpcanoso
@@ -286,29 +280,7 @@ public class GUIServer extends javax.swing.JFrame {
      * @param evt
      */
     private void btn_startActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_startActionPerformed
-        if (s == null) {
-            try {
-                Socket dist = new Socket(txt_distIP.getText(),
-                        Integer.valueOf(txt_distPort.getText()));
-                // abertura da stream de saída
-                ObjectOutputStream out = new ObjectOutputStream(dist.getOutputStream());
-                //abertura da stream de entrada
-                ObjectInputStream in = new ObjectInputStream(dist.getInputStream());
-                // envia porta em que a instancia está a correr
-                out.writeInt(Integer.parseInt(txt_port.getText()));
-                jTextDebug.append("[Server] Sending port " + Integer.parseInt(txt_port.getText()) + " to dist");
-                out.close();
-                in.close();
-                dist.close();
-            } catch (Exception ex) {
-                Logger.getLogger(GUIServer.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            s = new FractalCalculatorServer(this, Integer.parseInt(txt_port.getText()));
-
-            s.start();
-            bt_stopManual.setEnabled(true);
-            btn_start.setEnabled(false);
-        }
+        AuxServer.unicast(Integer.parseInt(txt_port.getText()), txt_distIP.getText(), Integer.valueOf(txt_distPort.getText()),this);
     }//GEN-LAST:event_btn_startActionPerformed
     /**
      * Descobre automáticamente o server
@@ -316,52 +288,7 @@ public class GUIServer extends javax.swing.JFrame {
      * @param evt
      */
     private void bt_autoDiscoveryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_autoDiscoveryActionPerformed
-        InetAddress groupAddress = null;
-        String distPort;
-        try {
-            groupAddress = InetAddress.getByName(jTextGroupAddress.getText()); //Endereço do grupo
-        } catch (UnknownHostException ex) {
-            Logger.getLogger(GUIDistributor.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        int groupPort = Integer.valueOf(jTextGroupPort.getText());
-
-        //obtem a porta do server com multicast
-        distPort = MulticastServer.listenMulticast(groupPort, groupAddress, this);
-
-        String[] dados = distPort.split(",");
-        // limpa e faz o parse
-        int porta = Integer.parseInt(dados[1].trim());
-        // retira a / do ip
-        dados[0] = dados[0].replace("/", "");
-        //System.out.println("porta: "+porta);
-        //System.out.println("ip: "+dados[0]);
-
-        // inicia server
-        if (s == null) {
-            try {
-                //Socket dist = new Socket(txt_distIP.getText(),Integer.valueOf(txt_distPort.getText())) ;
-                Socket dist = new Socket(dados[0], porta);
-                // abertura da stream de saída
-                ObjectOutputStream out = new ObjectOutputStream(dist.getOutputStream());
-                //abertura da stream de entrada
-                ObjectInputStream in = new ObjectInputStream(dist.getInputStream());
-                // envia porta em que a instancia está a correr
-                out.writeInt(Integer.parseInt(txt_port.getText()));
-                jTextDebug.append("[Server] Sending port " + Integer.parseInt(txt_port.getText()) + " to dist");
-                out.close();
-                in.close();
-                dist.close();
-            } catch (Exception ex) {
-                Logger.getLogger(GUIServer.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            //Inicia enviando a gui e a porta
-            s = new FractalCalculatorServer(this, Integer.parseInt(txt_port.getText()));
-            //Inicia o server
-            s.start();
-            bt_stopManual.setEnabled(true);
-            btn_start.setEnabled(false);
-        }
-
+        AuxServer.multicast(Integer.parseInt(txt_port.getText()), jTextGroupAddress.getText(), Integer.valueOf(jTextGroupPort.getText()),this);
     }//GEN-LAST:event_bt_autoDiscoveryActionPerformed
     /**
      * Para a thread
@@ -420,8 +347,8 @@ public class GUIServer extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton bt_autoDiscovery;
     private javax.swing.JButton bt_stop;
-    private javax.swing.JButton bt_stopManual;
-    private javax.swing.JButton btn_start;
+    public javax.swing.JButton bt_stopManual;
+    public javax.swing.JButton btn_start;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel15;
@@ -440,7 +367,7 @@ public class GUIServer extends javax.swing.JFrame {
     public javax.swing.JPanel panelIMG;
     private javax.swing.JPanel panelSuport;
     private javax.swing.JTextField txt_distIP;
-    private javax.swing.JTextField txt_distPort;
+    public javax.swing.JTextField txt_distPort;
     private javax.swing.JTextField txt_port;
     // End of variables declaration//GEN-END:variables
 }
