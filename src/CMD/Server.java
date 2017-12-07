@@ -112,41 +112,30 @@ public class Server {
 
     public static void main(String[] args) {
         try {
-            int portServer = Integer.valueOf(args[0]);
-            boolean rep = false;
-            System.out.println("Definiu a porta: " + portServer + "");
-            while (rep != true) {
-                Scanner scan = new Scanner(System.in);
-                System.out.println("Como deseja fazer o calculo: ");
-                System.out.println("1-Unicast");
-                System.out.println("2-Mulicast");
-                System.out.println("0-Sair");
-                int op1 = Integer.valueOf(scan.nextLine());
-                switch (op1) {
-                    case 1:
-                        rep = true;
-                        System.out.println("Introduza o IP:");
-                        String ip = scan.nextLine();
-                        System.out.println("Introduza a Porta do Distribuidor:");
-                        int portDist = Integer.valueOf(scan.nextLine());
-                        unicast(portServer, ip, portDist);
-                        break;
-                    case 2:
-                        rep = true;
-                        System.out.println("Introduza o endereço de grupo:");
-                        String groupAddr = scan.nextLine();
-                        System.out.println("Introduza a Porta do grupo:");
-                        int groupPort = Integer.valueOf(scan.nextLine());
-                        multicast(portServer, groupAddr, groupPort);
-                        break;
-                    case 0:
-                        rep = true;
-                        break;
-                    default:
-                        rep = false;
-                        break;
-                }
+            String method = (args[0] != null) ? args[0] : "";
+            int portServer = (args[1] != null) ? Integer.valueOf(args[1]) : 0;
+            String ip = (args[2] != null) ? args[2] : "";
+            int portDist = (args[3] != null) ? Integer.valueOf(args[3]) : 0;
+            System.out.println("Definiu a porta do servidor: " + portServer + "\nIP:" + ip + "\nPorta da Distribuição:" + portDist);
+            switch (method) {
+                case "unicast":
+                    unicast(portServer, ip, portDist);
+                    break;
+                case "multicast":
+                    multicast(portServer, ip, portDist);
+                    break;
+                case "help":
+                    System.out.println("Metodos Existentes");
+                    System.out.println("unicast");
+                    System.out.println("\"nomeDoExecutável unicast portaDoServer ipDistribuidor portaDoDistribuidor \"");
+                    System.out.println("multicast");
+                    System.out.println("\"nomeDoExecutável multicast portaDoServer ipGroup portGroup \"");
+                    break;
+                default:
+                    System.out.println("Se tiver dúvidas escreva help");
+                    break;
             }
+
         } catch (Exception ex) {
             System.out.println("Ups! Ocorreu um erro!");
         }
