@@ -26,10 +26,12 @@ public class FractalCalculatorServer extends Thread {
     int port = 10000;
     GUIServer gui;
     long cont = 0;
+
     /**
      * Inicia o calculo da thread
+     *
      * @param gui
-     * @param port 
+     * @param port
      */
     public FractalCalculatorServer(GUIServer gui, int port) {
         this.port = port;
@@ -37,6 +39,7 @@ public class FractalCalculatorServer extends Thread {
     }
 
     public static BufferedImage image = null;
+
     /**
      * Metodo que é iniciado quando se inicia a tread
      */
@@ -44,8 +47,8 @@ public class FractalCalculatorServer extends Thread {
     public void run() {
         try {
             ServerSocket server = new ServerSocket(port);
-            gui.jTextDebug.append("[Server] Server running on port " + port + "...\n");
-
+            if(gui!=null)gui.jTextDebug.append("[Server] Server running on port " + port + "...\n");
+            else System.out.print("[Server] Server running on port " + port + "...\n");    
             while (true) {
                 //System.out.println(server.getInetAddress());
                 Socket socket = server.accept();
@@ -53,9 +56,11 @@ public class FractalCalculatorServer extends Thread {
                 ObjectInputStream in = new ObjectInputStream(socket.getInputStream());
                 Service s = (Service) in.readObject();
                 image = FractalThr.getFractal(s.getCx(), s.getCy(), s.getZoom(), 1000, 3860, 2160);
-                ImageIcon icon = new ImageIcon(image);
+                if (gui != null) {
+                    ImageIcon icon = new ImageIcon(image);
 
-                gui.l.setIcon(icon);
+                    gui.l.setIcon(icon);
+                }
                 s.setData(ImgUtils.ImageToByte(image));
 
                 out.writeObject(s);
@@ -70,7 +75,8 @@ public class FractalCalculatorServer extends Thread {
                     break;
                 }
             }
-            gui.jTextDebug.append("Server stoped....\n");
+            if(gui!=null)gui.jTextDebug.append("Server stoped....\n");
+            else System.out.print("Server stoped....\n");   
         } catch (Exception ex) {
             Logger.getLogger(FractalCalculatorServer.class.getName()).log(Level.SEVERE, null, ex);
         }

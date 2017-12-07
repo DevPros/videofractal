@@ -63,6 +63,7 @@ public class LinkToServer extends Thread {
 
                 // receber a resposta
                 myService = (Service) in.readObject();
+                
                 ImageIcon icon = new ImageIcon(ImgUtils.byteToImage(myService.getData()));
                 gui.limage.setIcon(icon);
                 // apresenta a resposta

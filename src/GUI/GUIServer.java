@@ -347,7 +347,7 @@ public class GUIServer extends javax.swing.JFrame {
                 ObjectInputStream in = new ObjectInputStream(dist.getInputStream());
                 // envia porta em que a instancia está a correr
                 out.writeInt(Integer.parseInt(txt_port.getText()));
-                System.out.println("[Server] Sending port " + Integer.parseInt(txt_port.getText()) + " to dist");
+                jTextDebug.append("[Server] Sending port " + Integer.parseInt(txt_port.getText()) + " to dist");
                 out.close();
                 in.close();
                 dist.close();

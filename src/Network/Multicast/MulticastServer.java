@@ -32,8 +32,10 @@ public class MulticastServer extends Thread {
      */
     public static String listenMulticast(int port, InetAddress groupAddress, GUIServer gui) {
         String msg = "";
+        if(gui != null)
         gui.jTextDebug.append("[Multicast] Multicast receiver started\n");
-
+        else
+            System.out.print("[Multicast] Multicast receiver started\n");
         byte[] buf = new byte[256];
 
         try (MulticastSocket clientSocket = new MulticastSocket(port)) {
