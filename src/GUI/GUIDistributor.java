@@ -73,6 +73,7 @@ public class GUIDistributor extends javax.swing.JFrame {
         jTextHeight = new javax.swing.JTextField();
         jLabel14 = new javax.swing.JLabel();
         lnumbImg = new javax.swing.JLabel();
+        pb_oneMin = new javax.swing.JProgressBar();
         jPanel3 = new javax.swing.JPanel();
         jPanel4 = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
@@ -295,7 +296,9 @@ public class GUIDistributor extends javax.swing.JFrame {
                             .addGroup(jPanel2Layout.createSequentialGroup()
                                 .addComponent(jLabel14)
                                 .addGap(18, 18, 18)
-                                .addComponent(lnumbImg, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                                .addComponent(lnumbImg, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(pb_oneMin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addContainerGap())))
         );
         jPanel2Layout.setVerticalGroup(
@@ -315,9 +318,11 @@ public class GUIDistributor extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel14)
-                    .addComponent(lnumbImg))
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel14)
+                        .addComponent(lnumbImg))
+                    .addComponent(pb_oneMin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -668,6 +673,7 @@ public class GUIDistributor extends javax.swing.JFrame {
     public javax.swing.JLabel limage;
     public javax.swing.JLabel lnumbImg;
     public javax.swing.JLabel lperc;
+    public javax.swing.JProgressBar pb_oneMin;
     private javax.swing.JTextField txt_distributorPort;
     // End of variables declaration//GEN-END:variables
 }

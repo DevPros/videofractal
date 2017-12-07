@@ -68,6 +68,8 @@ public class LinkToServer extends Thread {
                 gui.limage.setIcon(icon);
                 // apresenta a resposta
                 gui.lnumbImg.setText(myService.imageNumber + "");
+                gui.pb_oneMin.setMaximum(60*24);
+                gui.pb_oneMin.setValue(myService.imageNumber);
                 ImgUtils.saveImage(myService.getData(), "img/fractal" + String.format("%05d", myService.imageNumber) + ".jpg");
 
                 //fechar o socket e as streams

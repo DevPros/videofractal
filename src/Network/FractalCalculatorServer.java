@@ -47,8 +47,11 @@ public class FractalCalculatorServer extends Thread {
     public void run() {
         try {
             ServerSocket server = new ServerSocket(port);
-            if(gui!=null)gui.jTextDebug.append("[Server] Server running on port " + port + "...\n");
-            else System.out.print("[Server] Server running on port " + port + "...\n");    
+            if (gui != null) {
+                gui.jTextDebug.append("[Server] Server running on port " + port + "...\n");
+            } else {
+                System.out.print("[Server] Server running on port " + port + "...\n");
+            }
             while (true) {
                 //System.out.println(server.getInetAddress());
                 Socket socket = server.accept();
@@ -75,8 +78,11 @@ public class FractalCalculatorServer extends Thread {
                     break;
                 }
             }
-            if(gui!=null)gui.jTextDebug.append("Server stoped....\n");
-            else System.out.print("Server stoped....\n");   
+            if (gui != null) {
+                gui.jTextDebug.append("Server stoped....\n");
+            } else {
+                System.out.print("Server stoped....\n");
+            }
         } catch (Exception ex) {
             Logger.getLogger(FractalCalculatorServer.class.getName()).log(Level.SEVERE, null, ex);
         }
