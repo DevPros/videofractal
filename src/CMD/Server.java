@@ -14,7 +14,6 @@ import java.io.ObjectOutputStream;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
-import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -110,34 +109,41 @@ public class Server {
         }
     }
 
+    public static void help() {
+        System.out.println("Metodos Existentes");
+        System.out.println("unicast");
+        System.out.println("\"nomeDoExecutável unicast portaDoServer ipDistribuidor portaDoDistribuidor \"");
+        System.out.println("multicast");
+        System.out.println("\"nomeDoExecutável multicast portaDoServer ipGroup portGroup \"");
+    }
+
     public static void main(String[] args) {
+        if (args.length < 3) {
+            System.out.println("numero de parametros errados");
+            help();
+            return;
+        }
         try {
-            String method = (args[0] != null) ? args[0] : "";
-            int portServer = (args[1] != null) ? Integer.valueOf(args[1]) : 0;
-            String ip = (args[2] != null) ? args[2] : "";
-            int portDist = (args[3] != null) ? Integer.valueOf(args[3]) : 0;
+            int portServer = Integer.valueOf(args[1]);
+            String ip = args[2];
+            int portDist = Integer.valueOf(args[3]);
             System.out.println("Definiu a porta do servidor: " + portServer + "\nIP:" + ip + "\nPorta da Distribuição:" + portDist);
-            switch (method) {
+            switch (args[0]) {
                 case "unicast":
                     unicast(portServer, ip, portDist);
                     break;
                 case "multicast":
                     multicast(portServer, ip, portDist);
                     break;
-                case "help":
-                    System.out.println("Metodos Existentes");
-                    System.out.println("unicast");
-                    System.out.println("\"nomeDoExecutável unicast portaDoServer ipDistribuidor portaDoDistribuidor \"");
-                    System.out.println("multicast");
-                    System.out.println("\"nomeDoExecutável multicast portaDoServer ipGroup portGroup \"");
-                    break;
                 default:
-                    System.out.println("Se tiver dúvidas escreva help");
-                    break;
+                    System.out.println("comando desconhecido : " + args[0]);
+                    help();
             }
 
         } catch (Exception ex) {
+            System.out.println(ex.getMessage());
             System.out.println("Ups! Ocorreu um erro!");
+            help();
         }
     }
 }
