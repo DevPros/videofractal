@@ -3,9 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package CMD;
+package Aplication.CMD;
 
-import Server.AuxServer;
+import Aplication.UTILS.AuxServer;
 
 /**
  * @author João Canoso https://github.com/jpcanoso

@@ -18,7 +18,7 @@
 //::                                                               (c)2016   ::
 //:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 //////////////////////////////////////////////////////////////////////////////
-package FractalNovo;
+package External.Fractal;
 
 import java.awt.Color;
 import java.awt.image.BufferedImage;

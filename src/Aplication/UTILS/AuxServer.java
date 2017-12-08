@@ -3,11 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Server;
+package Aplication.UTILS;
 
-import GUI.GUIDistributor;
-import GUI.GUIServer;
-import Network.FractalCalculatorServer;
+import Aplication.GUI.GUIDistributor;
+import Aplication.GUI.GUIServer;
+import Network.Unicast.FractalCalculatorServer;
 import Network.Multicast.MulticastServer;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;

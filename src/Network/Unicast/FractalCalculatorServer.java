@@ -3,11 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Network;
+package Network.Unicast;
 
-import FractalNovo.FractalThr;
-import GUI.GUIServer;
-import auxiliar.ImgUtils;
+import External.Fractal.FractalThr;
+import Aplication.GUI.GUIServer;
+import Network.Service;
+import Utils.ImgUtils;
 import java.awt.image.BufferedImage;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;

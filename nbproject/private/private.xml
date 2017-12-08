@@ -5,7 +5,11 @@
         <group>
             <file>file:/C:/Users/Rui%20Barcelos/Desktop/Licenciatura/SD/SD-Trabalho2/src/GUI/GUIDistributor.java</file>
             <file>file:/C:/Users/Rui%20Barcelos/Desktop/Licenciatura/SD/SD-Trabalho2/src/GUI/GUIServer.java</file>
+            <file>file:/C:/Users/Rui%20Barcelos/Desktop/Licenciatura/SD/SD-Trabalho2/src/Network/LinkToServer.java</file>
+            <file>file:/C:/Users/Rui%20Barcelos/Desktop/Licenciatura/SD/SD-Trabalho2/src/CMD/Server.java</file>
             <file>file:/C:/Users/Rui%20Barcelos/Desktop/Licenciatura/SD/SD-Trabalho2/src/Network/FractalCalculatorServer.java</file>
+            <file>file:/C:/Users/Rui%20Barcelos/Desktop/Licenciatura/SD/SD-Trabalho2/src/Network/Distributor.java</file>
+            <file>file:/C:/Users/Rui%20Barcelos/Desktop/Licenciatura/SD/SD-Trabalho2/src/Network/Multicast/MulticastServer.java</file>
         </group>
     </open-files>
 </project-private>

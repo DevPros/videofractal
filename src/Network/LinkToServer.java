@@ -5,8 +5,9 @@
  */
 package Network;
 
-import GUI.GUIDistributor;
-import auxiliar.ImgUtils;
+import Aplication.GUI.GUIDistributor;
+import Network.Service;
+import Utils.ImgUtils;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;

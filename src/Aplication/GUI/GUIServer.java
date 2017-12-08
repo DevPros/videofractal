@@ -3,10 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package GUI;
+package Aplication.GUI;
 
-import Network.FractalCalculatorServer;
-import Server.AuxServer;
+import Network.Unicast.FractalCalculatorServer;
+import Aplication.UTILS.AuxServer;
 import java.net.InetAddress;
 
 /**

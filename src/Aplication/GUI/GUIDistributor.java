@@ -3,9 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package GUI;
+package Aplication.GUI;
 
-import Network.Distributor;
+import Network.Unicast.Distributor;
 import Network.Multicast.MulticastDistributor;
 import java.io.File;
 import java.net.InetAddress;

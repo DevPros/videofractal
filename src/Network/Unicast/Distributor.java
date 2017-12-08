@@ -3,9 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Network;
+package Network.Unicast;
 
-import GUI.GUIDistributor;
+import Network.LinkToServer;
+import Aplication.GUI.GUIDistributor;
+import Network.Service;
 import com.xuggle.mediatool.IMediaWriter;
 import com.xuggle.mediatool.ToolFactory;
 import java.awt.image.BufferedImage;
