@@ -45,7 +45,7 @@ public class MulticastDistributor extends Thread {
                 byte[] data = new byte[256];
                 data = distPort.getBytes();
                 // mensagem de debug
-                debug.append("[Multicast] Advertisement " + count + " | Port: " + distPort + "\n");
+                debug.append("[Multicast] Advertisement " + count + " | Port: " + distPort + " \n");
 
                 // incrementa contador
                 count++;

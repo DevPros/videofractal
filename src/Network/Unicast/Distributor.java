@@ -15,6 +15,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.math.BigDecimal;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -56,7 +57,7 @@ public class Distributor extends Thread {
         this.port = port;
         this.factor = factor;
         this.gui = gui;
-        this.s = new Service(centerX, centerY, 1E-1, Integer.valueOf(gui.jTextIterations.getText()), Integer.valueOf(gui.jTextWidth.getText()), Integer.valueOf(gui.jTextHeight.getText()));
+        this.s = new Service(new BigDecimal(centerX), new BigDecimal(centerY), new BigDecimal(1E-2), Integer.valueOf(gui.jTextIterations.getText()), Integer.valueOf(gui.jTextWidth.getText()), Integer.valueOf(gui.jTextHeight.getText()));
     }
 
     /**

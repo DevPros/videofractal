@@ -6,6 +6,8 @@
 package Network;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
+import java.math.MathContext;
 
 /**
  * @author João Canoso https://github.com/jpcanoso
@@ -13,9 +15,10 @@ import java.io.Serializable;
  */
 public class Service implements Serializable {
 
-    private double cx;
-    private double cy;
-    private double zoom;
+    MathContext precision = new MathContext(10); //Precisão matemática para a realização de contas em BigDecimal
+    private BigDecimal cx;
+    private BigDecimal cy;
+    private BigDecimal zoom;
     private int itera;
     private int width;
     private int height;
@@ -30,7 +33,7 @@ public class Service implements Serializable {
      * @param width
      * @param height 
      */
-    public Service(double cx, double cy, double zoom, int itera, int width, int height) {
+    public Service(BigDecimal cx, BigDecimal cy, BigDecimal zoom, int itera, int width, int height) {
         this.cx = cx;
         this.cy = cy;
         this.zoom = zoom;
@@ -49,34 +52,36 @@ public class Service implements Serializable {
      * @throws Exception
      */
     public synchronized Service cloneAndZoom(double factor) throws Exception {
-        zoom *= factor;
+        BigDecimal bFactor = new BigDecimal(factor);
+        zoom = zoom.multiply(bFactor, precision);
+        //zoom *= factor;
         imageNumber++;
         Service s = new Service(cx, cy, zoom, itera, width, height);
         s.imageNumber = this.imageNumber;
         return s;
     }
 
-    public double getCx() {
+    public BigDecimal getCx() {
         return cx;
     }
 
-    public void setCx(double cx) {
+    public void setCx(BigDecimal cx) {
         this.cx = cx;
     }
 
-    public double getCy() {
+    public BigDecimal getCy() {
         return cy;
     }
 
-    public void setCy(double cy) {
+    public void setCy(BigDecimal cy) {
         this.cy = cy;
     }
 
-    public double getZoom() {
+    public BigDecimal getZoom() {
         return zoom;
     }
 
-    public void setZoom(double zoom) {
+    public void setZoom(BigDecimal zoom) {
         this.zoom = zoom;
     }
 

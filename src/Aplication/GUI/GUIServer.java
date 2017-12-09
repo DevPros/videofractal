@@ -288,6 +288,7 @@ public class GUIServer extends javax.swing.JFrame {
      * @param evt
      */
     private void bt_autoDiscoveryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_autoDiscoveryActionPerformed
+
         AuxServer.multicast(Integer.parseInt(txt_port.getText()), jTextGroupAddress.getText(), Integer.valueOf(jTextGroupPort.getText()),this);
     }//GEN-LAST:event_bt_autoDiscoveryActionPerformed
     /**

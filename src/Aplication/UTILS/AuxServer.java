@@ -44,15 +44,15 @@ public class AuxServer {
                 // envia porta em que a instancia está a correr
                 out.writeInt(serverPort);
                 if (gui != null) {
-                    gui.jTextDebug.append("[Server] Sending port " + serverPort + " to dist");
+                    gui.jTextDebug.append("[Server] Sending port " + serverPort + " to dist \n");
                 } else {
-                    System.out.println("[Server] Sending port " + serverPort + " to dist");
+                    System.out.println("[Server] Sending port " + serverPort + " to dist \n");
                 }
                 out.close();
                 in.close();
                 dist.close();
             } catch (Exception ex) {
-                System.out.println("Enganou-se a introduzir os dados");
+                System.out.println("Enganou-se a introduzir os dados \n");
             }
             if (gui != null) {
                 //Inicia enviando a gui e a porta
@@ -109,9 +109,9 @@ public class AuxServer {
                 // envia porta em que a instancia está a correr
                 out.writeInt(serverPort);
                 if (gui != null) {
-                    gui.jTextDebug.append("[Server] Sending port " + serverPort + " to dist");
+                    gui.jTextDebug.append("[Server] Sending port " + serverPort + " to dist \n");
                 } else {
-                    System.out.println("[Server] Sending port " + serverPort + " to dist");
+                    System.out.println("[Server] Sending port " + serverPort + " to dist \n");
                 }
                 out.close();
                 in.close();
