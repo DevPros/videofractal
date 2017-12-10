@@ -100,11 +100,11 @@ public class FractalThr extends Thread {
         BigDecimal TWO = new BigDecimal("2.0");
         BigDecimal FOUR = new BigDecimal("4.0");
         //while (x * x + y * y < 4 && iteration < max) {
-        while (x.multiply(x, precision).add(y, precision).multiply(y, precision).compareTo(FOUR) == -1 && iteration < max) {
+        while (x.multiply(x, precision).add(y.multiply(y, precision), precision).compareTo(FOUR) == -1 && iteration < max) {
             //x_new = x * x - y * y + c_re;
-            x_new = x.multiply(x, precision).subtract(y, precision).multiply(y, precision).add(c_re, precision);
+            x_new = ((x.multiply(x, precision)).subtract(y.multiply(y, precision), precision)).add(c_re, precision);
             //y = 2 * x * y + c_im;
-            y = TWO.multiply(x, precision).multiply(y, precision).add(c_im, precision);
+            y = (TWO.multiply(x.multiply(y, precision), precision)).add(c_im, precision);
             x = x_new;
             iteration++;
         }

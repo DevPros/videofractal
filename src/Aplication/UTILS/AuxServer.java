@@ -7,7 +7,7 @@ package Aplication.UTILS;
 
 import Aplication.GUI.GUIDistributor;
 import Aplication.GUI.GUIServer;
-import Network.Unicast.FractalCalculatorServer;
+import Network.FractalCalculatorServer;
 import Network.Multicast.MulticastServer;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
