@@ -34,8 +34,6 @@ import java.util.logging.Logger;
  */
 public class FractalThr extends Thread {
 
-    
-    MathContext precision = new MathContext(10); //Precisão matemática para a realização de contas em BigDecimal
     BigDecimal TWO = new BigDecimal("2.0");
     AtomicInteger rowNumber;
     BigDecimal centerX;
@@ -65,6 +63,7 @@ public class FractalThr extends Thread {
     @Override
     public void run() {
         int y;
+        MathContext precision = new MathContext(((int)zoom.precision()*(int)1.3));
         //double cx, cy;
         //calculate pixels
         BigDecimal bx, by, iyL, iL;
@@ -78,7 +77,7 @@ public class FractalThr extends Thread {
                 bx = centerX.add(bx.subtract(iyL.divide(TWO, precision)).multiply(zoom, precision), precision);
                 by = centerY.subtract(by.subtract(iL.divide(TWO, precision)).multiply(zoom, precision), precision);
                 //escape iteration
-                image[y][x] = mandelbrot(bx, by, max);
+                image[y][x] = mandelbrot(bx, by, max, precision);
             }
         }
     }
@@ -91,16 +90,17 @@ public class FractalThr extends Thread {
      * @param max max iteration
      * @return escape iteration
      */
-    private int mandelbrot(BigDecimal c_re, BigDecimal c_im, int max) {
+    private int mandelbrot(BigDecimal c_re, BigDecimal c_im, int max, MathContext precision) {
         int iteration = 0;
         //double x = 0, y = 0, x_new;
+        
         BigDecimal x = new BigDecimal("0.0");
         BigDecimal y = new BigDecimal("0.0");
         BigDecimal x_new = new BigDecimal("0.0");
         BigDecimal TWO = new BigDecimal("2.0");
         BigDecimal FOUR = new BigDecimal("4.0");
         //while (x * x + y * y < 4 && iteration < max) {
-        while (x.multiply(x, precision).add(y.multiply(y, precision), precision).compareTo(FOUR) == -1 && iteration < max) {
+        while (x.multiply(x,precision).add(y.multiply(y, precision), precision).compareTo(FOUR) == -1 && iteration < max) {
             //x_new = x * x - y * y + c_re;
             x_new = ((x.multiply(x, precision)).subtract(y.multiply(y, precision), precision)).add(c_re, precision);
             //y = 2 * x * y + c_im;
