@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package GUI;
+package Application;
 
 import Network.Distributor;
 import Network.Multicast.MulticastDistributor;
@@ -18,7 +18,7 @@ import javax.swing.JFileChooser;
  * @author João Canoso https://github.com/jpcanoso
  * @author Rui Barcelos https://github.com/barcelosrui
  */
-public class GUIDistributor extends javax.swing.JFrame {
+public class UIDistributor extends javax.swing.JFrame {
 
     // Video 
     String videoSourceFiles; // dir com imagens src
@@ -30,7 +30,7 @@ public class GUIDistributor extends javax.swing.JFrame {
     /**
      * Creates new form GUIClient
      */
-    public GUIDistributor() {
+    public UIDistributor() {
         initComponents();
     }
 
@@ -492,7 +492,7 @@ public class GUIDistributor extends javax.swing.JFrame {
         try {
             groupAddress = InetAddress.getByName(jTextGroupAddress.getText()); //Endereço do grupo
         } catch (UnknownHostException ex) {
-            Logger.getLogger(GUIDistributor.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(UIDistributor.class.getName()).log(Level.SEVERE, null, ex);
         }
         int distPort = Integer.valueOf(txt_distributorPort.getText()); // porta do distribuidor
         int groupPort = Integer.valueOf(jTextGroupPort.getText()); // porta do grupo
@@ -532,7 +532,7 @@ public class GUIDistributor extends javax.swing.JFrame {
                 try {
                     Distributor.generateVideo(file, images, fps, filetype, this);
                 } catch (Exception ex) {
-                    Logger.getLogger(GUIDistributor.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(UIDistributor.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }).start();
         }
@@ -602,14 +602,22 @@ public class GUIDistributor extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(GUIDistributor.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(UIDistributor.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(GUIDistributor.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(UIDistributor.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(GUIDistributor.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(UIDistributor.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(GUIDistributor.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(UIDistributor.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
         //</editor-fold>
         //</editor-fold>
@@ -622,7 +630,7 @@ public class GUIDistributor extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new GUIDistributor().setVisible(true);
+                new UIDistributor().setVisible(true);
             }
         });
     }

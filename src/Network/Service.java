@@ -59,6 +59,7 @@ public class Service implements Serializable {
     public double getCx() {
         return cx;
     }
+    
 
     public void setCx(double cx) {
         this.cx = cx;
@@ -88,4 +89,27 @@ public class Service implements Serializable {
         this.data = data;
     }
 
+    public int getItera() {
+        return itera;
+    }
+
+    public void setItera(int itera) {
+        this.itera = itera;
+    }
+
+    public int getWidth() {
+        return width;
+    }
+
+    public void setWidth(int width) {
+        this.width = width;
+    }
+
+    public int getHeight() {
+        return height;
+    }
+
+    public void setHeight(int height) {
+        this.height = height;
+    } 
 }

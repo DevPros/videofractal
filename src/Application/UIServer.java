@@ -3,11 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package GUI;
+package Application;
 
 import Network.FractalCalculatorServer;
 import Network.Multicast.MulticastServer;
-import auxiliar.Cli;
+import Utils.Cli;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.io.ObjectInputStream;
@@ -22,7 +22,7 @@ import org.apache.commons.cli.*;
  * @author João Canoso https://github.com/jpcanoso
  * @author Rui Barcelos https://github.com/barcelosrui
  */
-public class GUIServer extends javax.swing.JFrame {
+public class UIServer extends javax.swing.JFrame {
 
     public static FractalCalculatorServer s = null;
     public static InetAddress groupAddress = null;
@@ -32,7 +32,7 @@ public class GUIServer extends javax.swing.JFrame {
     /**
      * Creates new form GUITESTE
      */
-    public GUIServer() {
+    public UIServer() {
         initComponents();
     }
 
@@ -308,7 +308,7 @@ public class GUIServer extends javax.swing.JFrame {
         try {
             groupAddress = InetAddress.getByName(jTextGroupAddress.getText()); //Endereço do grupo
         } catch (UnknownHostException ex) {
-            Logger.getLogger(GUIDistributor.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(UIDistributor.class.getName()).log(Level.SEVERE, null, ex);
         }
         int groupPort = Integer.valueOf(jTextGroupPort.getText()); // porta do grupo
         int serverPort = Integer.parseInt(txt_port.getText()); // porta de trabalho do server
@@ -358,14 +358,16 @@ public class GUIServer extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(GUIServer.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(UIServer.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(GUIServer.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(UIServer.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(GUIServer.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(UIServer.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(GUIServer.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(UIServer.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
         //</editor-fold>
         
@@ -374,7 +376,7 @@ public class GUIServer extends javax.swing.JFrame {
             public void run() {
                 // Se existirem argumentos, não lança GUI
                 if (args.length <= 0){
-                    new GUIServer().setVisible(true);
+                    new UIServer().setVisible(true);
                 } else {
                     new Cli(args).parse(); //lança o parse
                 }
@@ -430,7 +432,7 @@ public class GUIServer extends javax.swing.JFrame {
                 } catch (Exception e) {
                     System.out.println("[Server] An error has occurred \n");
                 }
-                Logger.getLogger(GUIServer.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(UIServer.class.getName()).log(Level.SEVERE, null, ex);
             }
             if (!err){
                 //Inicia enviando a gui e a porta

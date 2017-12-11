@@ -5,7 +5,7 @@
  */
 package Network.Multicast;
 
-import GUI.GUIServer;
+import Application.UIServer;
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.InetAddress;
@@ -30,10 +30,15 @@ public class MulticastServer extends Thread {
      * @param gui
      * @return
      */
-    public static String listenMulticast(int port, InetAddress groupAddress, GUIServer gui) {
+    public static String listenMulticast(int port, InetAddress groupAddress, UIServer gui) {
         String msg = "";
-        gui.jTextDebug.append("[Multicast] Multicast receiver started \n");
-
+        
+        try {
+            gui.jTextDebug.append("[Multicast] Multicast receiver started \n");
+        } catch (Exception e) {
+            System.out.println("[Multicast] Multicast receiver started \n");
+        }
+        
         byte[] buf = new byte[256];
 
         try (MulticastSocket clientSocket = new MulticastSocket(port)) {

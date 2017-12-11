@@ -5,8 +5,8 @@
  */
 package Network;
 
-import GUI.GUIDistributor;
-import auxiliar.ImgUtils;
+import Application.UIDistributor;
+import Utils.ImgUtils;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.ConnectException;
@@ -25,7 +25,7 @@ public class LinkToServer extends Thread {
     String ip;
     int port;
     Service service;
-    GUIDistributor gui;
+    UIDistributor gui;
     double fator;
 
     /**
@@ -37,7 +37,7 @@ public class LinkToServer extends Thread {
      * @param fator
      * @param gui
      */
-    public LinkToServer(String ip, int port, Service service, double fator, GUIDistributor gui) {
+    public LinkToServer(String ip, int port, Service service, double fator, UIDistributor gui) {
         this.ip = ip;
         this.port = port;
         this.service = service;
@@ -86,5 +86,4 @@ public class LinkToServer extends Thread {
             }
         }
     }
-
 }

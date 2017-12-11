@@ -18,7 +18,7 @@
 //::                                                               (c)2016   ::
 //:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 //////////////////////////////////////////////////////////////////////////////
-package FractalNovo;
+package Utils;
 
 import java.awt.Color;
 import java.awt.image.BufferedImage;
@@ -30,7 +30,7 @@ import java.util.logging.Logger;
  *
  * @author antoniomanso
  */
-public class FractalThr extends Thread {
+public class Fractal extends Thread {
 
     AtomicInteger rowNumber;
     double centerX;
@@ -48,7 +48,7 @@ public class FractalThr extends Thread {
      * @param maxIteration max Iteration
      * @param image shared Array of escape iterations
      */
-    public FractalThr(AtomicInteger rowNumber, double centerX, double centerY, double zoom, int maxIteration, int[][] image) {
+    public Fractal(AtomicInteger rowNumber, double centerX, double centerY, double zoom, int maxIteration, int[][] image) {
         this.rowNumber = rowNumber;
         this.centerX = centerX;
         this.centerY = centerY;
@@ -110,20 +110,20 @@ public class FractalThr extends Thread {
         //row distributor
         AtomicInteger tickets = new AtomicInteger(height-1);
         //fractal threads 
-        FractalThr[] thr = new FractalThr[Runtime.getRuntime().availableProcessors()];
+        Fractal[] thr = new Fractal[Runtime.getRuntime().availableProcessors()];
         //create and start threads
         for (int i = 0; i < thr.length; i++) {
-            thr[i]= new FractalThr(tickets, centerX, centerY, zoom, max, image);
+            thr[i]= new Fractal(tickets, centerX, centerY, zoom, max, image);
             thr[i].start();
             
         }
        
         //wait to job done
-        for (FractalThr fractalThr : thr) {
+        for (Fractal fractalThr : thr) {
             try {
                 fractalThr.join();
             } catch (InterruptedException ex) {
-                Logger.getLogger(FractalThr.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(Fractal.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
         

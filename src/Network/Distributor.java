@@ -5,7 +5,7 @@
  */
 package Network;
 
-import GUI.GUIDistributor;
+import Application.UIDistributor;
 import com.xuggle.mediatool.IMediaWriter;
 import com.xuggle.mediatool.ToolFactory;
 import java.awt.image.BufferedImage;
@@ -35,7 +35,7 @@ public class Distributor extends Thread {
     int port;
     double factor;
 
-    private static GUIDistributor gui;
+    private static UIDistributor gui;
     InetAddress myIP;
 
     // mensagem a ser transmitida
@@ -50,7 +50,7 @@ public class Distributor extends Thread {
      * @param factor
      * @param gui
      */
-    public Distributor(double centerX, double centerY, int port, double factor, GUIDistributor gui) {
+    public Distributor(double centerX, double centerY, int port, double factor, UIDistributor gui) {
         this.port = port;
         this.factor = factor;
         this.gui = gui;
@@ -73,7 +73,7 @@ public class Distributor extends Thread {
                 myIP = InetAddress.getByName(socket.getLocalAddress().getHostAddress());
             }
 
-            gui.jTextAreaDebug.append("Distributor running on address " + myIP + ":" + port + "... \n");
+            gui.jTextAreaDebug.append("[Dist] Running on address " + myIP + ":" + port + "... \n");
             gui.jTextFieldIP.setText(myIP + ":" + port);
             //Escuta o server
             while (true) {
@@ -85,7 +85,7 @@ public class Distributor extends Thread {
                 //valor da porta
                 int fserver_port = in.readInt();
                 // adiciona o ip:porta ao debug
-                gui.jTextAreaDebug.append("New Server " + serverFractal.getInetAddress().getHostAddress() + ":" + fserver_port + "\n");
+                gui.jTextAreaDebug.append("[Dist] New Server " + serverFractal.getInetAddress().getHostAddress() + ":" + fserver_port + " \n");
 
                 in.close();
                 out.close();
@@ -110,7 +110,7 @@ public class Distributor extends Thread {
      * @param gui
      * @throws IOException
      */
-    public static void generateVideo(File video, File imagens[], int fps, String filetype, GUIDistributor gui) throws IOException {
+    public static void generateVideo(File video, File imagens[], int fps, String filetype, UIDistributor gui) throws IOException {
         IMediaWriter writer = ToolFactory.makeWriter(video + "");
         int frameNumber = 0;
         int imgleng = imagens.length - 1;

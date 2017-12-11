@@ -3,10 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package auxiliar;
+package Utils;
 
-import GUI.GUIServer;
-import static GUI.GUIServer.startServer;
+import static Application.UIServer.startServer;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.DefaultParser;
@@ -68,13 +67,9 @@ public class Cli {
             
             switch (cmd.getOptionValue("network")){
                 case "multicast":
-                    GUIServer.startServer(dAddress, dPort, sPort);
+                    startServer(dAddress, dPort, sPort);
                     break;
                 case "unicast":
-                    System.out.println("unicast: \n");
-                    System.out.println("endereço: "+dAddress);
-                    System.out.println("dporta: "+dPort);
-                    System.out.println("sport: "+sPort);
                     startServer(dAddress, dPort, sPort);
                     break;
                 default:
@@ -83,9 +78,7 @@ public class Cli {
             }
             
         } catch (ParseException e) {
-            //System.out.println(e.getMessage());
             help();
-            return;
         }
     }
     
@@ -107,6 +100,4 @@ public class Cli {
     public int getdPort() {
         return dPort;
     }
-    
-    
 }

@@ -5,8 +5,8 @@
  */
 package Network;
 
-import FractalNovo.FractalThr;
-import auxiliar.ImgUtils;
+import Utils.Fractal;
+import Utils.ImgUtils;
 import java.awt.image.BufferedImage;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -60,7 +60,7 @@ public class FractalCalculatorServer extends Thread {
                 ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
                 ObjectInputStream in = new ObjectInputStream(socket.getInputStream());
                 Service s = (Service) in.readObject();
-                image = FractalThr.getFractal(s.getCx(), s.getCy(), s.getZoom(), 1000, 3860, 2160);
+                image = Fractal.getFractal(s.getCx(), s.getCy(), s.getZoom(), s.getItera(), s.getWidth(), s.getHeight());
                 
                 // try catch CLI
                 try{
@@ -86,7 +86,7 @@ public class FractalCalculatorServer extends Thread {
             }
             // try catch CLI
             try{
-                jDebug.append("Server stopped... \n");
+                jDebug.append("[Server] Server stopped... \n");
             } catch (Exception e) {
                 System.out.println("[Server] Server stopped... \n");
             }
@@ -94,5 +94,4 @@ public class FractalCalculatorServer extends Thread {
             Logger.getLogger(FractalCalculatorServer.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-
 }
