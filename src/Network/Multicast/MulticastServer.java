@@ -5,11 +5,11 @@
  */
 package Network.Multicast;
 
-import Application.UIServer;
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.InetAddress;
 import java.net.MulticastSocket;
+import javax.swing.JTextArea;
 
 /**
  * @author João Canoso https://github.com/jpcanoso
@@ -17,6 +17,7 @@ import java.net.MulticastSocket;
  */
 public class MulticastServer extends Thread {
 
+    JTextArea debug;
     MulticastSocket socket;
     DatagramPacket packet;
     InetAddress groupAddress;
@@ -27,14 +28,14 @@ public class MulticastServer extends Thread {
      *
      * @param port         Porto
      * @param groupAddress Endereço
-     * @param gui          GUI
+     * @param debug
      * @return mensagem recebida
      */
-    public static String listenMulticast(int port, InetAddress groupAddress, UIServer gui) {
+    public static String listenMulticast(int port, InetAddress groupAddress, JTextArea debug) {
         String msg = "";
         
         try {
-            gui.jTextDebug.append("[Multicast] Multicast receiver started \n");
+            debug.append("[Multicast] Multicast receiver started \n");
         } catch (Exception e) {
             System.out.println("[Multicast] Multicast receiver started \n");
         }

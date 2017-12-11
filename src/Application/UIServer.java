@@ -16,7 +16,6 @@ import java.net.ConnectException;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
-import org.apache.commons.cli.*;
 
 /**
  * @author João Canoso https://github.com/jpcanoso
@@ -26,12 +25,7 @@ public class UIServer extends javax.swing.JFrame {
 
     public static FractalCalculatorServer s = null;
     public static InetAddress groupAddress = null;
-    private static Options options = new Options();
 
-
-    /**
-     * Creates new form GUITESTE
-     */
     public UIServer() {
         initComponents();
     }
@@ -268,18 +262,18 @@ public class UIServer extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
     /**
-     * Para o calculo Manual do server
-     *
-     * @param evt
+     * Botão para parar serviços em execução
+     * @param evt 
      */
     private void bt_stopManualActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_stopManualActionPerformed
         stop();
     }//GEN-LAST:event_bt_stopManualActionPerformed
+    
     /**
-     * Inicia Manualmente o server
-     *
-     * @param evt
+     * Botão que inicia o servidor sem multicast
+     * @param evt 
      */
     private void btn_startActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_startActionPerformed
         boolean serverStatus;
@@ -287,7 +281,7 @@ public class UIServer extends javax.swing.JFrame {
         int distPort = Integer.valueOf(txt_distPort.getText());
         int serverPort = Integer.parseInt(txt_port.getText());
         // inicia Servidor
-        serverStatus = startServer(distIP, distPort, serverPort);
+        serverStatus = startServer(false, distIP, distPort, serverPort);
         
         if (!serverStatus){
             // Muda estado dos botões
@@ -296,34 +290,19 @@ public class UIServer extends javax.swing.JFrame {
             bt_autoDiscovery.setEnabled(false);
         }
     }//GEN-LAST:event_btn_startActionPerformed
+    
     /**
-     * Descobre automáticamente o server
-     *
-     * @param evt
+     * Botão que inicia servidor com multicast
+     * @param evt 
      */
     private void bt_autoDiscoveryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_autoDiscoveryActionPerformed
-        InetAddress groupAddress = null;
-        String distData;
-        boolean serverStatus;
-        try {
-            groupAddress = InetAddress.getByName(jTextGroupAddress.getText()); //Endereço do grupo
-        } catch (UnknownHostException ex) {
-            Logger.getLogger(UIDistributor.class.getName()).log(Level.SEVERE, null, ex);
-        }
         int groupPort = Integer.valueOf(jTextGroupPort.getText()); // porta do grupo
         int serverPort = Integer.parseInt(txt_port.getText()); // porta de trabalho do server
-        
-        //obtem a porta do server com multicast
-        distData = MulticastServer.listenMulticast(groupPort, groupAddress, this);
-        // separa o ip e a porta
-        String[] dados = distData.split(",");
-        // limpa e faz o parse
-        int porta = Integer.parseInt(dados[1].trim());
-        // retira a / do ip
-        dados[0] = dados[0].replace("/", "");
-        
+        String groupAddress = jTextGroupAddress.getText(); // Endereço do grupo
+        boolean serverStatus;
+ 
         // inicia server
-        serverStatus = startServer(dados[0], porta, serverPort);
+        serverStatus = startServer(true, groupAddress, groupPort, serverPort);
         
         if (!serverStatus) {
             // Muda estado dos botões
@@ -332,10 +311,10 @@ public class UIServer extends javax.swing.JFrame {
             bt_autoDiscovery.setEnabled(false);
         }
     }//GEN-LAST:event_bt_autoDiscoveryActionPerformed
+    
     /**
-     * Para a thread
-     *
-     * @param evt
+     * Botão para parar serviços em execução
+     * @param evt 
      */
     private void bt_stopAutoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_stopAutoActionPerformed
         stop();
@@ -384,6 +363,9 @@ public class UIServer extends javax.swing.JFrame {
         });
     }
     
+    /**
+     * Função que pára todos os serviços
+     */
     private void stop()
     {
         if (s != null) {
@@ -398,10 +380,40 @@ public class UIServer extends javax.swing.JFrame {
         }
     }
     
-    public static boolean startServer(String distIP, int distPort, int serverPort)
+    /**
+     * Função para iniciar os serviços do servidor
+     * @param multi
+     * @param distIP     IP Distribuição / multicast
+     * @param distPort   Porto Distribuição / multicast
+     * @param serverPort Porto do servidor
+     * @return 
+     */
+    public static boolean startServer(boolean multi, String distIP, int distPort, int serverPort)
     {
         boolean err = false;
+        // se o serviço não estiver a correr 
         if (s == null) {
+            
+            // lançar server multicast
+            if (multi){
+                InetAddress groupAddress = null;
+                String distData;
+                try {
+                    groupAddress = InetAddress.getByName(distIP); //Endereço do grupo
+                } catch (UnknownHostException ex) {
+                    Logger.getLogger(UIDistributor.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                //obtem a porta do server com multicast
+                distData = MulticastServer.listenMulticast(distPort, groupAddress, jTextDebug);
+                // separa o ip e a porta
+                String[] dados = distData.split(",");
+                // limpa e faz o parse
+                distPort = Integer.parseInt(dados[1].trim());
+                // retira a / do ip
+                distIP = dados[0].replace("/", "");
+            }
+            
+            // lança server
             try {
                 Socket dist = new Socket(distIP, distPort);
                 // abertura da stream de saída
@@ -467,13 +479,13 @@ public class UIServer extends javax.swing.JFrame {
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
     public static javax.swing.JTextArea jTextDebug;
-    private javax.swing.JTextField jTextGroupAddress;
-    private javax.swing.JTextField jTextGroupPort;
+    private static javax.swing.JTextField jTextGroupAddress;
+    private static javax.swing.JTextField jTextGroupPort;
     public static javax.swing.JLabel l;
     public javax.swing.JPanel panelIMG;
     private javax.swing.JPanel panelSuport;
     private javax.swing.JTextField txt_distIP;
     private javax.swing.JTextField txt_distPort;
-    private javax.swing.JTextField txt_port;
+    private static javax.swing.JTextField txt_port;
     // End of variables declaration//GEN-END:variables
 }

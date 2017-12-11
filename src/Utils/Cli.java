@@ -75,10 +75,10 @@ public class Cli {
             
             switch (cmd.getOptionValue("network")){
                 case "multicast":
-                    startServer(dAddress, dPort, sPort);
+                    startServer(true, dAddress, dPort, sPort);
                     break;
                 case "unicast":
-                    startServer(dAddress, dPort, sPort);
+                    startServer(false, dAddress, dPort, sPort);
                     break;
                 default:
                     help();
