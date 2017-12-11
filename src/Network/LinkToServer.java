@@ -25,7 +25,7 @@ public class LinkToServer extends Thread {
     int port;
     Service service;
     GUIDistributor gui;
-    BigDecimal fator;
+    Double fator;
 
     /**
      * Construtor que recebe a ligação do server
@@ -36,7 +36,7 @@ public class LinkToServer extends Thread {
      * @param fator
      * @param gui
      */
-    public LinkToServer(String ip, int port, Service service, BigDecimal fator, GUIDistributor gui) {
+    public LinkToServer(String ip, int port, Service service, Double fator, GUIDistributor gui) {
         this.ip = ip;
         this.port = port;
         this.service = service;

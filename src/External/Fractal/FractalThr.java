@@ -23,7 +23,6 @@ package External.Fractal;
 import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.math.MathContext;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.logging.Level;
@@ -35,9 +34,11 @@ import java.util.logging.Logger;
  */
 public class FractalThr extends Thread {
 
+    BigDecimal TWO = new BigDecimal("2.0", new MathContext(2));
+    BigDecimal FOUR = new BigDecimal("4.0", new MathContext(2));
     AtomicInteger rowNumber;
-    Double centerX;
-    Double centerY;
+    BigDecimal centerX;
+    BigDecimal centerY;
     BigDecimal zoom;
     int max;
     int[][] image;
@@ -54,8 +55,8 @@ public class FractalThr extends Thread {
      */
     public FractalThr(AtomicInteger rowNumber, Double centerX, Double centerY, BigDecimal zoom, int maxIteration, int[][] image) {
         this.rowNumber = rowNumber;
-        this.centerX = centerX;
-        this.centerY = centerY;
+        this.centerX = new BigDecimal(centerX,new MathContext(5));
+        this.centerY = new BigDecimal(centerY,new MathContext(5));
         this.zoom = zoom;
         this.max = maxIteration;
         this.image = image;
@@ -64,14 +65,15 @@ public class FractalThr extends Thread {
     @Override
     public void run() {
         int y;
-        MathContext precision = new MathContext((int) (zoom.precision() * 1.3));
+        MathContext precision = new MathContext(zoom.scale() + 4);
         //double cx, cy;
         //calculate pixels
         BigDecimal bx, by;
         while ((y = rowNumber.getAndDecrement()) >= 0) {
             for (int x = 0; x < image[y].length; x++) {
-                bx = new BigDecimal(centerX + x - (image[y].length) / 2).multiply(zoom, precision);
-                by = new BigDecimal(centerY - y - (image.length) / 2).multiply(zoom, precision);
+
+                bx = centerX.add(new BigDecimal(x - image[y].length / 2, new MathContext(5)).multiply(zoom, precision), precision);
+                by = centerY.subtract(new BigDecimal(y - image.length / 2, new MathContext(5)).multiply(zoom, precision), precision);
                 //escape iteration
                 image[y][x] = mandelbrot(bx, by, max, precision);
             }
@@ -90,11 +92,9 @@ public class FractalThr extends Thread {
         int iteration = 0;
         //double x = 0, y = 0, x_new;
 
-        BigDecimal x = new BigDecimal("0.0");
-        BigDecimal y = new BigDecimal("0.0");
-        BigDecimal x_new = new BigDecimal("0.0");
-        BigDecimal TWO = new BigDecimal("2.0");
-        BigDecimal FOUR = new BigDecimal("4.0");
+        BigDecimal x = new BigDecimal("0.0", precision);
+        BigDecimal y = new BigDecimal("0.0", precision);
+        BigDecimal x_new;
         //while (x * x + y * y < 4 && iteration < max) {
         while (x.multiply(x, precision).add(y.multiply(y, precision), precision).compareTo(FOUR) == -1 && iteration < max) {
             //x_new = x * x - y * y + c_re;

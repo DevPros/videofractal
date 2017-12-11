@@ -51,8 +51,8 @@ public class Service implements Serializable {
      * @return
      * @throws Exception
      */
-    public synchronized Service cloneAndZoom(BigDecimal factor) throws Exception {
-        zoom = zoom.multiply(factor, new MathContext((int)(zoom.precision()*1.3)));
+    public synchronized Service cloneAndZoom(Double factor) throws Exception {
+        zoom = zoom.multiply(new BigDecimal(factor, new MathContext(zoom.scale()+4)));
         //zoom *= factor;
         imageNumber++;
         Service s = new Service(cx, cy, zoom, itera, width, height);
