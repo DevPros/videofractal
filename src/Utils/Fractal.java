@@ -22,6 +22,8 @@ package Utils;
 
 import java.awt.Color;
 import java.awt.image.BufferedImage;
+import java.math.BigDecimal;
+import java.math.MathContext;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -32,10 +34,11 @@ import java.util.logging.Logger;
  */
 public class Fractal extends Thread {
 
+    BigDecimal TWO = new BigDecimal("2.0",new MathContext(3));
     AtomicInteger rowNumber;
-    double centerX;
-    double centerY;
-    double zoom;
+    BigDecimal centerX;
+    BigDecimal centerY;
+    BigDecimal zoom;
     int max;
     int[][] image;
 
@@ -48,7 +51,7 @@ public class Fractal extends Thread {
      * @param maxIteration max Iteration
      * @param image shared Array of escape iterations
      */
-    public Fractal(AtomicInteger rowNumber, double centerX, double centerY, double zoom, int maxIteration, int[][] image) {
+    public Fractal(AtomicInteger rowNumber, BigDecimal centerX, BigDecimal centerY, BigDecimal zoom, int maxIteration, int[][] image) {
         this.rowNumber = rowNumber;
         this.centerX = centerX;
         this.centerY = centerY;
@@ -60,33 +63,47 @@ public class Fractal extends Thread {
     @Override
     public void run() {
         int y;
-        double cx, cy;
+        MathContext precision = new MathContext((int)(zoom.precision()*1.3));
+        //double cx, cy;
         //calculate pixels
+        BigDecimal bx, by, iyL, iL;
         while ((y = rowNumber.getAndDecrement()) >= 0) {
             for (int x = 0; x < image[y].length; x++) {
-                //coordinates of fractal world
-                cx = centerX + (x - image[y].length / 2.0) * zoom;
-                cy = centerY - (y - image.length / 2.0) * zoom;
+                //bx = new BigDecimal(x,new MathContext(5));
+                //by = new BigDecimal(y,new MathContext(5));
+                //iyL = new BigDecimal(image[y].length,new MathContext(5));
+                //iL = new BigDecimal(image.length,new MathContext(5));
+                
+                bx = centerX.add(new BigDecimal(x-image[y].length/2,new MathContext(5)).multiply(zoom, precision), precision);
+                by = centerY.subtract(new BigDecimal(y-image.length/2,new MathContext(5)).multiply(zoom, precision), precision);
                 //escape iteration
-                image[y][x] = mandelbroth(cx, cy, max);
+                image[y][x] = mandelbrot(bx, by, max, precision);
             }
         }
     }
 
     /**
-     * escape iteration of mandelbroth set
+     * escape iteration of mandelbrot set
      *
      * @param c_re coordinate X o point (real value)
      * @param c_im coordinate Y o point (imaginary value)
      * @param max max iteration
      * @return escape iteration
      */
-    private  int mandelbroth(double c_re, double c_im, int max) {
+    private int mandelbrot(BigDecimal c_re, BigDecimal c_im, int max, MathContext precision) {
         int iteration = 0;
-        double x = 0, y = 0, x_new;
-        while (x * x + y * y < 4 && iteration < max) {
-            x_new = x * x - y * y + c_re;
-            y = 2 * x * y + c_im;
+        //double x = 0, y = 0, x_new;
+        
+        BigDecimal x = new BigDecimal("0.0");
+        BigDecimal y = new BigDecimal("0.0");
+        BigDecimal x_new = new BigDecimal("0.0");
+        BigDecimal FOUR = new BigDecimal("4.0");
+        //while (x * x + y * y < 4 && iteration < max) {
+        while (x.multiply(x,precision).add(y.multiply(y, precision), precision).compareTo(FOUR) == -1 && iteration < max) {
+            //x_new = x * x - y * y + c_re;
+            x_new = ((x.multiply(x, precision)).subtract(y.multiply(y, precision), precision)).add(c_re, precision);
+            //y = 2 * x * y + c_im;
+            y = (TWO.multiply(x.multiply(y, precision), precision)).add(c_im, precision);
             x = x_new;
             iteration++;
         }
@@ -104,7 +121,7 @@ public class Fractal extends Thread {
      * @param height height of image
      * @return image of the fractal
      */
-    public static BufferedImage getFractal(double centerX, double centerY, double zoom, int max, int width, int height) {
+    public static BufferedImage getFractal(BigDecimal centerX, BigDecimal centerY, BigDecimal zoom, int max, int width, int height) {
         //escape iteration     
         int[][]image = new int[height][width];
         //row distributor

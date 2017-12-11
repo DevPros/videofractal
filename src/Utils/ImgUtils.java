@@ -10,6 +10,8 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import javax.imageio.ImageIO;
 
 /**
@@ -18,21 +20,31 @@ import javax.imageio.ImageIO;
  */
 public class ImgUtils {
 
+    /*
+    public static byte[] imageToByteArray(BufferedImage image) throws IOException {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        ImageIO.write(image, "jpg", baos);
+        baos.flush();
+        return  baos.toByteArray();
+    }
+
+  */
+    
     public static BufferedImage byteToImage(byte[] data) throws Exception {
-        InputStream ian = new ByteArrayInputStream(data);
-        BufferedImage bImage = ImageIO.read(ian);
-        return bImage;
+        return ImageIO.read(new ByteArrayInputStream(data));
     }
 
     //https://stackoverflow.com/questions/10247123/java-convert-bufferedimage-to-byte-without-writing-to-disk
     public static byte[] ImageToByte(BufferedImage img) throws Exception {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         ImageIO.write(img, "jpg", outputStream);
-        byte[] imageBytes = outputStream.toByteArray();
-        return imageBytes;
+        //byte[] imageBytes = outputStream.toByteArray();
+        outputStream.flush();
+        return outputStream.toByteArray();
     }
 
     public static void saveImage(byte[] bytes, String name) throws Exception {
-        ImageIO.write(byteToImage(bytes),"jpg",new File(name));
+        //ImageIO.write(byteToImage(bytes),"jpg",new File(name));
+        Files.write(Paths.get(name), bytes);
     }
 }

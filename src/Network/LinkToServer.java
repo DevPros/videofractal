@@ -49,7 +49,7 @@ public class LinkToServer extends Thread {
      */
     @Override
     public void run() {
-        while (service.getZoom() > 1E-18) {
+        while (true) {
             try {
                 //ligação do socket ao servidor
                 Socket socket = new Socket(ip, port);
