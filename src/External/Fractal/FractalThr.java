@@ -23,6 +23,7 @@ package External.Fractal;
 import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.math.MathContext;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.logging.Level;
@@ -34,16 +35,16 @@ import java.util.logging.Logger;
  */
 public class FractalThr extends Thread {
 
-    BigDecimal TWO = new BigDecimal("2.0");
     AtomicInteger rowNumber;
-    BigDecimal centerX;
-    BigDecimal centerY;
+    Double centerX;
+    Double centerY;
     BigDecimal zoom;
     int max;
     int[][] image;
 
     /**
      * make a thread to calculate video
+     *
      * @param rowNumber shared objet to balance the row calculation
      * @param centerX center X of fracatal
      * @param centerY center X of fracatal
@@ -51,7 +52,7 @@ public class FractalThr extends Thread {
      * @param maxIteration max Iteration
      * @param image shared Array of escape iterations
      */
-    public FractalThr(AtomicInteger rowNumber, BigDecimal centerX, BigDecimal centerY, BigDecimal zoom, int maxIteration, int[][] image) {
+    public FractalThr(AtomicInteger rowNumber, Double centerX, Double centerY, BigDecimal zoom, int maxIteration, int[][] image) {
         this.rowNumber = rowNumber;
         this.centerX = centerX;
         this.centerY = centerY;
@@ -63,19 +64,14 @@ public class FractalThr extends Thread {
     @Override
     public void run() {
         int y;
-        MathContext precision = new MathContext((int)(zoom.precision()*1.3));
+        MathContext precision = new MathContext((int) (zoom.precision() * 1.3));
         //double cx, cy;
         //calculate pixels
-        BigDecimal bx, by, iyL, iL;
+        BigDecimal bx, by;
         while ((y = rowNumber.getAndDecrement()) >= 0) {
             for (int x = 0; x < image[y].length; x++) {
-                bx = new BigDecimal(x);
-                by = new BigDecimal(y);
-                iyL = new BigDecimal(image[y].length);
-                iL = new BigDecimal(image.length);
-                
-                bx = centerX.add(bx.subtract(iyL.divide(TWO, precision)).multiply(zoom, precision), precision);
-                by = centerY.subtract(by.subtract(iL.divide(TWO, precision)).multiply(zoom, precision), precision);
+                bx = new BigDecimal(centerX + x - (image[y].length) / 2).multiply(zoom, precision);
+                by = new BigDecimal(centerY - y - (image.length) / 2).multiply(zoom, precision);
                 //escape iteration
                 image[y][x] = mandelbrot(bx, by, max, precision);
             }
@@ -93,14 +89,14 @@ public class FractalThr extends Thread {
     private int mandelbrot(BigDecimal c_re, BigDecimal c_im, int max, MathContext precision) {
         int iteration = 0;
         //double x = 0, y = 0, x_new;
-        
+
         BigDecimal x = new BigDecimal("0.0");
         BigDecimal y = new BigDecimal("0.0");
         BigDecimal x_new = new BigDecimal("0.0");
         BigDecimal TWO = new BigDecimal("2.0");
         BigDecimal FOUR = new BigDecimal("4.0");
         //while (x * x + y * y < 4 && iteration < max) {
-        while (x.multiply(x,precision).add(y.multiply(y, precision), precision).compareTo(FOUR) == -1 && iteration < max) {
+        while (x.multiply(x, precision).add(y.multiply(y, precision), precision).compareTo(FOUR) == -1 && iteration < max) {
             //x_new = x * x - y * y + c_re;
             x_new = ((x.multiply(x, precision)).subtract(y.multiply(y, precision), precision)).add(c_re, precision);
             //y = 2 * x * y + c_im;
@@ -110,8 +106,7 @@ public class FractalThr extends Thread {
         }
         return iteration;
     }
-    
-    
+
     /**
      *
      * @param centerX center X of fractal
@@ -122,20 +117,20 @@ public class FractalThr extends Thread {
      * @param height height of image
      * @return image of the fractal
      */
-    public static BufferedImage getFractal(BigDecimal centerX, BigDecimal centerY, BigDecimal zoom, int max, int width, int height) {
+    public static BufferedImage getFractal(Double centerX, Double centerY, BigDecimal zoom, int max, int width, int height) {
         //escape iteration     
-        int[][]image = new int[height][width];
+        int[][] image = new int[height][width];
         //row distributor
-        AtomicInteger tickets = new AtomicInteger(height-1);
+        AtomicInteger tickets = new AtomicInteger(height - 1);
         //fractal threads 
         FractalThr[] thr = new FractalThr[Runtime.getRuntime().availableProcessors()];
         //create and start threads
         for (int i = 0; i < thr.length; i++) {
-            thr[i]= new FractalThr(tickets, centerX, centerY, zoom, max, image);
+            thr[i] = new FractalThr(tickets, centerX, centerY, zoom, max, image);
             thr[i].start();
-            
+
         }
-       
+
         //wait to job done
         for (FractalThr fractalThr : thr) {
             try {
@@ -144,8 +139,8 @@ public class FractalThr extends Thread {
                 Logger.getLogger(FractalThr.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-        
-         //image to fractal
+
+        //image to fractal
         BufferedImage img = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
         //color pallete
         int[] pallet = new int[max + 1];

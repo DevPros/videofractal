@@ -9,6 +9,7 @@ import Aplication.GUI.GUIDistributor;
 import Utils.ImgUtils;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.math.BigDecimal;
 import java.net.Socket;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -24,7 +25,7 @@ public class LinkToServer extends Thread {
     int port;
     Service service;
     GUIDistributor gui;
-    double fator;
+    BigDecimal fator;
 
     /**
      * Construtor que recebe a ligação do server
@@ -35,7 +36,7 @@ public class LinkToServer extends Thread {
      * @param fator
      * @param gui
      */
-    public LinkToServer(String ip, int port, Service service, double fator, GUIDistributor gui) {
+    public LinkToServer(String ip, int port, Service service, BigDecimal fator, GUIDistributor gui) {
         this.ip = ip;
         this.port = port;
         this.service = service;

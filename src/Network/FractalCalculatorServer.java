@@ -59,7 +59,7 @@ public class FractalCalculatorServer extends Thread {
                 ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
                 ObjectInputStream in = new ObjectInputStream(socket.getInputStream());
                 Service s = (Service) in.readObject();
-                image = FractalThr.getFractal(s.getCx(), s.getCy(), s.getZoom(), 1000, 3860, 2160);
+                image = FractalThr.getFractal(s.getCx(), s.getCy(), s.getZoom(), s.getItera(), s.getWidth(), s.getHeight());
                 if (gui != null) {
                     ImageIcon icon = new ImageIcon(image);
 

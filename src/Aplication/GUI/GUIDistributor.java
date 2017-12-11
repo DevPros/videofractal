@@ -8,6 +8,7 @@ package Aplication.GUI;
 import Network.Unicast.Distributor;
 import Network.Multicast.MulticastDistributor;
 import java.io.File;
+import java.math.BigDecimal;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.logging.Level;
@@ -497,7 +498,7 @@ public class GUIDistributor extends javax.swing.JFrame {
         }
         int distPort = Integer.valueOf(txt_distributorPort.getText()); // porta do distribuidor
         int groupPort = Integer.valueOf(jTextGroupPort.getText()); // porta do grupo
-        double factor = Double.valueOf(jTextZoom.getText());       // Zoom
+        BigDecimal factor = new BigDecimal(jTextZoom.getText());       // Zoom
         double centerX = Double.valueOf(jTextXCoordinate.getText());//Coordenada X do ponto a calcular
         double centerY = Double.valueOf(jTextYCoordinate.getText());//Coordenada Y do ponto a calcular    
 

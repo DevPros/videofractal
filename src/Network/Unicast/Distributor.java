@@ -36,7 +36,7 @@ import javax.swing.JOptionPane;
 public class Distributor extends Thread {
 
     int port;
-    double factor;
+    BigDecimal factor;
 
     private static GUIDistributor gui;
     InetAddress myIP;
@@ -53,11 +53,11 @@ public class Distributor extends Thread {
      * @param factor
      * @param gui
      */
-    public Distributor(double centerX, double centerY, int port, double factor, GUIDistributor gui) {
+    public Distributor(double centerX, double centerY, int port, BigDecimal factor, GUIDistributor gui) {
         this.port = port;
         this.factor = factor;
         this.gui = gui;
-        this.s = new Service(new BigDecimal(centerX), new BigDecimal(centerY), new BigDecimal(1E-2), Integer.valueOf(gui.jTextIterations.getText()), Integer.valueOf(gui.jTextWidth.getText()), Integer.valueOf(gui.jTextHeight.getText()));
+        this.s = new Service(centerX,centerY, new BigDecimal(1E-2), Integer.valueOf(gui.jTextIterations.getText()), Integer.valueOf(gui.jTextWidth.getText()), Integer.valueOf(gui.jTextHeight.getText()));
     }
 
     /**
