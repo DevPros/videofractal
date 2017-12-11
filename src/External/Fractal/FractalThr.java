@@ -34,7 +34,7 @@ import java.util.logging.Logger;
  */
 public class FractalThr extends Thread {
 
-    BigDecimal TWO = new BigDecimal("2.0");
+    BigDecimal TWO = new BigDecimal("2.0",new MathContext(3));
     AtomicInteger rowNumber;
     BigDecimal centerX;
     BigDecimal centerY;
@@ -69,13 +69,13 @@ public class FractalThr extends Thread {
         BigDecimal bx, by, iyL, iL;
         while ((y = rowNumber.getAndDecrement()) >= 0) {
             for (int x = 0; x < image[y].length; x++) {
-                bx = new BigDecimal(x);
-                by = new BigDecimal(y);
-                iyL = new BigDecimal(image[y].length);
-                iL = new BigDecimal(image.length);
+                //bx = new BigDecimal(x,new MathContext(5));
+                //by = new BigDecimal(y,new MathContext(5));
+                //iyL = new BigDecimal(image[y].length,new MathContext(5));
+                //iL = new BigDecimal(image.length,new MathContext(5));
                 
-                bx = centerX.add(bx.subtract(iyL.divide(TWO, precision)).multiply(zoom, precision), precision);
-                by = centerY.subtract(by.subtract(iL.divide(TWO, precision)).multiply(zoom, precision), precision);
+                bx = centerX.add(new BigDecimal(x-image[y].length/2,new MathContext(5)).multiply(zoom, precision), precision);
+                by = centerY.subtract(new BigDecimal(y-image.length/2,new MathContext(5)).multiply(zoom, precision), precision);
                 //escape iteration
                 image[y][x] = mandelbrot(bx, by, max, precision);
             }
@@ -97,7 +97,6 @@ public class FractalThr extends Thread {
         BigDecimal x = new BigDecimal("0.0");
         BigDecimal y = new BigDecimal("0.0");
         BigDecimal x_new = new BigDecimal("0.0");
-        BigDecimal TWO = new BigDecimal("2.0");
         BigDecimal FOUR = new BigDecimal("4.0");
         //while (x * x + y * y < 4 && iteration < max) {
         while (x.multiply(x,precision).add(y.multiply(y, precision), precision).compareTo(FOUR) == -1 && iteration < max) {
