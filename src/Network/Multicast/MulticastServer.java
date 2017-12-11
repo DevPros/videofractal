@@ -32,7 +32,7 @@ public class MulticastServer extends Thread {
      */
     public static String listenMulticast(int port, InetAddress groupAddress, GUIServer gui) {
         String msg = "";
-        gui.jTextDebug.append("[Multicast] Multicast receiver started\n");
+        gui.jTextDebug.append("[Multicast] Multicast receiver started \n");
 
         byte[] buf = new byte[256];
 
@@ -40,7 +40,7 @@ public class MulticastServer extends Thread {
             //Joint the Multicast group.
             clientSocket.joinGroup(groupAddress);
 
-            // Receive the information and print it.
+            // Receive the information
             DatagramPacket msgPacket = new DatagramPacket(buf, buf.length);
             clientSocket.receive(msgPacket);
 

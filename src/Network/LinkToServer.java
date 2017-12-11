@@ -9,7 +9,9 @@ import GUI.GUIDistributor;
 import auxiliar.ImgUtils;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.net.ConnectException;
 import java.net.Socket;
+import java.net.SocketTimeoutException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ImageIcon;
@@ -73,7 +75,13 @@ public class LinkToServer extends Thread {
                 socket.close();
                 in.close();
                 out.close();
-            } catch (Exception ex) {
+               
+            } catch (ConnectException ex) { // catch connection error
+                gui.jTextAreaDebug.append("[Dist] Cannot connect to server "+ip+":"+port+" \n");
+            } catch (SocketTimeoutException ex) { // catch connection timeout
+                this.interrupt();
+                this.ip = null;
+            }catch (Exception ex) {
                 Logger.getLogger(LinkToServer.class.getName()).log(Level.SEVERE, null, ex);
             }
         }

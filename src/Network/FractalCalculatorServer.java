@@ -6,7 +6,6 @@
 package Network;
 
 import FractalNovo.FractalThr;
-import GUI.GUIServer;
 import auxiliar.ImgUtils;
 import java.awt.image.BufferedImage;
 import java.io.ObjectInputStream;
@@ -16,6 +15,8 @@ import java.net.Socket;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ImageIcon;
+import javax.swing.JLabel;
+import javax.swing.JTextArea;
 
 /**
  * @author João Canoso https://github.com/jpcanoso
@@ -24,16 +25,19 @@ import javax.swing.ImageIcon;
 public class FractalCalculatorServer extends Thread {
 
     int port = 10000;
-    GUIServer gui;
-    long cont = 0;
+    JLabel l; //imagem
+    JTextArea jDebug; //Console
+    
     /**
      * Inicia o calculo da thread
-     * @param gui
+     * @param l
+     * @param jDebug
      * @param port 
      */
-    public FractalCalculatorServer(GUIServer gui, int port) {
+    public FractalCalculatorServer(JLabel l, JTextArea jDebug, int port) {
+        this.l = l;
+        this.jDebug = jDebug;
         this.port = port;
-        this.gui = gui;
     }
 
     public static BufferedImage image = null;
@@ -44,33 +48,48 @@ public class FractalCalculatorServer extends Thread {
     public void run() {
         try {
             ServerSocket server = new ServerSocket(port);
-            gui.jTextDebug.append("[Server] Server running on port " + port + "...\n");
-
+            // try catch CLI
+            try{
+                jDebug.append("[Server] Server running on port " + port + "... \n");
+            } catch (Exception e) {
+                System.out.println("[Server] Server running on port " + port + "... \n");
+            }
+            
             while (true) {
-                //System.out.println(server.getInetAddress());
                 Socket socket = server.accept();
                 ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
                 ObjectInputStream in = new ObjectInputStream(socket.getInputStream());
                 Service s = (Service) in.readObject();
                 image = FractalThr.getFractal(s.getCx(), s.getCy(), s.getZoom(), 1000, 3860, 2160);
-                ImageIcon icon = new ImageIcon(image);
-
-                gui.l.setIcon(icon);
+                
+                // try catch CLI
+                try{
+                    
+                    ImageIcon icon = new ImageIcon(image);
+                    l.setIcon(icon);
+                    
+                } catch (Exception e) {
+                }
+                
                 s.setData(ImgUtils.ImageToByte(image));
-
                 out.writeObject(s);
 
                 socket.close();
                 in.close();
                 out.close();
-
+                
+                // stop server
                 if (isInterrupted() == true) {
-                    System.out.println("Server stop....");
                     server.close();
                     break;
                 }
             }
-            gui.jTextDebug.append("Server stoped....\n");
+            // try catch CLI
+            try{
+                jDebug.append("Server stopped... \n");
+            } catch (Exception e) {
+                System.out.println("[Server] Server stopped... \n");
+            }
         } catch (Exception ex) {
             Logger.getLogger(FractalCalculatorServer.class.getName()).log(Level.SEVERE, null, ex);
         }
