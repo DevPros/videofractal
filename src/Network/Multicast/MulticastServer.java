@@ -23,12 +23,12 @@ public class MulticastServer extends Thread {
     int port;
 
     /**
-     * Recebe os dados multicast
+     * Lança instancia para receber pacote de multicast
      *
-     * @param port
-     * @param groupAddress
-     * @param gui
-     * @return
+     * @param port         Porto
+     * @param groupAddress Endereço
+     * @param gui          GUI
+     * @return mensagem recebida
      */
     public static String listenMulticast(int port, InetAddress groupAddress, UIServer gui) {
         String msg = "";

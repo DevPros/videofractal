@@ -10,8 +10,6 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.InputStream;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import javax.imageio.ImageIO;
 
 /**
@@ -19,32 +17,40 @@ import javax.imageio.ImageIO;
  * @author Rui Barcelos https://github.com/barcelosrui
  */
 public class ImgUtils {
-
-    /*
-    public static byte[] imageToByteArray(BufferedImage image) throws IOException {
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        ImageIO.write(image, "jpg", baos);
-        baos.flush();
-        return  baos.toByteArray();
-    }
-
-  */
     
+    /**
+     * Converte um array de bytes para imagem
+     * @param data conteudo da imagem
+     * @return Imagem
+     * @throws Exception 
+     */
     public static BufferedImage byteToImage(byte[] data) throws Exception {
-        return ImageIO.read(new ByteArrayInputStream(data));
+        InputStream ian = new ByteArrayInputStream(data);
+        BufferedImage bImage = ImageIO.read(ian);
+        return bImage;
     }
-
+    
+    /**
+     * Converte uma imagem para um array de bytes
+     * @param img imagem
+     * @return array de bytes
+     * @throws Exception 
+     */
     //https://stackoverflow.com/questions/10247123/java-convert-bufferedimage-to-byte-without-writing-to-disk
     public static byte[] ImageToByte(BufferedImage img) throws Exception {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         ImageIO.write(img, "jpg", outputStream);
-        //byte[] imageBytes = outputStream.toByteArray();
-        outputStream.flush();
-        return outputStream.toByteArray();
+        byte[] imageBytes = outputStream.toByteArray();
+        return imageBytes;
     }
-
+    
+    /**
+     * Função utilizada para guardar imagens
+     * @param bytes conteudo da imagem
+     * @param name nome do ficheiro
+     * @throws Exception 
+     */
     public static void saveImage(byte[] bytes, String name) throws Exception {
-        //ImageIO.write(byteToImage(bytes),"jpg",new File(name));
-        Files.write(Paths.get(name), bytes);
+        ImageIO.write(byteToImage(bytes),"jpg",new File(name));
     }
 }

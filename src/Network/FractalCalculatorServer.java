@@ -25,8 +25,9 @@ import javax.swing.JTextArea;
 public class FractalCalculatorServer extends Thread {
 
     int port = 10000;
-    JLabel l; //imagem
+    JLabel l; //label onde será guardada a imagem
     JTextArea jDebug; //Console
+    public static BufferedImage image = null;
     
     /**
      * Inicia o calculo da thread
@@ -40,7 +41,7 @@ public class FractalCalculatorServer extends Thread {
         this.port = port;
     }
 
-    public static BufferedImage image = null;
+    
     /**
      * Metodo que é iniciado quando se inicia a tread
      */

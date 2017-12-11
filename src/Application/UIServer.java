@@ -410,7 +410,12 @@ public class UIServer extends javax.swing.JFrame {
                 ObjectInputStream in = new ObjectInputStream(dist.getInputStream());
                 // envia porta em que a instancia está a correr
                 out.writeInt(serverPort);
-                System.out.println("[Server] Sending port " + serverPort + " to distributor \n");
+                // try catch CLI
+                try {
+                    jTextDebug.append("[Server] Sending port " + serverPort + " to distributor \n");
+                } catch (Exception e) {
+                    System.out.println("[Server] Sending port " + serverPort + " to distributor \n");
+                }
                 out.close();
                 in.close();
                 dist.close();

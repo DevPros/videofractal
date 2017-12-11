@@ -47,11 +47,11 @@ public class Distributor extends Thread {
     /**
      * Recebe os Parametro da GUI Para começar a distribuir
      *
-     * @param centerX
-     * @param centerY
-     * @param port
-     * @param factor
-     * @param gui
+     * @param centerX Valor X para exploração
+     * @param centerY Valor Y para exploração
+     * @param port    porto
+     * @param factor  zoom
+     * @param gui     GUI
      */
     public Distributor(double centerX, double centerY, int port, double factor, UIDistributor gui) {
         this.port = port;
@@ -62,6 +62,7 @@ public class Distributor extends Thread {
 
     /**
      * Metodo Executado com a Thread é iniciada
+     * Efetua a distribuição da carga de trabalho
      */
     @Override
     public void run() {
@@ -136,6 +137,7 @@ public class Distributor extends Thread {
             frameNumber++;
         }
         writer.close();
+        gui.jTextAreaDebug.append("[Video] Generated video \n");
         JOptionPane.showMessageDialog(gui, "Video Gerado", "Fractal Movie", JOptionPane.PLAIN_MESSAGE, new ImageIcon("src/auxiliar/icon.png"));
         gui.jProgressBarVideo.setValue(0);
         gui.bt_genVideo.setEnabled(true);

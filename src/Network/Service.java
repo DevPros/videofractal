@@ -23,14 +23,15 @@ public class Service implements Serializable {
     private int height;
     private byte[] data;
     int imageNumber;
+    
     /**
      * Objecto que é chamado para passar as informações de um lado para o outro
-     * @param cx
-     * @param cy
-     * @param zoom
-     * @param itera
-     * @param width
-     * @param height 
+     * @param cx     Valor das coordenadas X
+     * @param cy     Valor das coordenadas Y
+     * @param zoom   Valor do zoom
+     * @param itera  Número de iterações
+     * @param width  Valor do comprimento
+     * @param height Valor da altura
      */
     public Service(BigDecimal cx, BigDecimal cy, BigDecimal zoom, int itera, int width, int height) {
         this.cx = cx;
@@ -45,7 +46,6 @@ public class Service implements Serializable {
 
     /**
      * Recebe o novo valor do zoom e multiplica pelo anterior
-     *
      * @param factor
      * @return
      * @throws Exception
@@ -59,60 +59,115 @@ public class Service implements Serializable {
         s.imageNumber = this.imageNumber;
         return s;
     }
-
+    
+    /**
+     * Retorna o valor das coordenadas X
+     * @return 
+     */
     public BigDecimal getCx() {
         return cx;
     }
     
-
+    /**
+     * Define o valor das coordenadas X
+     * @param cx 
+     */
     public void setCx(BigDecimal cx) {
         this.cx = cx;
     }
-
+    
+    /**
+     * Retorna o valor das coordenadas Y
+     * @return 
+     */
     public BigDecimal getCy() {
         return cy;
     }
-
+    
+    /**
+     * Define o valor das coordenadas Y
+     * @param cy 
+     */
     public void setCy(BigDecimal cy) {
         this.cy = cy;
     }
 
+    /**
+     * Retorna o valor do zoom
+     * @return 
+     */
     public BigDecimal getZoom() {
         return zoom;
     }
 
+    /**
+     * Define o valor do zoom
+     * @param zoom 
+     */
     public void setZoom(BigDecimal zoom) {
         this.zoom = zoom;
     }
 
+    /**
+     * 
+     * @return 
+     */
     public byte[] getData() {
         return data;
     }
 
+    /**
+     * 
+     * @param data 
+     */
     public void setData(byte[] data) {
         this.data = data;
     }
 
+    /**
+     * Retorna o número de iterações
+     * @return 
+     */
     public int getItera() {
         return itera;
     }
 
+    /**
+     * Define o número de iterações
+     * @param itera 
+     */
     public void setItera(int itera) {
         this.itera = itera;
     }
 
+    /**
+     * Retorna o valor do comprimento
+     * @return 
+     */
     public int getWidth() {
         return width;
     }
 
+    /**
+     * Define o valor do comprimento
+     * @param width 
+     */
     public void setWidth(int width) {
         this.width = width;
     }
 
+    /**
+     * Retorna o valor da altura
+     * @return 
+     */
     public int getHeight() {
         return height;
     }
 
+    /**
+     * Define o valor da altura
+     * @param height 
+     */
     public void setHeight(int height) {
         this.height = height;
     } 

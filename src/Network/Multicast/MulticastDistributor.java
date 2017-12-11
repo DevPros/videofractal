@@ -24,6 +24,13 @@ public class MulticastDistributor extends Thread {
     int groupPort;
     String distPort;
 
+    /**
+     * Contrutor para criar server multicast
+     * @param debug
+     * @param groupAddress
+     * @param groupPort
+     * @param distPort 
+     */
     public MulticastDistributor(JTextArea debug, InetAddress groupAddress, int groupPort, int distPort) {
         this.debug = debug;
         this.groupAddress = groupAddress;
@@ -32,7 +39,7 @@ public class MulticastDistributor extends Thread {
     }
 
     /**
-     * É executado quando é chamado para encotrar os servidores via multicast
+     * Thread que envia continuamente para a rede pacotes com a porta de execução do distribuidor
      */
     @Override
     public void run() {

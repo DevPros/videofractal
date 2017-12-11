@@ -31,11 +31,11 @@ public class LinkToServer extends Thread {
     /**
      * Construtor que recebe a ligação do server
      *
-     * @param ip
-     * @param port
-     * @param service
-     * @param fator
-     * @param gui
+     * @param ip       IP
+     * @param port     Porto
+     * @param service  Serviço
+     * @param fator    Zoom
+     * @param gui      GUI
      */
     public LinkToServer(String ip, int port, Service service, double fator, UIDistributor gui) {
         this.ip = ip;
@@ -44,6 +44,7 @@ public class LinkToServer extends Thread {
         this.fator = fator;
         this.gui = gui;
     }
+    
     /**
      * Metodo que é chamado para executar a impressão das imgens
      */

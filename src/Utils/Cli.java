@@ -23,11 +23,12 @@ public class Cli {
     private String[] args = null;
     private Options options = new Options();
     
-    int sPort;
-    String dAddress;
-    int dPort;
-            
     
+            
+    /**
+     * Construtor da CLI que recebe argumenos e define as opções disponíveis
+     * @param args argumentos passados da interface
+     */
     public Cli(String[] args) {
         this.args = args;
         Option help = new Option("h", "help", false, "print this message" );
@@ -50,7 +51,14 @@ public class Cli {
         options.addOption(multiPort);
     }
     
+    /**
+     * Efetua o parse dos argumentos passados à interface
+     */
     public void parse(){
+        int sPort; // porta server
+        String dAddress; // endereço distribuidor
+        int dPort; // porta distribuidor
+    
         CommandLineParser parser = new DefaultParser();
         CommandLine cmd;
         
@@ -82,22 +90,13 @@ public class Cli {
         }
     }
     
+    /**
+     * Mostra a mensagem de ajuda
+     */
     private void help()
     {
         HelpFormatter formater = new HelpFormatter();
         formater.printHelp("GUIServer", options);
         System.exit(0);
-    }
-
-    public int getsPort() {
-        return sPort;
-    }
-
-    public String getdAddress() {
-        return dAddress;
-    }
-
-    public int getdPort() {
-        return dPort;
     }
 }
