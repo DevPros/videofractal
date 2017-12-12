@@ -51,7 +51,7 @@ public class Service implements Serializable {
      * @throws Exception
      */
     public synchronized Service cloneAndZoom(double factor) throws Exception {
-        MathContext precision = new MathContext((int)(zoom.precision()*1.3)); //Precisão matemática para a realização de contas em BigDecimal
+        MathContext precision = new MathContext(5); //Precisão matemática para a realização de contas em BigDecimal
         BigDecimal bFactor = new BigDecimal(factor, precision);
         zoom = zoom.multiply(bFactor, precision);
         imageNumber++;

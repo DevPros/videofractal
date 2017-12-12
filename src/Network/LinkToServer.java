@@ -79,11 +79,16 @@ public class LinkToServer extends Thread {
                
             } catch (ConnectException ex) { // catch connection error
                 gui.jTextAreaDebug.append("[Dist] Cannot connect to server "+ip+":"+port+" \n");
+                break;
             } catch (SocketTimeoutException ex) { // catch connection timeout
                 this.interrupt();
                 this.ip = null;
+                if(this.isInterrupted()==true){
+                    break;
+                }  
             }catch (Exception ex) {
                 Logger.getLogger(LinkToServer.class.getName()).log(Level.SEVERE, null, ex);
+                break;
             }
         }
     }
