@@ -63,7 +63,7 @@ public class Fractal extends Thread {
     @Override
     public void run() {
         int y;
-        MathContext precision = new MathContext((int)(zoom.precision()*1.3));
+        MathContext precision = new MathContext((int)(zoom.toString().length()*1.3));
         //double cx, cy;
         //calculate pixels
         BigDecimal bx, by, iyL, iL;
