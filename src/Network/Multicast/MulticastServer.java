@@ -5,11 +5,11 @@
  */
 package Network.Multicast;
 
-import GUI.GUIServer;
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.InetAddress;
 import java.net.MulticastSocket;
+import javax.swing.JTextArea;
 
 /**
  * @author João Canoso https://github.com/jpcanoso
@@ -17,30 +17,36 @@ import java.net.MulticastSocket;
  */
 public class MulticastServer extends Thread {
 
+    JTextArea debug;
     MulticastSocket socket;
     DatagramPacket packet;
     InetAddress groupAddress;
     int port;
 
     /**
-     * Recebe os dados multicast
+     * Lança instancia para receber pacote de multicast
      *
-     * @param port
-     * @param groupAddress
-     * @param gui
-     * @return
+     * @param port         Porto
+     * @param groupAddress Endereço
+     * @param debug
+     * @return mensagem recebida
      */
-    public static String listenMulticast(int port, InetAddress groupAddress, GUIServer gui) {
+    public static String listenMulticast(int port, InetAddress groupAddress, JTextArea debug) {
         String msg = "";
-        gui.jTextDebug.append("[Multicast] Multicast receiver started\n");
-
+        
+        try {
+            debug.append("[Multicast] Multicast receiver started \n");
+        } catch (Exception e) {
+            System.out.println("[Multicast] Multicast receiver started \n");
+        }
+        
         byte[] buf = new byte[256];
 
         try (MulticastSocket clientSocket = new MulticastSocket(port)) {
             //Joint the Multicast group.
             clientSocket.joinGroup(groupAddress);
 
-            // Receive the information and print it.
+            // Receive the information
             DatagramPacket msgPacket = new DatagramPacket(buf, buf.length);
             clientSocket.receive(msgPacket);
 

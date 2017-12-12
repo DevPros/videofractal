@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package GUI;
+package Application;
 
 import Network.Distributor;
 import Network.Multicast.MulticastDistributor;
@@ -18,17 +18,19 @@ import javax.swing.JFileChooser;
  * @author João Canoso https://github.com/jpcanoso
  * @author Rui Barcelos https://github.com/barcelosrui
  */
-public class GUIDistributor extends javax.swing.JFrame {
+public class UIDistributor extends javax.swing.JFrame {
 
     // Video 
     String videoSourceFiles; // dir com imagens src
     File images[];  // array de imagens
     ////////////////////////////
+    MulticastDistributor multicastServer;
+    Distributor dist;
 
     /**
      * Creates new form GUIClient
      */
-    public GUIDistributor() {
+    public UIDistributor() {
         initComponents();
     }
 
@@ -49,7 +51,7 @@ public class GUIDistributor extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTextAreaDebug = new javax.swing.JTextArea();
-        jButton3 = new javax.swing.JButton();
+        bt_defaultValues = new javax.swing.JButton();
         jPanel5 = new javax.swing.JPanel();
         jLabel7 = new javax.swing.JLabel();
         jTextGroupAddress = new javax.swing.JTextField();
@@ -82,7 +84,7 @@ public class GUIDistributor extends javax.swing.JFrame {
         jLabel6 = new javax.swing.JLabel();
         jComboVideoFormat = new javax.swing.JComboBox<>();
         jLabelVideoTime = new javax.swing.JLabel();
-        jButton4 = new javax.swing.JButton();
+        bt_chooseDirectory = new javax.swing.JButton();
         bt_genVideo = new javax.swing.JButton();
         jProgressBarVideo = new javax.swing.JProgressBar();
         lperc = new javax.swing.JLabel();
@@ -124,10 +126,10 @@ public class GUIDistributor extends javax.swing.JFrame {
             .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 107, Short.MAX_VALUE)
         );
 
-        jButton3.setText("Set Default Values");
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
+        bt_defaultValues.setText("Set Default Values");
+        bt_defaultValues.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
+                bt_defaultValuesActionPerformed(evt);
             }
         });
 
@@ -182,7 +184,7 @@ public class GUIDistributor extends javax.swing.JFrame {
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txt_distributorPort, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel2))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(13, Short.MAX_VALUE))
         );
 
         jPanel6.setBorder(javax.swing.BorderFactory.createTitledBorder("Fractal Properties"));
@@ -282,13 +284,14 @@ public class GUIDistributor extends javax.swing.JFrame {
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addGap(6, 6, 6)
                                 .addComponent(jLabel3)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jTextFieldIP, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(bt_startDist, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jButton3)
+                                .addComponent(bt_startDist, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(bt_defaultValues)
                                 .addGap(0, 0, Short.MAX_VALUE))
                             .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -306,12 +309,11 @@ public class GUIDistributor extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel3)
-                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(bt_startDist)
-                        .addComponent(jButton3)
-                        .addComponent(jTextFieldIP, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(bt_startDist)
+                    .addComponent(bt_defaultValues)
+                    .addComponent(jTextFieldIP, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel3))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -338,10 +340,10 @@ public class GUIDistributor extends javax.swing.JFrame {
         jLabelVideoTime.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jLabelVideoTime.setForeground(new java.awt.Color(255, 0, 0));
 
-        jButton4.setText("Choose Directory");
-        jButton4.addActionListener(new java.awt.event.ActionListener() {
+        bt_chooseDirectory.setText("Choose Directory");
+        bt_chooseDirectory.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton4ActionPerformed(evt);
+                bt_chooseDirectoryActionPerformed(evt);
             }
         });
 
@@ -366,7 +368,7 @@ public class GUIDistributor extends javax.swing.JFrame {
                     .addGroup(jPanel4Layout.createSequentialGroup()
                         .addComponent(jTextSourceFiles, javax.swing.GroupLayout.PREFERRED_SIZE, 192, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton4)
+                        .addComponent(bt_chooseDirectory)
                         .addGap(0, 0, Short.MAX_VALUE))))
         );
         jPanel4Layout.setVerticalGroup(
@@ -376,7 +378,7 @@ public class GUIDistributor extends javax.swing.JFrame {
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
                     .addComponent(jTextSourceFiles, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton4))
+                    .addComponent(bt_chooseDirectory))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabelVideoTime, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -391,6 +393,7 @@ public class GUIDistributor extends javax.swing.JFrame {
         );
 
         bt_genVideo.setText("Generate Video");
+        bt_genVideo.setEnabled(false);
         bt_genVideo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 bt_genVideoActionPerformed(evt);
@@ -430,7 +433,7 @@ public class GUIDistributor extends javax.swing.JFrame {
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(bt_genVideo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(lperc, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(221, Short.MAX_VALUE))
+                .addContainerGap(224, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Video", jPanel3);
@@ -445,7 +448,7 @@ public class GUIDistributor extends javax.swing.JFrame {
         );
         jPanel8Layout.setVerticalGroup(
             jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(limage, javax.swing.GroupLayout.DEFAULT_SIZE, 449, Short.MAX_VALUE)
+            .addComponent(limage, javax.swing.GroupLayout.DEFAULT_SIZE, 452, Short.MAX_VALUE)
         );
 
         jScrollPane2.setViewportView(jPanel8);
@@ -488,7 +491,7 @@ public class GUIDistributor extends javax.swing.JFrame {
         try {
             groupAddress = InetAddress.getByName(jTextGroupAddress.getText()); //Endereço do grupo
         } catch (UnknownHostException ex) {
-            Logger.getLogger(GUIDistributor.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(UIDistributor.class.getName()).log(Level.SEVERE, null, ex);
         }
         int distPort = Integer.valueOf(txt_distributorPort.getText()); // porta do distribuidor
         int groupPort = Integer.valueOf(jTextGroupPort.getText()); // porta do grupo
@@ -497,11 +500,11 @@ public class GUIDistributor extends javax.swing.JFrame {
         double centerY = Double.valueOf(jTextYCoordinate.getText());//Coordenada Y do ponto a calcular    
 
         // inicializa server multicast
-        MulticastDistributor multicastServer = new MulticastDistributor(jTextAreaDebug, groupAddress, groupPort, distPort);
+        multicastServer = new MulticastDistributor(jTextAreaDebug, groupAddress, groupPort, distPort);
         multicastServer.start();
 
         // inicializa distribuidor
-        Distributor dist = new Distributor(centerX, centerY, distPort, factor, this);
+        dist = new Distributor(centerX, centerY, distPort, factor, this);
         dist.start();
     }//GEN-LAST:event_bt_startDistActionPerformed
 
@@ -511,11 +514,6 @@ public class GUIDistributor extends javax.swing.JFrame {
      * @param evt
      */
     private void bt_genVideoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_genVideoActionPerformed
-        // verificar se tudo de encontra preenchido
-        //if (jTextSourceFiles.getText() == "" || jTextFPS.getText() == "")
-        //{
-        //JOptionPane.showMessageDialog(jPanel1, "Todos os campos devem ser preenchidos.", "Erro", JOptionPane.ERROR_MESSAGE);
-        //}
 
         int fps = Integer.parseInt(jTextFPS.getText());
         String filetype = jComboVideoFormat.getSelectedItem().toString();
@@ -533,7 +531,7 @@ public class GUIDistributor extends javax.swing.JFrame {
                 try {
                     Distributor.generateVideo(file, images, fps, filetype, this);
                 } catch (Exception ex) {
-                    Logger.getLogger(GUIDistributor.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(UIDistributor.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }).start();
         }
@@ -543,7 +541,7 @@ public class GUIDistributor extends javax.swing.JFrame {
      *
      * @param evt
      */
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+    private void bt_defaultValuesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_defaultValuesActionPerformed
         jTextZoom.setText("0.99");
         jTextIterations.setText("1000");
         jTextWidth.setText("3840");
@@ -553,13 +551,13 @@ public class GUIDistributor extends javax.swing.JFrame {
         txt_distributorPort.setText("5000");
         jTextGroupAddress.setText("230.0.0.1");
         jTextGroupPort.setText("10000");
-    }//GEN-LAST:event_jButton3ActionPerformed
+    }//GEN-LAST:event_bt_defaultValuesActionPerformed
     /**
      * Activar a função do botão para gerar o video
      *
      * @param evt
      */
-    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+    private void bt_chooseDirectoryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_chooseDirectoryActionPerformed
         JFileChooser chooser;
         chooser = new JFileChooser();
         //define qual é a pasta do projeto a ser utilizada
@@ -576,12 +574,15 @@ public class GUIDistributor extends javax.swing.JFrame {
             videoSourceFiles = chooser.getSelectedFile() + "";
             // atribuir à text box a directoria escolhida
             jTextSourceFiles.setText(videoSourceFiles);
-            // 
+            // coloca as imagens no array de ficheiros
             images = (new File(videoSourceFiles)).listFiles();
-            //
+            // apresenta label com o tempo de video gerado
             jLabelVideoTime.setText("Video will be " + images.length / Integer.parseInt(jTextFPS.getText()) + " seconds long");
         }
-    }//GEN-LAST:event_jButton4ActionPerformed
+        // Se existirem ficheiros, ativa botao de gerar video
+        if (images.length > 0)
+            bt_genVideo.setEnabled(true);
+    }//GEN-LAST:event_bt_chooseDirectoryActionPerformed
 
     /**
      * @param args the command line arguments
@@ -600,14 +601,22 @@ public class GUIDistributor extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(GUIDistributor.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(UIDistributor.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(GUIDistributor.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(UIDistributor.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(GUIDistributor.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(UIDistributor.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(GUIDistributor.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(UIDistributor.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
         //</editor-fold>
         //</editor-fold>
@@ -620,16 +629,16 @@ public class GUIDistributor extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new GUIDistributor().setVisible(true);
+                new UIDistributor().setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton bt_chooseDirectory;
+    private javax.swing.JButton bt_defaultValues;
     public javax.swing.JButton bt_genVideo;
     private javax.swing.JButton bt_startDist;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
     private javax.swing.JComboBox<String> jComboVideoFormat;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;

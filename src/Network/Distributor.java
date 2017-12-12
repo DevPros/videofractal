@@ -5,7 +5,7 @@
  */
 package Network;
 
-import GUI.GUIDistributor;
+import Application.UIDistributor;
 import com.xuggle.mediatool.IMediaWriter;
 import com.xuggle.mediatool.ToolFactory;
 import java.awt.image.BufferedImage;
@@ -13,6 +13,8 @@ import java.io.File;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.math.BigDecimal;
+import java.math.MathContext;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -31,11 +33,12 @@ import javax.swing.JOptionPane;
  * @author Rui Barcelos https://github.com/barcelosrui
  */
 public class Distributor extends Thread {
-
+    
+    MathContext precision = new MathContext(5);
     int port;
     double factor;
 
-    private static GUIDistributor gui;
+    private static UIDistributor gui;
     InetAddress myIP;
 
     // mensagem a ser transmitida
@@ -44,21 +47,22 @@ public class Distributor extends Thread {
     /**
      * Recebe os Parametro da GUI Para começar a distribuir
      *
-     * @param centerX
-     * @param centerY
-     * @param port
-     * @param factor
-     * @param gui
+     * @param centerX Valor X para exploração
+     * @param centerY Valor Y para exploração
+     * @param port    porto
+     * @param factor  zoom
+     * @param gui     GUI
      */
-    public Distributor(double centerX, double centerY, int port, double factor, GUIDistributor gui) {
+    public Distributor(double centerX, double centerY, int port, double factor, UIDistributor gui) {
         this.port = port;
         this.factor = factor;
         this.gui = gui;
-        this.s = new Service(centerX, centerY, 1E-1, Integer.valueOf(gui.jTextIterations.getText()), Integer.valueOf(gui.jTextWidth.getText()), Integer.valueOf(gui.jTextHeight.getText()));
+        this.s = new Service(new BigDecimal(centerX, precision), new BigDecimal(centerY, precision), new BigDecimal(1E-2), Integer.valueOf(gui.jTextIterations.getText()), Integer.valueOf(gui.jTextWidth.getText()), Integer.valueOf(gui.jTextHeight.getText()));
     }
 
     /**
      * Metodo Executado com a Thread é iniciada
+     * Efetua a distribuição da carga de trabalho
      */
     @Override
     public void run() {
@@ -73,7 +77,7 @@ public class Distributor extends Thread {
                 myIP = InetAddress.getByName(socket.getLocalAddress().getHostAddress());
             }
 
-            gui.jTextAreaDebug.append("Distributor running on address " + myIP + ":" + port + "... \n");
+            gui.jTextAreaDebug.append("[Dist] Running on address " + myIP + ":" + port + "... \n");
             gui.jTextFieldIP.setText(myIP + ":" + port);
             //Escuta o server
             while (true) {
@@ -85,7 +89,7 @@ public class Distributor extends Thread {
                 //valor da porta
                 int fserver_port = in.readInt();
                 // adiciona o ip:porta ao debug
-                gui.jTextAreaDebug.append("New Server " + serverFractal.getInetAddress().getHostAddress() + ":" + fserver_port + "\n");
+                gui.jTextAreaDebug.append("[Dist] New Server " + serverFractal.getInetAddress().getHostAddress() + ":" + fserver_port + " \n");
 
                 in.close();
                 out.close();
@@ -110,7 +114,7 @@ public class Distributor extends Thread {
      * @param gui
      * @throws IOException
      */
-    public static void generateVideo(File video, File imagens[], int fps, String filetype, GUIDistributor gui) throws IOException {
+    public static void generateVideo(File video, File imagens[], int fps, String filetype, UIDistributor gui) throws IOException {
         IMediaWriter writer = ToolFactory.makeWriter(video + "");
         int frameNumber = 0;
         int imgleng = imagens.length - 1;
@@ -133,6 +137,7 @@ public class Distributor extends Thread {
             frameNumber++;
         }
         writer.close();
+        gui.jTextAreaDebug.append("[Video] Generated video \n");
         JOptionPane.showMessageDialog(gui, "Video Gerado", "Fractal Movie", JOptionPane.PLAIN_MESSAGE, new ImageIcon("src/auxiliar/icon.png"));
         gui.jProgressBarVideo.setValue(0);
         gui.bt_genVideo.setEnabled(true);

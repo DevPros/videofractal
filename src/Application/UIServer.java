@@ -3,14 +3,16 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package GUI;
+package Application;
 
 import Network.FractalCalculatorServer;
 import Network.Multicast.MulticastServer;
+import Utils.Cli;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.net.ConnectException;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
@@ -19,15 +21,12 @@ import java.net.UnknownHostException;
  * @author João Canoso https://github.com/jpcanoso
  * @author Rui Barcelos https://github.com/barcelosrui
  */
-public class GUIServer extends javax.swing.JFrame {
+public class UIServer extends javax.swing.JFrame {
 
-    FractalCalculatorServer s = null;
+    public static FractalCalculatorServer s = null;
     public static InetAddress groupAddress = null;
 
-    /**
-     * Creates new form GUITESTE
-     */
-    public GUIServer() {
+    public UIServer() {
         initComponents();
     }
 
@@ -56,7 +55,7 @@ public class GUIServer extends javax.swing.JFrame {
         jSeparator1 = new javax.swing.JSeparator();
         bt_autoDiscovery = new javax.swing.JButton();
         jSeparator2 = new javax.swing.JSeparator();
-        bt_stop = new javax.swing.JButton();
+        bt_stopAuto = new javax.swing.JButton();
         panelSuport = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         panelIMG = new javax.swing.JPanel();
@@ -111,10 +110,10 @@ public class GUIServer extends javax.swing.JFrame {
             }
         });
 
-        bt_stop.setText("Stop");
-        bt_stop.addActionListener(new java.awt.event.ActionListener() {
+        bt_stopAuto.setText("Stop");
+        bt_stopAuto.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                bt_stopActionPerformed(evt);
+                bt_stopAutoActionPerformed(evt);
             }
         });
 
@@ -154,7 +153,7 @@ public class GUIServer extends javax.swing.JFrame {
                     .addGroup(jPanel8Layout.createSequentialGroup()
                         .addComponent(bt_autoDiscovery)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(bt_stop)))
+                        .addComponent(bt_stopAuto)))
                 .addContainerGap())
         );
         jPanel8Layout.setVerticalGroup(
@@ -176,7 +175,7 @@ public class GUIServer extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(bt_autoDiscovery)
-                    .addComponent(bt_stop))
+                    .addComponent(bt_stopAuto))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -263,128 +262,68 @@ public class GUIServer extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
     /**
-     * Para o calculo Manual do server
-     *
-     * @param evt
+     * Botão para parar serviços em execução
+     * @param evt 
      */
     private void bt_stopManualActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_stopManualActionPerformed
-        if (s != null) {
-            if (s.isAlive()) {
-                if (s.isInterrupted() == false) {
-                    btn_start.setEnabled(true);
-                    bt_stopManual.setEnabled(false);
-                    s.interrupt();
-                    s = null;
-                }
-            }
-        }
+        stop();
     }//GEN-LAST:event_bt_stopManualActionPerformed
+    
     /**
-     * Inicia Manualmente o server
-     *
-     * @param evt
+     * Botão que inicia o servidor sem multicast
+     * @param evt 
      */
     private void btn_startActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_startActionPerformed
-        if (s == null) {
-            try {
-                Socket dist = new Socket(txt_distIP.getText(),
-                        Integer.valueOf(txt_distPort.getText()));
-                // abertura da stream de saída
-                ObjectOutputStream out = new ObjectOutputStream(dist.getOutputStream());
-                //abertura da stream de entrada
-                ObjectInputStream in = new ObjectInputStream(dist.getInputStream());
-                // envia porta em que a instancia está a correr
-                out.writeInt(Integer.parseInt(txt_port.getText()));
-                jTextDebug.append("[Server] Sending port " + Integer.parseInt(txt_port.getText()) + " to dist");
-                out.close();
-                in.close();
-                dist.close();
-            } catch (Exception ex) {
-                Logger.getLogger(GUIServer.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            s = new FractalCalculatorServer(this, Integer.parseInt(txt_port.getText()));
-
-            s.start();
+        boolean serverStatus;
+        String distIP = txt_distIP.getText();
+        int distPort = Integer.valueOf(txt_distPort.getText());
+        int serverPort = Integer.parseInt(txt_port.getText());
+        // inicia Servidor
+        serverStatus = startServer(false, distIP, distPort, serverPort);
+        
+        if (!serverStatus){
+            // Muda estado dos botões
             bt_stopManual.setEnabled(true);
             btn_start.setEnabled(false);
+            bt_autoDiscovery.setEnabled(false);
         }
     }//GEN-LAST:event_btn_startActionPerformed
+    
     /**
-     * Descobre automáticamente o server
-     *
-     * @param evt
+     * Botão que inicia servidor com multicast
+     * @param evt 
      */
     private void bt_autoDiscoveryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_autoDiscoveryActionPerformed
-        InetAddress groupAddress = null;
-        String distPort;
-        try {
-            groupAddress = InetAddress.getByName(jTextGroupAddress.getText()); //Endereço do grupo
-        } catch (UnknownHostException ex) {
-            Logger.getLogger(GUIDistributor.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        int groupPort = Integer.valueOf(jTextGroupPort.getText());
-
-        //obtem a porta do server com multicast
-        distPort = MulticastServer.listenMulticast(groupPort, groupAddress, this);
-
-        String[] dados = distPort.split(",");
-        // limpa e faz o parse
-        int porta = Integer.parseInt(dados[1].trim());
-        // retira a / do ip
-        dados[0] = dados[0].replace("/", "");
-        //System.out.println("porta: "+porta);
-        //System.out.println("ip: "+dados[0]);
-
+        int groupPort = Integer.valueOf(jTextGroupPort.getText()); // porta do grupo
+        int serverPort = Integer.parseInt(txt_port.getText()); // porta de trabalho do server
+        String groupAddress = jTextGroupAddress.getText(); // Endereço do grupo
+        boolean serverStatus;
+ 
         // inicia server
-        if (s == null) {
-            try {
-                //Socket dist = new Socket(txt_distIP.getText(),Integer.valueOf(txt_distPort.getText())) ;
-                Socket dist = new Socket(dados[0], porta);
-                // abertura da stream de saída
-                ObjectOutputStream out = new ObjectOutputStream(dist.getOutputStream());
-                //abertura da stream de entrada
-                ObjectInputStream in = new ObjectInputStream(dist.getInputStream());
-                // envia porta em que a instancia está a correr
-                out.writeInt(Integer.parseInt(txt_port.getText()));
-                System.out.println("[Server] Sending port " + Integer.parseInt(txt_port.getText()) + " to dist");
-                out.close();
-                in.close();
-                dist.close();
-            } catch (Exception ex) {
-                Logger.getLogger(GUIServer.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            //Inicia enviando a gui e a porta
-            s = new FractalCalculatorServer(this, Integer.parseInt(txt_port.getText()));
-            //Inicia o server
-            s.start();
+        serverStatus = startServer(true, groupAddress, groupPort, serverPort);
+        
+        if (!serverStatus) {
+            // Muda estado dos botões
             bt_stopManual.setEnabled(true);
             btn_start.setEnabled(false);
+            bt_autoDiscovery.setEnabled(false);
         }
-
     }//GEN-LAST:event_bt_autoDiscoveryActionPerformed
+    
     /**
-     * Para a thread
-     *
-     * @param evt
+     * Botão para parar serviços em execução
+     * @param evt 
      */
-    private void bt_stopActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_stopActionPerformed
-        if (s != null) {
-            if (s.isAlive()) {
-                if (s.isInterrupted() == false) {
-                    btn_start.setEnabled(true);
-                    bt_stopManual.setEnabled(false);
-                    s.interrupt();
-                    s = null;
-                }
-            }
-        }
-    }//GEN-LAST:event_bt_stopActionPerformed
+    private void bt_stopAutoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_stopAutoActionPerformed
+        stop();
+    }//GEN-LAST:event_bt_stopAutoActionPerformed
 
     /**
      * @param args the command line arguments
      */
-    public static void main(String args[]) {
+    public static void main(String args[]) { 
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
@@ -398,28 +337,134 @@ public class GUIServer extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(GUIServer.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(UIServer.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(GUIServer.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(UIServer.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(GUIServer.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(UIServer.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(GUIServer.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(UIServer.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
         //</editor-fold>
-
+        //</editor-fold>
+        //</editor-fold>
+        
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new GUIServer().setVisible(true);
+                // Se existirem argumentos, não lança GUI
+                if (args.length <= 0){
+                    new UIServer().setVisible(true);
+                } else {
+                    new Cli(args).parse(); //lança o parse
+                }
             }
         });
     }
+    
+    /**
+     * Função que pára todos os serviços
+     */
+    private void stop()
+    {
+        if (s != null) {
+            if (s.isAlive()) {
+                if (s.isInterrupted() == false) {
+                    bt_autoDiscovery.setEnabled(true);
+                    bt_stopManual.setEnabled(false);
+                    s.interrupt();
+                    s = null;
+                }
+            }
+        }
+    }
+    
+    /**
+     * Função para iniciar os serviços do servidor
+     * @param multi
+     * @param distIP     IP Distribuição / multicast
+     * @param distPort   Porto Distribuição / multicast
+     * @param serverPort Porto do servidor
+     * @return 
+     */
+    public static boolean startServer(boolean multi, String distIP, int distPort, int serverPort)
+    {
+        boolean err = false;
+        // se o serviço não estiver a correr 
+        if (s == null) {
+            
+            // lançar server multicast
+            if (multi){
+                InetAddress groupAddress = null;
+                String distData;
+                try {
+                    groupAddress = InetAddress.getByName(distIP); //Endereço do grupo
+                } catch (UnknownHostException ex) {
+                    Logger.getLogger(UIDistributor.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                //obtem a porta do server com multicast
+                distData = MulticastServer.listenMulticast(distPort, groupAddress, jTextDebug);
+                // separa o ip e a porta
+                String[] dados = distData.split(",");
+                // limpa e faz o parse
+                distPort = Integer.parseInt(dados[1].trim());
+                // retira a / do ip
+                distIP = dados[0].replace("/", "");
+            }
+            
+            // lança server
+            try {
+                Socket dist = new Socket(distIP, distPort);
+                // abertura da stream de saída
+                ObjectOutputStream out = new ObjectOutputStream(dist.getOutputStream());
+                //abertura da stream de entrada
+                ObjectInputStream in = new ObjectInputStream(dist.getInputStream());
+                // envia porta em que a instancia está a correr
+                out.writeInt(serverPort);
+                // try catch CLI
+                try {
+                    jTextDebug.append("[Server] Sending port " + serverPort + " to distributor \n");
+                } catch (Exception e) {
+                    System.out.println("[Server] Sending port " + serverPort + " to distributor \n");
+                }
+                out.close();
+                in.close();
+                dist.close();
+                
+            } catch (ConnectException ex) {
+                // try catch CLI
+                try{
+                    jTextDebug.append("[Server] Cannot establish connection with distributor \n");
+                } catch (Exception e) {
+                    System.out.println("[Server] Cannot establish connection with distributor \n");
+                }
+                
+                err = true;
+            } catch (Exception ex) {
+                err = true;
+                // try catch CLI
+                try{
+                    jTextDebug.append("[Server] An error has occurred \n");
+                } catch (Exception e) {
+                    System.out.println("[Server] An error has occurred \n");
+                }
+                Logger.getLogger(UIServer.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            if (!err){
+                //Inicia enviando a gui e a porta
+                s = new FractalCalculatorServer(l,jTextDebug ,serverPort);
+                //Inicia o server
+                s.start();
+            }
+	}
+        return err;
+    }
+        
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton bt_autoDiscovery;
-    private javax.swing.JButton bt_stop;
+    private javax.swing.JButton bt_stopAuto;
     private javax.swing.JButton bt_stopManual;
     private javax.swing.JButton btn_start;
     private javax.swing.JLabel jLabel1;
@@ -433,14 +478,14 @@ public class GUIServer extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
-    public javax.swing.JTextArea jTextDebug;
-    private javax.swing.JTextField jTextGroupAddress;
-    private javax.swing.JTextField jTextGroupPort;
-    public javax.swing.JLabel l;
+    public static javax.swing.JTextArea jTextDebug;
+    private static javax.swing.JTextField jTextGroupAddress;
+    private static javax.swing.JTextField jTextGroupPort;
+    public static javax.swing.JLabel l;
     public javax.swing.JPanel panelIMG;
     private javax.swing.JPanel panelSuport;
     private javax.swing.JTextField txt_distIP;
     private javax.swing.JTextField txt_distPort;
-    private javax.swing.JTextField txt_port;
+    private static javax.swing.JTextField txt_port;
     // End of variables declaration//GEN-END:variables
 }

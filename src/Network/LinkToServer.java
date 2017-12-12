@@ -5,11 +5,13 @@
  */
 package Network;
 
-import GUI.GUIDistributor;
-import auxiliar.ImgUtils;
+import Application.UIDistributor;
+import Utils.ImgUtils;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.net.ConnectException;
 import java.net.Socket;
+import java.net.SocketTimeoutException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ImageIcon;
@@ -23,31 +25,32 @@ public class LinkToServer extends Thread {
     String ip;
     int port;
     Service service;
-    GUIDistributor gui;
+    UIDistributor gui;
     double fator;
 
     /**
      * Construtor que recebe a ligação do server
      *
-     * @param ip
-     * @param port
-     * @param service
-     * @param fator
-     * @param gui
+     * @param ip       IP
+     * @param port     Porto
+     * @param service  Serviço
+     * @param fator    Zoom
+     * @param gui      GUI
      */
-    public LinkToServer(String ip, int port, Service service, double fator, GUIDistributor gui) {
+    public LinkToServer(String ip, int port, Service service, double fator, UIDistributor gui) {
         this.ip = ip;
         this.port = port;
         this.service = service;
         this.fator = fator;
         this.gui = gui;
     }
+    
     /**
      * Metodo que é chamado para executar a impressão das imgens
      */
     @Override
     public void run() {
-        while (service.getZoom() > 1E-18) {
+        while (true) {
             try {
                 //ligação do socket ao servidor
                 Socket socket = new Socket(ip, port);
@@ -73,10 +76,15 @@ public class LinkToServer extends Thread {
                 socket.close();
                 in.close();
                 out.close();
-            } catch (Exception ex) {
+               
+            } catch (ConnectException ex) { // catch connection error
+                gui.jTextAreaDebug.append("[Dist] Cannot connect to server "+ip+":"+port+" \n");
+            } catch (SocketTimeoutException ex) { // catch connection timeout
+                this.interrupt();
+                this.ip = null;
+            }catch (Exception ex) {
                 Logger.getLogger(LinkToServer.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
     }
-
 }
